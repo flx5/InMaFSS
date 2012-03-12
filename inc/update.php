@@ -35,7 +35,7 @@ class Update {
                        return $_SESSION['updates'][$this->version];
                  }
 
-                 $updateData = @file_get_contents("https://api.github.com/repos/flx5/MyVertretungsplan/tags");
+                 $updateData = @file_get_contents("https://api.github.com/repos/flx5/InMaFSS/tags");
                  if(!$updateData) {
                    return Array();
                  }
