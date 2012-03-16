@@ -38,7 +38,7 @@ $left->setVar('site','left');
 $tpl->addTemplateClass($left);
 $tpl->Write('</div>');
 
-$tpl->Write('<div class="main" style="right:0px; border-left:0px solid black;" >');
+$tpl->Write('<div class="main tomorrow" style="right:0px; border-left:0px solid black;" >');
 $right = $tpl->getTemplate('plan');
 $right->setVar('site','right');
 $tpl->addTemplateClass($right);

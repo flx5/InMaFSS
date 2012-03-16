@@ -20,8 +20,8 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 ?>
-
 <div class='bar'>
-<span style=" padding-left:20px;">Gymnasium Donauw&ouml;rth </span>
-<span id='clock' style="text-align:right; padding-right:20px; float:right;">&nbsp;</span>
+<span style="float:left; padding-left:20px;">Gymnasium Donauw&ouml;rth </span>
+<span><b>InMaFSS</b></span>
+<span id='clock' style="text-align:right; padding-right:20px; float:right;"><?php echo date("j.m.Y H:i:s"); ?></span>
 </div>

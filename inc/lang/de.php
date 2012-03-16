@@ -54,7 +54,7 @@ case 'home':
   $loc['title'] = 'Home';
   $loc['empty'] = 'Derzeit steht kein Inhalt zur Verf&uuml;gung!';
   $loc['page'] = 'Seite';
-  $loc['plan.for'] = '<b>Vertretungsplan f�r %day%, %date%</b> (Stand: %time% Uhr)';
+  $loc['plan.for'] = '<b>Vertretungsplan f&uuml;r %day%, %date%</b> (Stand: %time% Uhr)';
 break;
 
 case 'admin':

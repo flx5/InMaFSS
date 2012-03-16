@@ -32,6 +32,7 @@ html, body {
    height:30px;
    color:#fff;
    font-size:16pt;
+   text-align:center;
 }
 
 .main {
@@ -51,7 +52,6 @@ html, body {
 
 .main td
 {
-
   background-color:#c0c0e0;
   font-family:"trebuchet ms", verdana, arial, sans-serif;
 }
@@ -59,6 +59,20 @@ html, body {
 .main tr {
   height:25px;
   color:#004060;
+}
+
+.tomorrow tr {
+  color:#CCCCCC;
+}
+
+.tomorrow th {
+  color:#CCCCCC;
+  background-color: #43886F;
+}
+
+.tomorrow td {
+  background-color:#A5CDCD;
+  color: #2C5E4C;
 }
 
 .main a {

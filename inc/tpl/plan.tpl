@@ -30,7 +30,15 @@
       $where = "timestamp >= ".$tfrom." AND timestamp <= ".mktime(23,59,59, date("n"), date("j"));
    } else {
       $tfrom = mktime(0,0,0, date("n"), date("j")+1);
-      $where = "timestamp >= ".$tfrom." AND timestamp <= ".mktime(23,59,59, date("n"), date("j")+1);
+      if(date("w",$tfrom) == 6) {
+            $tfrom = mktime(0,0,0, date("n"), date("j")+3);
+      }
+
+      if(date("w",$tfrom) == 0)
+      {
+            $tfrom = mktime(0,0,0, date("n"), date("j")+2);
+      }
+      $where = "timestamp >= ".$tfrom." AND timestamp <= ".mktime(23,59,59, date("n", $tfrom), date("j", $tfrom));
    }
 
    $sql = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade != 0 ORDER BY grade, grade_pre, grade_last");
@@ -59,13 +67,17 @@
        if(($i+count($grade))>$limit || $i == 0) {
               if($i != 0) {
                 $output .= '</table>';
-                $grades .= $prek.'</span> * ';
+                if($prek == $k) {
+                     $grades .= '</span> * ';
+                } else {
+                     $grades .= '-'. $prek.'</span> * ';
+                }
               }
               $output .= '<table width="95%" align="center" border="0" cellspacing="1" id="plan_'.$site.'_'.$ti.'" style="'.(($i != 0) ? 'display:none;' : '').'"><th>Klasse</th><th>Lehrer</th><th>Stunde</th><th>vertreten durch</th><th>Raum</th><th>Bemerkung</th>';
               if($i == 0) {
-                $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#004488">'. $k . '-';
+                $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#004488">'. $k;
               } else {
-                $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#C0C0C0">'. $k . '-';
+                $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#C0C0C0">'. $k;
               }
               $ti++;
               $i = 1;
@@ -100,10 +112,20 @@
        $prek = $k;
     }
 
-$grades .= $prek;
+if($grades != "") {
+  if($prek == $k) {
+     $grades .= '</span>';
+  } else {
+     $grades .= '-'. $prek.'</span>';
+  }
+}
 $pi = 1;
 
 $notes_count = mysql_num_rows($sql3);
+
+if($notes_count == 0) {
+    if($output != "") { $output .= '</table>';  }
+}
 
 if($notes_count != 0 && ($i+$notes_count+1 > $limit || $ti == 0)) {
      if($output != "") { $output .= '</table>';  }
@@ -152,15 +174,9 @@ if($pi == 1 && $ti == 0) {
     echo '<div style="height:80px; width:90%; background-color:#C0C0C0; padding:5px; margin:auto; margin-top:40%;"><h1>'.lang()->loc('empty', false).'</h1></div>';
 }
 
-if($site == 'left') {
-    $date = time();
-}  else {
-    $date = mktime(0,0,0, date("n"), date("j")+1);
-}
-
 $plan_for = lang()->loc('plan.for',false);
-$plan_for = preg_replace("/%day%/", lang()->loc(strtolower(substr(date("D",$date),0,2)),false), $plan_for);
-$plan_for = preg_replace("/%date%/", date("d.m.Y",$date), $plan_for);
+$plan_for = preg_replace("/%day%/", lang()->loc(strtolower(substr(date("D",$tfrom),0,2)),false), $plan_for);
+$plan_for = preg_replace("/%date%/", date("d.m.Y",$tfrom), $plan_for);
 $plan_for = preg_replace("/%time%/", date("d.m. - H:i",$last_update), $plan_for);
 
 if($output != "") {
