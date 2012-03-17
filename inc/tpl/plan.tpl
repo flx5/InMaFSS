@@ -113,7 +113,7 @@
     }
 
 if($grades != "") {
-  if($prek == $k) {
+  if($prek == substr($grades, strlen($grades)-strlen($prek))) {
      $grades .= '</span>';
   } else {
      $grades .= '-'. $prek.'</span>';
@@ -123,12 +123,9 @@ $pi = 1;
 
 $notes_count = mysql_num_rows($sql3);
 
-if($notes_count == 0) {
-    if($output != "") { $output .= '</table>';  }
-}
+if($output != "") { $output .= '</table>';  }
 
 if($notes_count != 0 && ($i+$notes_count+1 > $limit || $ti == 0)) {
-     if($output != "") { $output .= '</table>';  }
 
      if($grades != "") {
         $grades .= ' * ';
@@ -145,11 +142,9 @@ while($note = mysql_fetch_assoc($sql3)) {
      $output .= '<tr><th colspan="6" >'.$note['content'].'</th></tr>';
 }
 
-if($notes_count != 0 && $output != "" && ($i+$notes_count+1 < $limit || $ti == 1)) { $output .= '</table>';  }
-
-
-
-
+if($notes_count != 0 && ($i+$notes_count+1 > $limit || $ti == 0)) {
+       $output .= '</table>';
+}
 if($site == 'left') {
       $where = "timestamp_end >= ".mktime(0,0,0)." AND timestamp_from <= ".mktime(0,0,0, date("n"), date("j")+1);
    } else {
@@ -185,7 +180,9 @@ if(count($content) != 0) { echo $plan_for.'<br>'; }
 
 echo $grades;
 echo '</div>';
+
 }
 
 echo $output;
+
 ?>

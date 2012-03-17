@@ -32,7 +32,7 @@
   } else {
      end($updates);
      $key = key($updates);
-
+                              
      echo '<a href="update.php?v='.$key.'">'.lang()->loc('update.to.version',false).' '.$key.'</a><br>';
      echo '<h3>'.lang()->loc('missed.updates',false).'</h3>';
   }

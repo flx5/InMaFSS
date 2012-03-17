@@ -53,7 +53,7 @@ class Update {
                  foreach($versions as $v=>$url) {
                      $ver = preg_replace("#\.#","",$v);
                      if($ver > $this->version) {
-                       $updates[$ver] = $url;
+                       $updates[$v] = $url;
                      }
                  }
                  ksort($updates, SORT_NUMERIC);

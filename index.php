@@ -45,9 +45,6 @@ $tpl->addTemplateClass($right);
 $tpl->Write('</div>');
 }
 
-
-
-
 $tpl->Write('
 <script language="JavaScript">
 Init();
