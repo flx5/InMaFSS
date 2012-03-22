@@ -31,6 +31,8 @@ $tpl->addTemplate('header');
 $tpl->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
 if(!isset($_GET['size']) || !is_numeric($_GET['size'])) {
       $tpl->Write('</div>');
+} elseif($_GET['size'] < 533) {
+      $tpl->addTemplate('too_small');
 } else {
 
 $left = $tpl->getTemplate('plan');
@@ -51,8 +53,7 @@ Init();
 </script>
 <noscript>');
 
-$nojs = $tpl->getTemplate('no_js');
-$tpl->addTemplateClass($nojs);
+$tpl->addTemplate('no_js');
 $tpl->Write('</noscript>');
 
 $tpl->addTemplate('footer');

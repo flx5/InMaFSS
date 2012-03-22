@@ -24,6 +24,5 @@ lang()->add('errors');
 ?>
 
 <div style="position:absolute; bottom:0px; top:30px; background-color:#E1E100; width:100%; font-size:20px; text-align:center; z-index:100">
-<p><h1><?php lang()->loc('no.js'); ?></h1></p><hr>
-<p><?php lang()->loc('no.js.desc'); ?></p>
+<p><h1><?php lang()->loc('too.small'); ?></h1></p><hr>
 </div>

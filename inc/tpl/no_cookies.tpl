@@ -19,9 +19,11 @@
 |* You should have received a copy of the GNU Affero General Public License        *|
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
+
+lang()->add('errors');
 ?>
 
-<div style="background-color:#E1E100; width:100%; padding:5px; font-size:20px; text-align:center;">  
-<p><h1>FEHLER: Ihr Browser unterst&uuml;tzt keine Cookies.</h1></p><hr>
-<p>Bitte aktivieren sie Cookies, um diese Seite nutzen zu k&ouml;nnen.</p>
+<div style="background-color:#E1E100; width:100%; padding:5px; font-size:20px; text-align:center;">
+<p><h1><?php lang()->loc('no.cookies'); ?></h1></p><hr>
+<p><?php lang()->loc('no.cookies.desc'); ?></p>
 </div>

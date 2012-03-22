@@ -63,6 +63,14 @@ case 'home':
   $loc['comment'] = 'Bemerkung';
 break;
 
+case 'errors':
+  $loc['too.small'] = 'FEHLER: Ihr Bildschirm ist zu klein!';
+  $loc['no.js'] = 'FEHLER: Ihr Browser unterst&uuml;tzt kein JavaScript.';
+  $loc['no.js.desc'] = 'Bitte aktivieren sie JavaScript, um diese Seite nutzen zu k&ouml;nnen.';
+  $loc['no.cookies'] = 'FEHLER: Ihr Browser unterst&uuml;tzt keine Cookies.';
+  $loc['no.cookies.desc'] = 'Bitte aktivieren sie Cookies, um diese Seite nutzen zu k&ouml;nnen.';
+break;
+
 case 'admin':
   $loc['title'] = 'Administrator';
   $loc['login'] = 'Login';
