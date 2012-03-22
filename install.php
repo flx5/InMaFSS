@@ -301,7 +301,7 @@ $apikey = \''.$key.'\';
 
 $clang = \''.$lang.'\';
 
-$auto_addition = true;
+$auto_addition = false;
 
 $use_ftp = false;
 $ftp[\'server\'] = \'localhost\';

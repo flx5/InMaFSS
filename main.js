@@ -81,7 +81,7 @@ function NextPage(site) {
                next = document.getElementById('plan_'+site+'_0');
                next_info = document.getElementById('info_'+site+'_0');
                current_page = 0;
-               if(runs_right > 5 && runs_left > 5) {  
+               if(runs_right > 5 && runs_left > 5) {
                      location.reload(true);
                }
 
@@ -94,11 +94,12 @@ function NextPage(site) {
           current_page = current_page+1;
        }
        next.style.display = '';
-       next_info.style.color = '#004488';
 
        if(site == 'left') {
+             next_info.style.color = '#004488';
              current_page_left = current_page;
        }  else {
+             next_info.style.color = '#43886F';  
              current_page_right = current_page;
        }
 }

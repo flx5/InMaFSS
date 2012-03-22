@@ -41,11 +41,10 @@ class parse {
                $html = substr($html,strpos($html,'Bemerkung</th>')+strlen('Bemerkung</th>')+9);
 
                $notes = Array();
-               if(strpos($html, '<table class="F">') === true) {
+               if(strpos($html, '<table class="F">') !== false) {
                      $notes = substr($html, strpos($html, '<table class="F">')+strlen('<table class="F">'));
                      $notes = substr($notes,0,strpos($notes,'</table>'));
                      $notes = explode("<th", $notes);
-                     unset($notes[0]);
                }
 
                $final_notes = Array();
@@ -53,7 +52,9 @@ class parse {
                foreach($notes as $note) {
                      $note = substr($note, strpos($note, ">")+1);
                      $note = trim(substr($note, 0, strpos($note, "</th>")));
-                     $final_notes[] = Array('content'=>$note, 'stamp_for'=>$stamp_for);
+                     if($note != "") {
+                       $final_notes[] = Array('content'=>$note, 'stamp_for'=>$stamp_for);
+                     }
                }
 
                $html = substr($html,0,strpos($html,'</table>'));
@@ -122,7 +123,7 @@ class parse {
                                  }
                            }
 
-                           $sql = dbquery("SELECT id FROM replacements WHERE grade_pre = '".$pre."' AND grade = '".$k1."' AND grade_last = '".$last."' AND lesson = '".$data['lesson']."' AND timestamp = '".$data['stamp_for']."'");
+                           $sql = dbquery("SELECT id FROM replacements WHERE grade_pre = '".$pre."' AND grade = '".$k1."' AND grade_last = '".$last."' AND lesson = '".$data['lesson']."' AND timestamp = '".$data['stamp_for']."' AND teacher = '".$data['teacher']."'");
 
                            if(mysql_num_rows($sql) == 1) {
                                   dbquery("UPDATE replacements SET teacher = '".$data['teacher']."', replacement = '".$data['replacement']."', room = '".$data['room']."',  hint = '".$data['hint']."', timestamp_update = '".time()."' WHERE id = ".mysql_result($sql,0));
