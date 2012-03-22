@@ -36,15 +36,17 @@ class parse {
                $date_for = substr($date, 0, strpos($date,"</br>"));
 
                $date_for = explode(".",$date_for);
-               $stamp_for = mktime(0,0,0, $date_for[1], $date_for[0], $date_for[2]);
+               $stamp_for = mktime(0,0,0, intval($date_for[1]), intval($date_for[0]), intval($date_for[2]));
 
                $html = substr($html,strpos($html,'Bemerkung</th>')+strlen('Bemerkung</th>')+9);
 
-               $notes = substr($html, strpos($html, '<table class="F">')+strlen('<table class="F">'));
-               $notes = substr($notes,0,strpos($notes,'</table>'));
-
-               $notes = explode("<th", $notes);
-               unset($notes[0]);
+               $notes = Array();
+               if(strpos($html, '<table class="F">') === true) {
+                     $notes = substr($html, strpos($html, '<table class="F">')+strlen('<table class="F">'));
+                     $notes = substr($notes,0,strpos($notes,'</table>'));
+                     $notes = explode("<th", $notes);
+                     unset($notes[0]);
+               }
 
                $final_notes = Array();
 
@@ -56,6 +58,7 @@ class parse {
 
                $html = substr($html,0,strpos($html,'</table>'));
                $graden = explode('<tr class="k">',$html);
+               $replacements = Array();
 
                foreach($graden as $grade) {
 

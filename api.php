@@ -20,7 +20,6 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-
 require_once("global.php");
 
 if(trim($apikey) == "") {
@@ -45,6 +44,8 @@ if(trim($apikey) == "") {
                       $p = new parse();
 
                       foreach($files as $file) {
+                             $file = stripslashes(urldecode($file));
+                             $file = substr($file, strpos($file,"<html>"));
                              $p->parseHTML($file);
                       }
 
