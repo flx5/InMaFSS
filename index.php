@@ -35,14 +35,23 @@ if(!isset($_GET['size']) || !is_numeric($_GET['size'])) {
       $tpl->addTemplate('too_small');
 } else {
 
+$size = $_GET['size'];
+$limit = floor(($size-30)/26)-2;
+
+require_once("inc/view.php");
+
 $left = $tpl->getTemplate('plan');
 $left->setVar('site','left');
+$view_left = new view('left', $limit);
+$left->setVar('view',$view_left);
 $tpl->addTemplateClass($left);
 $tpl->Write('</div>');
 
 $tpl->Write('<div class="main tomorrow" style="right:0px; border-left:0px solid black;" >');
 $right = $tpl->getTemplate('plan');
 $right->setVar('site','right');
+$view_right = new view('right', $limit);
+$right->setVar('view',$view_right);
 $tpl->addTemplateClass($right);
 $tpl->Write('</div>');
 }
@@ -56,6 +65,9 @@ Init();
 $tpl->addTemplate('no_js');
 $tpl->Write('</noscript>');
 
-$tpl->addTemplate('footer');
+$footer = $tpl->getTemplate('footer');
+$footer->setVar('view_left',$view_left);
+$footer->setVar('view_right',$view_right);
+$tpl->addTemplateClass($footer);
 $tpl->Output();
 ?>

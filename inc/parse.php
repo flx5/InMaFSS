@@ -52,7 +52,7 @@ class parse {
                foreach($notes as $note) {
                      $note = substr($note, strpos($note, ">")+1);
                      $note = trim(substr($note, 0, strpos($note, "</th>")));
-                     if($note != "") {
+                     if(trim(preg_replace("#\*#","",$note)) != "") {
                        $final_notes[] = Array('content'=>$note, 'stamp_for'=>$stamp_for);
                      }
                }

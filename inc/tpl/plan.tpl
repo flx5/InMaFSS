@@ -22,169 +22,25 @@
 
 
    lang()->add('date');
-   $size = $_GET['size'];
-   $limit = floor(($size-65)/26)-2;
-
-   if($site == 'left') {
-      $tfrom = mktime(0,0,0);
-      $where = "timestamp >= ".$tfrom." AND timestamp <= ".mktime(23,59,59, date("n"), date("j"));
-   } else {
-      $tfrom = mktime(0,0,0, date("n"), date("j")+1);
-      if(date("w",$tfrom) == 6) {
-            $tfrom = mktime(0,0,0, date("n"), date("j")+3);
-      }
-
-      if(date("w",$tfrom) == 0)
-      {
-            $tfrom = mktime(0,0,0, date("n"), date("j")+2);
-      }
-      $where = "timestamp >= ".$tfrom." AND timestamp <= ".mktime(23,59,59, date("n", $tfrom), date("j", $tfrom));
-   }
-
-   $sql = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade != 0 ORDER BY grade, grade_pre, grade_last");
-   $sql2 = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade = 0 ORDER BY grade, grade_pre, grade_last");
-   $sql3 = dbquery("SElECT * FROM notes WHERE ".$where." ORDER BY id");
-
-    $content = Array();
-    while($data = mysql_fetch_assoc($sql)) {
-             $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
-    }
-
-    while($data = mysql_fetch_assoc($sql2)) {
-             $content[$data['grade_pre'] . $data['grade_last']][] = $data;
-    }
-
-   $i = 0;
-   $ti = 0;
-
-    $output = "";
-    $grades = "";
-    $prek = "";
-    $last_update = 0;
-
-    foreach($content as $k=>$grade) {
-
-       if(($i+count($grade))>$limit || $i == 0) {
-              if($i != 0) {
-                $output .= '</table>';
-                if($prek == $k) {
-                     $grades .= '</span> * ';
-                } else {
-                     $grades .= '-'. $prek.'</span> * ';
-                }
-              }
-              $output .= '<table width="95%" align="center" border="0" cellspacing="1" id="plan_'.$site.'_'.$ti.'" style="'.(($i != 0) ? 'display:none;' : '').'"><th width="75px">'.lang()->loc('grade',false).'</th><th width="75px">'.lang()->loc('teacher.short',false).'</th><th width="60px">'.lang()->loc('lesson.short',false).'</th><th width="235px">'.lang()->loc('replaced.by',false).'</th><th width="75px">'.lang()->loc('room',false).'</th><th width="*">'.lang()->loc('comment',false).'</th>';
-              if($i == 0) {
-                $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#'.(($site == 'left') ? '004488' : '43886F').'">'. $k;
-              } else {
-                $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#C0C0C0">'. $k;
-              }
-              $ti++;
-              $i = 1;
-       }
 
 
-       $last_grade_pre = "";
-       $last_grade = "";
-       $last_grade_last = "";
+    $view->AddRepacements();
+    $view->CreateTables();
+    $view->GetPages();
 
-       foreach($grade as $val) {
-          $i++;
+    $menu = $view->CreateMenu();
+    $content = $view->GenerateContent();
 
-
-          if(($val['timestamp_update'] > $tfrom && config('auto_addition')) || $val['addition']) {
-               $output .= '<tr style="color:#ff0000;">';
-          } else {
-               $output .= '<tr >';
-          }
-
-          if($last_grade_last != $val['grade_last'] || $last_grade != $val['grade'] || $last_grade_pre != $val['grade_pre']) {
-                 $last_grade_pre = $val['grade_pre'];
-                 $last_grade = $val['grade'];
-                 $last_grade_last = $val['grade_last'];
-                 $output .= '<th rowspan="'.count($grade).'">'.$k.'</th>';
-          }
-          $output .= '<td>'.$val['teacher'].'</td><td>'.$val['lesson'].'</td><td align="left">&nbsp;'.$val['replacement'].'</td><td>'.$val['room'].'</td><td align="left">&nbsp;'.$val['hint'].'</td></tr>';
-          if($last_update < $val['timestamp_update']) {
-                $last_update = $val['timestamp_update'];
-          }
-       }
-       $prek = $k;
-    }
-
-if($grades != "") {
-  if($prek == substr($grades, strlen($grades)-strlen($prek))) {
-     $grades .= '</span>';
-  } else {
-     $grades .= '-'. $prek.'</span>';
-  }
-}
-$pi = 1;
-
-$notes_count = mysql_num_rows($sql3);
-
-
-if($notes_count != 0 && ($i+$notes_count+1 > $limit || $ti == 0)) {
-     if($output != "") { $output .= '</table>';  }
-     if($grades != "") {
-        $grades .= ' * ';
-     }
-     $output .= '<table width="95%" align="center" border="0" cellspacing="1" id="plan_'.$site.'_'.$ti.'" style="'.(($i != 0) ? 'display:none;' : '').'">';
-     $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#'.(($grades != "") ? 'C0C0C0' : '004488').';">'.lang()->loc('page',false).' '.$pi.'</span>';
-     $pi++;
-     $ti++;
-} elseif($notes_count != 0) {
-     $output .= '<tr><td colspan="6" style="background-color:transparent;"></td></tr>';
-}
-
-while($note = mysql_fetch_assoc($sql3)) {
-     $output .= '<tr><th colspan="6" >'.$note['content'].'</th></tr>';
-}
-
-if($notes_count != 0 && ($i+$notes_count+1 < $limit || $ti == 0)) {
-       $output .= '</table>';
-}
-
-if($notes_count == 0) { $output .= '</table>';  }
-
-if($site == 'left') {
-      $where = "timestamp_end >= ".mktime(0,0,0)." AND timestamp_from <= ".mktime(0,0,0, date("n"), date("j")+1);
-   } else {
-      $where = "timestamp_end >= ".mktime(0,0,0, date("n"), date("j")+1)." AND timestamp_from <= ".mktime(0,0,0, date("n"), date("j")+2);
-   }
-
-$sql = dbquery("SELECT * FROM pages WHERE ".$where." ORDER BY order_num");
-
-
-
-while($page = mysql_fetch_assoc($sql)) {
-    $output .=  '<div id="plan_'.$site.'_'.$ti.'" style="'.(($grades != "") ? 'display:none;' : '').'">'.$page['content'].'</div>';
-    if($grades != "") {
-        $grades .= ' * ';
-    }
-    $grades .= '<span id="info_'.$site.'_'.$ti.'" style="color:#'.(($grades != "") ? 'C0C0C0' : '004488').';">'.lang()->loc('page',false).' '.$pi.'</span>';
-    $pi++;
-    $ti++;
-}
-
-if($pi == 1 && $ti == 0) {
+if($content == "") {
     echo '<div style="height:80px; width:90%; background-color:#C0C0C0; padding:5px; margin:auto; margin-top:40%;"><h1>'.lang()->loc('empty', false).'</h1></div>';
-}
+}  else {
 
-if($output != "") {
-echo '<div style="height:65px; font-size:20px; width:95%; margin:auto;" align="center">';
-if(count($content) != 0) {
-echo '<div style="height:25px; width:99%; margin-top:5px; background-color:#C0C0C0; padding:5px;" >';
-echo '<span style="float:left;" >'.lang()->loc(strtolower(substr(date("D",$tfrom),0,2)),false).', '.date("d.m.Y",$tfrom).'</span>';
-echo '<span style="float:right;" >'.preg_replace("/%update%/", date("d.m. - H:i",$last_update), lang()->loc('last.update',false)).'</span>';
-echo '</div>';
-}
-
-echo '<div style="height:40px; width:100%; clear:both;" >'.$grades.'</div>';
+echo '<div style="height:30px; font-size:20px; width:95%; margin:auto;" align="center">';
+echo $menu;
 echo '</div>';
 
 }
 
-echo $output;
+echo $content;
 
 ?>

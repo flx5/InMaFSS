@@ -23,18 +23,23 @@
 
 <div class="bar" style="position:absolute; bottom:0px;"><marquee>
 <?php
+
    lang()->add('ticker');
-   $sql = dbquery("SELECT value FROM ticker WHERE from_stamp < '".time()."' AND to_stamp > '".time()."'");
-   if(mysql_num_rows($sql) == 0) {
+   $tickers = $view_left->GetTickers();
+   $tickers = array_merge($tickers,$view_right->GetTickers());
+   ksort($tickers);
+
+   if(count($tickers) == 0) {
       echo "+++&nbsp;";
       lang()->loc('no.ticker');
       echo '&nbsp;';
    }
 
-   while($ticker = mysql_fetch_object($sql)) {
-        $ticker = $ticker->value;
-        echo "+++&nbsp;".$ticker."&nbsp;";
+
+   foreach($tickers as $ticker) {
+        echo "+++&nbsp;".lang()->loc(strtolower(substr(date("D",$ticker['day']),0,2)),false).":&nbsp;".$ticker['content']."&nbsp;";
    }
+
    echo "+++";
 ?>
 </marquee></div>

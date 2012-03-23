@@ -75,7 +75,12 @@ function NextPage(site) {
            return;
        }
        current_plan.style.display = 'none'
-       document.getElementById('info_'+site+'_' + current_page).style.color = '#C0C0C0';
+
+       if(site == 'left') {
+         document.getElementById('info_'+site+'_' + current_page).style.color = '#C0C0E0';
+       } else {
+         document.getElementById('info_'+site+'_' + current_page).style.color = '#A5CDCD';
+       }
 
        if(next == null) {
                next = document.getElementById('plan_'+site+'_0');
@@ -99,7 +104,7 @@ function NextPage(site) {
              next_info.style.color = '#004488';
              current_page_left = current_page;
        }  else {
-             next_info.style.color = '#43886F';  
+             next_info.style.color = '#43886F';
              current_page_right = current_page;
        }
 }
