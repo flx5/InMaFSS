@@ -31,7 +31,7 @@ if(substr($www,strlen($www)-1) == "/") {
 define('WWW', $www);
 
 if(file_exists(CWD."install.php") && file_exists(CWD."inc/config.php")) {
-     die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
+     #die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
 }
 
 if(!file_exists(CWD."inc/config.php") && !file_exists(CWD."install.php")) {

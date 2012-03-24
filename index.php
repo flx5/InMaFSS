@@ -54,6 +54,11 @@ $view_right = new view('right', $limit);
 $right->setVar('view',$view_right);
 $tpl->addTemplateClass($right);
 $tpl->Write('</div>');
+
+$footer = $tpl->getTemplate('footer');
+$footer->setVar('view_left',$view_left);
+$footer->setVar('view_right',$view_right);
+$tpl->addTemplateClass($footer);
 }
 
 $tpl->Write('
@@ -64,10 +69,5 @@ Init();
 
 $tpl->addTemplate('no_js');
 $tpl->Write('</noscript>');
-
-$footer = $tpl->getTemplate('footer');
-$footer->setVar('view_left',$view_left);
-$footer->setVar('view_right',$view_right);
-$tpl->addTemplateClass($footer);
 $tpl->Output();
 ?>
