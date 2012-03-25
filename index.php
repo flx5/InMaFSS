@@ -63,7 +63,7 @@ $tpl->addTemplateClass($footer);
 
 $tpl->Write('
 <script language="JavaScript">
-Init();
+Init('.config("time_for_next_page").');
 </script>
 <noscript>');
 

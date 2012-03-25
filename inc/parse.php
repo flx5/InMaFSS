@@ -34,9 +34,13 @@ class parse {
 
                $date = substr($date[0], strpos($date[0],",")+2);
                $date_for = substr($date, 0, strpos($date,"</br>"));
+               $date_update = substr($date, strpos($date,"(")+1);
+               $date_update = trim(substr($date, strpos($date," ")));
 
                $date_for = explode(".",$date_for);
+               $date_update = explode(".",$date_update);
                $stamp_for = mktime(0,0,0, intval($date_for[1]), intval($date_for[0]), intval($date_for[2]));
+               $stamp_update = mktime($time[0],$time[1],0, intval($date_update[1]), intval($date_update[0]));
 
                $html = substr($html,strpos($html,'Bemerkung</th>')+strlen('Bemerkung</th>')+9);
 
@@ -93,7 +97,7 @@ class parse {
 
                             $addition = true;
                           }
-                          $replacements[$grade][] = Array('stamp_for'=>$stamp_for, 'addition'=>$addition,'teacher'=>$teacher,'lesson'=>$lesson,'replacement'=>$teacher2,'room'=>$raum,'hint'=>$hint);
+                          $replacements[$grade][] = Array('stamp_update'=>$stamp_update, 'stamp_for'=>$stamp_for, 'addition'=>$addition,'teacher'=>$teacher,'lesson'=>$lesson,'replacement'=>$teacher2,'room'=>$raum,'hint'=>$hint);
                      }
                }
 
@@ -126,21 +130,19 @@ class parse {
                            $sql = dbquery("SELECT id FROM replacements WHERE grade_pre = '".$pre."' AND grade = '".$k1."' AND grade_last = '".$last."' AND lesson = '".$data['lesson']."' AND timestamp = '".$data['stamp_for']."' AND teacher = '".$data['teacher']."'");
 
                            if(mysql_num_rows($sql) == 1) {
-                                  dbquery("UPDATE replacements SET teacher = '".$data['teacher']."', replacement = '".$data['replacement']."', room = '".$data['room']."',  hint = '".$data['hint']."', timestamp_update = '".time()."' WHERE id = ".mysql_result($sql,0));
+                                  dbquery("UPDATE replacements SET teacher = '".$data['teacher']."', replacement = '".$data['replacement']."', room = '".$data['room']."',  hint = '".$data['hint']."', timestamp_update = '".$data['stamp_update']."' WHERE id = ".mysql_result($sql,0));
                                   continue;
                            }
 
-                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, hint, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".$data['teacher']."','".$data['replacement']."', '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".time()."', '".$data['addition']."')");
+                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, hint, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".$data['teacher']."','".$data['replacement']."', '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
                     }
                }
             }
 
             foreach($this->notes as $notes) {
                 foreach($notes as $note) {
-                       $sql = dbquery("SELECT null FROM notes WHERE content = '".$note['content']."' AND timestamp = '".$note['stamp_for']."'");
-                       if(mysql_num_rows($sql) == 0) {
-                               dbquery("INSERT INTO notes (content, timestamp) VALUES ('".$note['content']."', '".$note['stamp_for']."')");
-                       }
+                       dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
+                       dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp) VALUES (1, '".$note['content']."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."')");
                 }
             }
        }

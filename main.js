@@ -43,9 +43,12 @@ var runs_right = 0;
 
 var aktiv = null;
 
-function Init() {
+function Init(time) {
+  if(time == null) {
+    throw "No time given!";
+  }
   SetHeight();
-  aktiv = window.setInterval("Continue()", 5000);
+  aktiv = window.setInterval("Continue()", time*1000);
 }
 function Continue() {
       NextPage('left');

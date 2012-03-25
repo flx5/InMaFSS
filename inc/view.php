@@ -51,7 +51,7 @@
                             $first = true;
 
                             foreach($grade as $val) {
-                               $output .= '<tr style="color:#'.(($val['addition']) ? 'ff0000' : '000').';">';
+                               $output .= '<tr class="'.(($val['addition']) ? 'update' : '').'">';
                                if($first) {
                                   $output .= '<th rowspan="'.count($grade).'">'.$k.'</th>';
                                }
@@ -150,17 +150,11 @@
        }
 
        public function GetTickers() {
-             $sql1 = dbquery("SELECT * FROM ticker WHERE from_stamp < '".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()))."' AND to_stamp > '".$this->GetTFrom()."'");
-             $sql2 = dbquery("SELECT * FROM notes WHERE timestamp <= '".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()))."' AND timestamp >= '".$this->GetTFrom()."'");
+             $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()))."' AND to_stamp > '".$this->GetTFrom()."' ORDER BY to_stamp");
              $tickers = Array();
-             while($ticker = mysql_fetch_object($sql1)) {
-                  $tickers[] = Array('day'=>$ticker->from_stamp, 'content'=>$ticker->value);
+             while($ticker = mysql_fetch_object($sql)) {
+                  $tickers[] = Array('day'=>$ticker->from_stamp, 'content'=>$ticker->value, 'automatic'=>$ticker->automatic);
              }
-
-             while($ticker = mysql_fetch_object($sql2)) {
-                  $tickers[] = Array('day'=>$ticker->timestamp, 'content'=>$ticker->content);
-             }
-             ksort($tickers);
              return $tickers;
        }
   }

@@ -90,8 +90,14 @@
            }
         }
   }
-  $sql = dbquery("SELECT * FROM pages WHERE id = ".$id);
-  $data = mysql_fetch_assoc($sql);
+
+  if(isset($_GET['new']) && !isset($_POST['caption'])) {
+         $data = Array('title'=>'', 'content'=>'', 'timestamp_from'=>time(),'timestamp_end'=>time());
+  }  else {
+         $sql = dbquery("SELECT * FROM pages WHERE id = ".$id);
+         $data = mysql_fetch_assoc($sql);
+  }
+
 ?>
 <form method="post">
 <table width="100%">

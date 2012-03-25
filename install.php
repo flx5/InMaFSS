@@ -255,11 +255,12 @@ CREATE TABLE IF NOT EXISTS `pages` (
 
 "CREATE TABLE IF NOT EXISTS `ticker` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `automatic` tinyint(1) NOT NULL DEFAULT '0',
   `value` text NOT NULL,
   `from_stamp` varchar(20) NOT NULL,
   `to_stamp` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;",
 
 "CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -267,13 +268,6 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `password` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
-
-"CREATE TABLE IF NOT EXISTS `notes` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `content` text NOT NULL,
-  `timestamp` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;"
 
 );
 }
@@ -300,8 +294,8 @@ $salt = \''.$salt.'\';
 $apikey = \''.$key.'\';
 
 $clang = \''.$lang.'\';
-
 $auto_addition = false;
+$time_for_next_page = 5; // time to go to next page (in seconds)
 
 $use_ftp = false;
 $ftp[\'server\'] = \'localhost\';

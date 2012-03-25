@@ -37,7 +37,12 @@
 
 
    foreach($tickers as $ticker) {
-        echo "+++&nbsp;".lang()->loc(strtolower(substr(date("D",$ticker['day']),0,2)),false).":&nbsp;".$ticker['content']."&nbsp;";
+        echo "+++&nbsp;";
+        if($ticker['automatic']) {
+          echo lang()->loc(strtolower(substr(date("D",$ticker['day']),0,2)),false).":&nbsp";
+        }
+
+        echo $ticker['content']."&nbsp;";
    }
 
    echo "+++";

@@ -75,6 +75,10 @@ html, body {
   color: #2C5E4C;
 }
 
+.update td {
+  color:#ff0000;
+}
+
 .main a {
   color:#000;
 }
