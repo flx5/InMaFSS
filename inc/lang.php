@@ -31,8 +31,7 @@ class lang {
             $this->file = CWD.DS."inc".DS."lang".DS.$lang.".php";
 
             if(!file_exists($this->file)) {
-               global $core;
-               $core->SystemError('Language system error', 'Could not load language: ' . $this->language);
+               core::SystemError('Language system error', 'Could not load language: ' . $this->language);
                return;
             }
       }
@@ -59,7 +58,6 @@ class lang {
              }
              return $this->local[$id];
           }
-          global $core;
-          $core->SystemError('Language System Error', 'Could not find index '. $id);
+          core::SystemError('Language System Error', 'Could not find index '. $id);
       }
 }

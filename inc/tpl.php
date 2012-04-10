@@ -107,12 +107,11 @@ class Template {
 
     public function GetHtml()
     {
-                global $core;
                 $file = CWD . 'inc/tpl/' . $this->tplName . '.tpl';
 
                 if (!file_exists($file))
                 {
-                        $core->SystemError('Template system error', 'Could not load template: ' . $this->tplName);
+                        core::SystemError('Template system error', 'Could not load template: ' . $this->tplName);
                 }
 
                 foreach($this->vars as $key=>$var) {

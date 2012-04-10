@@ -35,11 +35,11 @@ class core {
         }
 
         public function generatePW($username, $password) {
-            global $salt;
-            return sha1($salt.md5($password.$salt.$username));
+            return sha1(config("salt").md5($password.config("salt").$username));
         }
 
         public function filter($input) {
                  return mysql_real_escape_string(stripslashes(trim($input)));
         }
 }
+?>

@@ -63,7 +63,11 @@
                     $output .= '</table>';
 
                     $keys = array_keys($table);
-                    $title = $keys[0].'-'.$keys[count($keys)-1];
+                    if(count($keys) != 1) {
+                      $title = $keys[0].'-'.$keys[count($keys)-1];
+                    } else {
+                      $title = $keys[0];
+                    }
                     $this->AddPage($title,$output);
               }
        }
@@ -144,7 +148,7 @@
                      {
                            $tfrom = mktime(0,0,0, date("n"), date("j")+2);
                      }
-
+                     getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", &$tfrom);
                }
                return $tfrom;
        }

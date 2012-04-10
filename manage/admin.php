@@ -24,15 +24,15 @@
 require_once("global.php");
 
 lang()->add('admin');
-$tpl->Init(lang()->loc('title',false));
-$tpl->addStandards('admin');
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addStandards('admin');
 
-$updatetpl = $tpl->getTemplate('update_info');
-$info = $tpl->getTemplate('info');
+$updatetpl = getVar("tpl")->getTemplate('update_info');
+$info = getVar("tpl")->getTemplate('info');
 
-$tpl->setParam('right',$updatetpl->GetHTML());
-$tpl->setParam('left',$info->GetHTML());
+getVar("tpl")->setParam('right',$updatetpl->GetHTML());
+getVar("tpl")->setParam('left',$info->GetHTML());
 
-$tpl->addTemplate('main');
-$tpl->Output();
+getVar("tpl")->addTemplate('main');
+getVar("tpl")->Output();
 ?>

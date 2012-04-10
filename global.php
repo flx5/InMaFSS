@@ -22,6 +22,7 @@
 
 define('DS', DIRECTORY_SEPARATOR);
 define('CWD', str_replace('manage' . DS, '', dirname(__FILE__) . DS));
+define('PLUGIN_DIR',CWD.DS."plugins".DS);
 
 $www = str_replace('manage', '', $_SERVER['REQUEST_URI']);
 $www = substr($www,0, strrpos($www,"/"));
@@ -43,20 +44,22 @@ if(!file_exists(CWD."inc/config.php") && file_exists(CWD."install.php")) {
      exit;
 }
 
-require_once("inc/config.php");
+require_once("inc/variables.php");
+require_once("inc/class.config.php");
 require_once("inc/core.php");
 require_once("inc/sql.php");
 require_once("inc/lang.php");
 require_once("inc/tpl.php");
 require_once("inc/update.php");
+require_once("inc/plugin.php");
+require_once("inc/parse.php");
 
-$core = new core();
-$lang = new lang($clang);
-$sql = new MySQL();
-$tpl = new tpl();
-$update = new Update();
+$config = new config();
+$vars = new variables(new core(), new lang($config->Get("lang")), new MySQL(), new tpl(), new Update(), new pluginManager(), false);
 
-$sql->connect($dbhost, $dbusr, $dbpass, $dbname);
+getVar("sql")->connect($config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname"));
+getVar("pluginManager")->Init();
+
 
 session_start();
 
@@ -69,23 +72,42 @@ if(isset($_SESSION['user']) && isset($_SESSION['timestamp'])) {
 }
 
 function lang() {
-  global $lang;
-
-  return $lang;
+  return getVar("lang");
 }
 
 function filter($input) {
-  global $core;
-  return $core->filter($input);
+  return getVar("core")->filter($input);
 }
 
 function dbquery($input) {
-   global $sql;
-   return $sql->dbquery($input);
+   if(getVar("PLUGIN") || !getVar("sql")->connected) {
+      return null;
+   }
+
+   return getVar("sql")->dbquery($input);
 }
 
 function config($var) {
-   global $$var;
-   return $$var;
+    if(getVar("PLUGIN")) {
+      return null;
+   }
+
+   global $config;
+   return $config->Get($var);
+}
+
+function getVar($var) {
+       global $vars;
+       return $vars->Get($var);
+}
+
+function setVar($var,$val) {
+       global $vars;
+       $vars->Set($var, $val);
+}
+
+function setPlugin($val, $actor) {
+       global $vars;
+       $vars->setPlugin($val, $actor);
 }
 ?>

@@ -25,10 +25,10 @@ require_once("global.php");
 lang()->add('ticker');
 lang()->add('date');
 
-$tpl->Init(lang()->loc('title',false));
-$tpl->addStandards('admin');
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addStandards('admin');
 
-$tpl->addHeader('
+getVar("tpl")->addHeader('
 <link rel="stylesheet" type="text/css" href="./calendar/tcal.css" />
 <script type="text/javascript" src="./calendar/tcal.js"></script>
 <script type="text/javascript" >
@@ -47,12 +47,12 @@ var A_TCALCONF = {
 </script>
 ');
 
-$tpl->setParam("id",'');
+getVar("tpl")->setParam("id",'');
 
 if(isset($_GET['del'])) {
-  $tpl->setParam("id",$_GET['del']);
+  getVar("tpl")->setParam("id",$_GET['del']);
 }
 
-$tpl->addTemplate('ticker');
-$tpl->Output();
+getVar("tpl")->addTemplate('ticker');
+getVar("tpl")->Output();
 ?>

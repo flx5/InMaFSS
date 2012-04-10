@@ -22,18 +22,18 @@
 
 
 class MySql {
+      var $connected = false;
       function connect($host, $username, $password, $database) {
-             global $core;
              lang()->add('database');
-             @mysql_connect($host,$username,$password) or $core->SystemError(lang()->loc('error',false),lang()->loc('connection.error',false));
-             @mysql_select_db($database) or $core->SystemError(lang()->loc('error',false),lang()->loc('database.not.found',false));
+             @mysql_connect($host,$username,$password) or core::SystemError(lang()->loc('error',false),lang()->loc('connection.error',false));
+             @mysql_select_db($database) or core::SystemError(lang()->loc('error',false),lang()->loc('database.not.found',false));
+             $this->connected = true;
       }
 
       function dbquery($sql) {
          $sql = mysql_query($sql);
          if(!$sql) {
-            global $core;
-             $core->SystemError("MySQL Error","Die Anfrage schlug fehl: ".mysql_error());
+             core::SystemError("MySQL Error","Die Anfrage schlug fehl: ".mysql_error());
          }
          return $sql;
       }

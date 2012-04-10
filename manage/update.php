@@ -25,10 +25,10 @@ require_once("global.php");
 
 lang()->add('updates');
 
-$tpl->Init(lang()->loc('title',false));
-$tpl->addStandards('admin');
-$tpl->Write('<div class="content">');
-$tpl->Output();
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addStandards('admin');
+getVar("tpl")->Write('<div class="content">');
+getVar("tpl")->Output();
 flush();
 
   $updates = $update->GetUpdates();

@@ -30,17 +30,17 @@ if(LOGGED_IN) {
 
 lang()->add('admin');
 
-$tpl->Init($lang->loc('title',false));
-$tpl->setParam('error','');
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->setParam('error','');
 
 if(isset($_POST['usr']) && isset($_POST['pwd'])) {
       $usr = filter($_POST['usr']);
       $pwd = filter($_POST['pwd']);
-      $pwd = $core->generatePW($usr,$pwd);
+      $pwd = getVar("core")->generatePW($usr,$pwd);
 
       $sql = dbquery("SELECT id FROM users WHERE username = '".$usr."' AND password = '".$pwd."' LIMIT 1");
       if(mysql_num_rows($sql) == 0) {
-         $tpl->setParam('error','<font color="#FF0000">'.lang()->loc('wrong',false).'</font><br><br>');
+         getVar("tpl")->setParam('error','<font color="#FF0000">'.lang()->loc('wrong',false).'</font><br><br>');
       } else {
           $_SESSION['user'] = $usr;
           $_SESSION['timestamp'] = time();
@@ -51,9 +51,9 @@ if(isset($_POST['usr']) && isset($_POST['pwd'])) {
 
 
 if(isset($_GET['cookies']) && $_GET['cookies'] == "no") {
-$tpl->addTemplate('no_cookies');
+getVar("tpl")->addTemplate('no_cookies');
 }
 
-$tpl->addTemplate('manage');
-$tpl->Output();
+getVar("tpl")->addTemplate('manage');
+getVar("tpl")->Output();
 ?>

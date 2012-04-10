@@ -20,6 +20,40 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
+/*=============================================*\
+| FILE SOURCE: http://www.schulferien.org/iCal/ |
+\*=============================================*/
 
-$version = 110;
+class german_holidays {
+  var $handler;
+  var $events;
+  public function Init($handler) {
+         $this->handler = $handler;
+         $this->parse_holidays();
+         $this->handler->RegisterEvent($this,"generate_tfrom_right","check");
+         return true;
+  }
+
+  public function parse_holidays() {
+          $data = file_get_contents(PLUGIN_DIR."Ferien_Bayern_".date("Y").".ics");
+
+          $xml = parse::ICS2XML($data);
+          $xml = simplexml_load_string($xml);
+          $events = Array();
+
+          foreach($xml->VEVENT as $event) {
+                 $events[] = Array("start"=>parse::ICS2UnixStamp($event->DTSTART),"end"=>parse::ICS2UnixStamp($event->DTEND),"value"=>(String)$event->SUMMARY);
+          }
+          $this->events = $events;
+  }
+
+  public function check($param) {
+         foreach($this->events as $event) {
+              if($param > $event['start'] && $param < $event['end']) {
+                      $param = mktime(0,0,0, date("n",$event['end']), date("j",$event['end'])+1);
+              }
+         }
+
+  }
+}
 ?>

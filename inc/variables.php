@@ -20,6 +20,52 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
+class variables {
+     private $core;
+     private $lang;
+     private $sql;
+     private $tpl;
+     private $update;
+     private $pluginManager;
+     private $PLUGIN;
+     private $AllowOverride = Array("PLUGIN");
+     private $PLUGIN_ACTOR = null;
 
-$version = 110;
+     public function variables($core,$lang,$sql,$tpl,$update,$pluginManager, $PLUGIN) {
+               $this->core          = $core;
+               $this->lang          = $lang;
+               $this->sql           = $sql;
+               $this->tpl           = $tpl;
+               $this->update        = $update;
+               $this->pluginManager = $pluginManager;
+               $this->PLUGIN = $PLUGIN;
+     }
+
+     public function Get($var) {
+            if($this->PLUGIN && $var != "PLUGIN") {
+              return;
+            }
+            return $this->$var;
+     }
+
+     public function Set($var,$val) {
+            if($this->PLUGIN || $var == "PLUGIN") {
+              return;
+            }
+            if(in_array($var, $this->AllowOverride)) {
+                   $this->$var = $val;
+            }
+     }
+
+     public function SetPlugin($val,$actor) {
+             if($this->PLUGIN_ACTOR == null && !$val) {
+                       return;
+             }
+
+             if($val) {
+                  $this->PLUGIN_ACTOR = $actor;
+             }
+             $this->PLUGIN = $val;
+     }
+}
 ?>

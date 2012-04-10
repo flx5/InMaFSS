@@ -115,7 +115,7 @@ function getPage() {
            echo '<tr><td>'.$loc['dbhost'].':</td><td><input type="text" value="localhost" name="host"></td></tr>';
            echo '<tr><td>'.$loc['username'].':</td><td><input type="text" value="root" name="username"></td></tr>';
            echo '<tr><td>'.$loc['password'].':</td><td><input type="password" value="" name="password"></td></tr>';
-           echo '<tr><td>'.$loc['database'].':</td><td><input type="text" value="myvertretungsplan" name="database"></td></tr>';
+           echo '<tr><td>'.$loc['database'].':</td><td><input type="text" value="inmafss" name="database"></td></tr>';
            echo '</table>';
 
         break;
@@ -180,7 +180,7 @@ function getPage() {
         case 6:
            echo $loc['create.admin'].'<br>';
            echo '<table  align="center" cellspacing="7px;" >';
-           echo '<tr><td>'.$loc['username'].':</td><td><input type="text" value="root" name="username"></td></tr>';
+           echo '<tr><td>'.$loc['username'].':</td><td><input type="text" value="Admin" name="username"></td></tr>';
            echo '<tr><td>'.$loc['password'].':</td><td><input type="password" value="" name="password"></td></tr>';
            echo '</table>';
         break;
@@ -269,6 +269,13 @@ CREATE TABLE IF NOT EXISTS `pages` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
 
+"CREATE TABLE IF NOT EXISTS `plugins` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `val1` varchar(200) NOT NULL,
+  `val2` varchar(200) NOT NULL,
+  `plugin` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"
 );
 }
 
@@ -293,7 +300,8 @@ $dbname = \''.$db.'\';
 $salt = \''.$salt.'\';
 $apikey = \''.$key.'\';
 
-$clang = \''.$lang.'\';
+$system = \'willi2\';
+$lang = \''.$lang.'\';
 $auto_addition = false;
 $time_for_next_page = 5; // time to go to next page (in seconds)
 

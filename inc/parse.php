@@ -26,85 +26,11 @@ class parse {
        var $notes = Array();
 
        function parseHTML($html) {
-               $date = substr($html,strpos($html,'Vertretungsplan f&uuml;r')+strlen('Vertretungsplan f&uuml;r'), strpos($html, ')')-strpos($html,'Vertretungsplan f&uuml;r'));
-               $date = explode("-", $date);
+               include(CWD.DS."inc".DS."parse".DS.config("system").".php");
+               $data = parseHTML($html);
 
-               $time = trim(substr($date[1],0, strpos($date[1], ")")));
-               $time = explode(":", $time);
-
-               $date = substr($date[0], strpos($date[0],",")+2);
-               $date_for = substr($date, 0, strpos($date,"</br>"));
-               $date_update = substr($date, strpos($date,"(")+1);
-               $date_update = trim(substr($date, strpos($date," ")));
-
-               $date_for = explode(".",$date_for);
-               $date_update = explode(".",$date_update);
-               $stamp_for = mktime(0,0,0, intval($date_for[1]), intval($date_for[0]), intval($date_for[2]));
-               $stamp_update = mktime($time[0],$time[1],0, intval($date_update[1]), intval($date_update[0]));
-
-               $html = substr($html,strpos($html,'Bemerkung</th>')+strlen('Bemerkung</th>')+9);
-
-               $notes = Array();
-               if(strpos($html, '<table class="F">') !== false) {
-                     $notes = substr($html, strpos($html, '<table class="F">')+strlen('<table class="F">'));
-                     $notes = substr($notes,0,strpos($notes,'</table>'));
-                     $notes = explode("<th", $notes);
-               }
-
-               $final_notes = Array();
-
-               foreach($notes as $note) {
-                     $note = substr($note, strpos($note, ">")+1);
-                     $note = trim(substr($note, 0, strpos($note, "</th>")));
-                     if(trim(preg_replace("#\*#","",$note)) != "") {
-                       $final_notes[] = Array('content'=>$note, 'stamp_for'=>$stamp_for);
-                     }
-               }
-
-               $html = substr($html,0,strpos($html,'</table>'));
-               $graden = explode('<tr class="k">',$html);
-               $replacements = Array();
-
-               foreach($graden as $grade) {
-
-                     if($grade == "") {
-                        continue;
-                     }
-
-                     $vertretung =  explode("<tr>",$grade);
-                     preg_match('#<th rowspan="(.*)" class="k">\r\n(.*)</th>#i',$vertretung[0],$data);
-                     $grade = $data[2];
-
-                     foreach($vertretung as $v) {
-                          $v = explode("<td>",$v);
-                          preg_match('#<center>(.*)</center>#i',$v[1],$data); $teacher = trim($data[1]);
-                          preg_match('#<center>(.*)</center>#i',$v[2],$data); $lesson = trim($data[1]);
-                          preg_match('#\r\n(.*)</td>#i',$v[3],$data); $teacher2 = trim($data[1]);
-                          preg_match('#<center>(.*)</center>#i',$v[4],$data); $raum = trim($data[1]);
-                          preg_match('#\r\n&nbsp;(.*)</td>#i',$v[5],$data); $hint = trim($data[1]);
-
-                          $teacher2 = preg_replace("/&nbsp;/","",$teacher2);
-                          $hint = preg_replace("/&nbsp;/","",$hint);
-
-
-                          $addition = false;
-                          if(strpos($teacher,'<font color="red">') !== false) {
-                            $teacher = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$teacher));
-                            $lesson = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$lesson));
-                            $teacher2 = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$teacher2));
-                            $raum = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$raum));
-                            $hint = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$hint));
-
-                            $addition = true;
-                          }
-                          $replacements[$grade][] = Array('stamp_update'=>$stamp_update, 'stamp_for'=>$stamp_for, 'addition'=>$addition,'teacher'=>$teacher,'lesson'=>$lesson,'replacement'=>$teacher2,'room'=>$raum,'hint'=>$hint);
-                     }
-               }
-
-               $this->replacements[] = $replacements;
-               $this->notes[] = $final_notes;
-
-               return $replacements;
+               $this->replacements[] = $data['replacements'];
+               $this->notes[] = $data['notes'];
        }
 
        public function UpdateDatabase() {
@@ -145,6 +71,25 @@ class parse {
                        dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp) VALUES (1, '".$note['content']."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."')");
                 }
             }
+       }
+
+
+        public static function ICS2XML($data) {
+              $data = htmlspecialchars($data);
+              $data = preg_replace("/\r\n /","",$data);
+
+              $data = preg_replace("/BEGIN:(.*)/","<$1>",$data);
+              $data = preg_replace("/END:(.*)/","</$1>",$data);
+
+              $data = preg_replace("/\n([A-z]*);VALUE=(.*)/","\n<$1>$2</$1>",$data);
+              $data = preg_replace(Array("/\n([A-z]*):(.*)/"),"\n<$1>$2</$1>",$data);
+
+              return $data;
+       }
+
+       public static function ICS2UnixStamp($data) {
+                 $data = substr($data,5);
+                 return mktime(0,0,0, substr($data,4,2), substr($data,6,2), substr($data,0,4));
        }
 }
 ?>

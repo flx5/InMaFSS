@@ -25,14 +25,13 @@
 <h2><?php lang()->loc('title'); ?></h2><br>
 <ul>
 <?php
-  global $update;
-  $updates = $update->GetUpdates();
+  $updates = getVar("update")->GetUpdates();
   if(count($updates) == 0) {
      echo '<li>'.lang()->loc('no.updates',false).'</li>';
   } else {
      end($updates);
      $key = key($updates);
-                              
+
      echo '<a href="update.php?v='.$key.'">'.lang()->loc('update.to.version',false).' '.$key.'</a><br>';
      echo '<h3>'.lang()->loc('missed.updates',false).'</h3>';
   }

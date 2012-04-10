@@ -20,6 +20,38 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
+class config {
+    private $dbhost;
+    private $dbusr;
+    private $dbpass;
+    private $dbname;
+    private $salt;
+    private $apikey;
+    private $lang;
+    private $auto_addition;
+    private $time_for_next_page;
+    private $use_ftp;
+    private $ftp;
+    private $system;
 
-$version = 110;
+    public function config() {
+         include(CWD."inc/config.php");
+         $this->dbhost = $dbhost;
+         $this->dbusr = $dbusr;
+         $this->dbpass = $dbpass;
+         $this->dbname = $dbname;
+         $this->salt = $salt;
+         $this->apikey = $apikey;
+         $this->lang = $lang;
+         $this->auto_addition = $auto_addition;
+         $this->time_for_next_page = $time_for_next_page;
+         $this->use_ftp = $use_ftp;
+         $this->ftp = $ftp;
+         $this->system = $system;
+    }
+
+    public function Get($var) {
+         return $this->$var;
+    }
+}
 ?>

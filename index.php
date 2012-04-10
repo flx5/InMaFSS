@@ -24,15 +24,15 @@
 require_once("global.php");
 
 lang()->add('home');
-$tpl->Init(lang()->loc('title',false));
-$tpl->addTemplate('clock');
-$tpl->addTemplate('header');
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addTemplate('clock');
+getVar("tpl")->addTemplate('header');
 
-$tpl->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
+getVar("tpl")->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
 if(!isset($_GET['size']) || !is_numeric($_GET['size'])) {
-      $tpl->Write('</div>');
+      getVar("tpl")->Write('</div>');
 } elseif($_GET['size'] < 533) {
-      $tpl->addTemplate('too_small');
+      getVar("tpl")->addTemplate('too_small');
 } else {
 
 $size = $_GET['size'];
@@ -40,34 +40,34 @@ $limit = floor(($size-30)/26)-2;
 
 require_once("inc/view.php");
 
-$left = $tpl->getTemplate('plan');
+$left = getVar("tpl")->getTemplate('plan');
 $left->setVar('site','left');
 $view_left = new view('left', $limit);
 $left->setVar('view',$view_left);
-$tpl->addTemplateClass($left);
-$tpl->Write('</div>');
+getVar("tpl")->addTemplateClass($left);
+getVar("tpl")->Write('</div>');
 
-$tpl->Write('<div class="main tomorrow" style="right:0px; border-left:0px solid black;" >');
-$right = $tpl->getTemplate('plan');
+getVar("tpl")->Write('<div class="main tomorrow" style="right:0px; border-left:0px solid black;" >');
+$right = getVar("tpl")->getTemplate('plan');
 $right->setVar('site','right');
 $view_right = new view('right', $limit);
 $right->setVar('view',$view_right);
-$tpl->addTemplateClass($right);
-$tpl->Write('</div>');
+getVar("tpl")->addTemplateClass($right);
+getVar("tpl")->Write('</div>');
 
-$footer = $tpl->getTemplate('footer');
+$footer = getVar("tpl")->getTemplate('footer');
 $footer->setVar('view_left',$view_left);
 $footer->setVar('view_right',$view_right);
-$tpl->addTemplateClass($footer);
+getVar("tpl")->addTemplateClass($footer);
 }
 
-$tpl->Write('
+getVar("tpl")->Write('
 <script language="JavaScript">
 Init('.config("time_for_next_page").');
 </script>
 <noscript>');
 
-$tpl->addTemplate('no_js');
-$tpl->Write('</noscript>');
-$tpl->Output();
+getVar("tpl")->addTemplate('no_js');
+getVar("tpl")->Write('</noscript>');
+getVar("tpl")->Output();
 ?>

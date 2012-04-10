@@ -25,11 +25,11 @@ require_once("global.php");
 lang()->add('pages');
 lang()->add('date');
 
-$tpl->Init(lang()->loc('page',false));
-$tpl->addStandards('admin');
+getVar("tpl")->Init(lang()->loc('page',false));
+getVar("tpl")->addStandards('admin');
 
-$tpl->addHeader('<script type="text/javascript" src="./tiny_mce/tiny_mce.js" ></script>');
-$tpl->addHeader('<script type="text/javascript" >
+getVar("tpl")->addHeader('<script type="text/javascript" src="./tiny_mce/tiny_mce.js" ></script>');
+getVar("tpl")->addHeader('<script type="text/javascript" >
 tinyMCE.init({
         mode : "textareas",
         theme : "advanced",
@@ -66,6 +66,6 @@ var A_TCALCONF = {
 </script>
 ');
 
-$tpl->addTemplate('pages_edit');
-$tpl->Output();
+getVar("tpl")->addTemplate('pages_edit');
+getVar("tpl")->Output();
 ?>

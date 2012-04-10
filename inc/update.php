@@ -97,11 +97,12 @@ class Update {
                 return false;
               }
 
-              global $core, $use_ftp, $ftp;
               set_time_limit(0);
 
               $perfile = 90/count($changes);
               $value = 0;
+              $use_ftp = config("use_ftp");
+              $ftp = config("ftp");
 
               if($use_ftp) {
                     $conn_id = ftp_connect(gethostbyname($ftp['server']), 21, 5) or die("Konnte keine Verbindung zum FTP Server aufbauen");
@@ -127,7 +128,7 @@ class Update {
                     switch($change['status']) {
                        default:
 
-                         $core->SystemError("Unknown Update Status", $change['status']);
+                         core::SystemError("Unknown Update Status", $change['status']);
                        break;
 
                        case 'added':
@@ -135,7 +136,7 @@ class Update {
 
                           $data = file_get_contents($change['url']);
                           if(!$data) {
-                               $core->SystemError("Network Error", "Couldn't download ".$file);
+                               core::SystemError("Network Error", "Couldn't download ".$file);
                           }
 
                           if($use_ftp) {
@@ -174,6 +175,11 @@ class Update {
 
               if($use_ftp) {
                 ftp_close($conn_id);
+              }
+
+              if(isset($changes["update.php"])) {
+                  define("IN_UPDATE_CLASS",true);
+                  include(CWD."update.php");
               }
               return true;
         }

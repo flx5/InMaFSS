@@ -24,14 +24,14 @@
 require_once("global.php");
 lang()->add('pages');
 
-$tpl->Init(lang()->loc('title',false));
-$tpl->addStandards('admin');
-$tpl->setParam("id",'');
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addStandards('admin');
+getVar("tpl")->setParam("id",'');
 
 if(isset($_GET['del'])) {
-  $tpl->setParam("id",$_GET['del']);
+  getVar("tpl")->setParam("id",$_GET['del']);
 }
 
-$tpl->addTemplate('pages');
-$tpl->Output();
+getVar("tpl")->addTemplate('pages');
+getVar("tpl")->Output();
 ?>
