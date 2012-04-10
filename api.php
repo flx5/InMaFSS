@@ -40,7 +40,6 @@ if(trim($apikey) == "") {
                             die("ERR|You have to POST the content of your files!");
                       }
                       $files = explode(chr(1),$_POST['data']);
-                      include("./inc/parse.php");
                       $p = new parse();
 
                       foreach($files as $file) {

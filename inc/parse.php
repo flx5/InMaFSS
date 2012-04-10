@@ -20,7 +20,6 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-
 class parse {
        var $replacements = Array();
        var $notes = Array();

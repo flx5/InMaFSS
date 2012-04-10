@@ -30,7 +30,6 @@ $msg = "";
 if(isset($_FILES['uploadedfile'])) {
    $data = file_get_contents($_FILES['uploadedfile']['tmp_name']);
 
-   include("../inc/parse.php");
    $p = new parse();
    $p->parseHTML(file_get_contents($_FILES['uploadedfile']['tmp_name']));
    $p->UpdateDatabase();

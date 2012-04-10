@@ -36,12 +36,19 @@ class german_holidays {
 
   public function parse_holidays() {
           $data = file_get_contents(PLUGIN_DIR."Ferien_Bayern_".date("Y").".ics");
+          $data2 = file_get_contents(PLUGIN_DIR."Feiertage_Bayern_".date("Y").".ics");
 
           $xml = parse::ICS2XML($data);
+          $xml2 = parse::ICS2XML($data2);
           $xml = simplexml_load_string($xml);
+          $xml2 = simplexml_load_string($xml2);
           $events = Array();
 
           foreach($xml->VEVENT as $event) {
+                 $events[] = Array("start"=>parse::ICS2UnixStamp($event->DTSTART),"end"=>parse::ICS2UnixStamp($event->DTEND),"value"=>(String)$event->SUMMARY);
+          }
+
+          foreach($xml2->VEVENT as $event) {
                  $events[] = Array("start"=>parse::ICS2UnixStamp($event->DTSTART),"end"=>parse::ICS2UnixStamp($event->DTEND),"value"=>(String)$event->SUMMARY);
           }
           $this->events = $events;
