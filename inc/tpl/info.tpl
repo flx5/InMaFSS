@@ -24,6 +24,16 @@
 <div style="width:60%; border:2px solid black; margin:5px auto;">
 <h2>Information</h2>
 <?php
+  require_once("../inc/view.php");
+  $left = new view('left', 100);
+  $today['repl_count'] = count($left->GetReplacements());
+
+  $right = new view('right', 100);
+  $nextday['repl_count'] = count($right->GetReplacements());
+
+  $right->GetPages();
+  $left->GetPages();
+
 
   $left1 = mysql_num_rows(dbquery("SELECT null FROM  replacements WHERE timestamp >= ".mktime(0,0,0)." AND timestamp <= ".mktime(23,59,59, date("n"), date("j"))));
   $right1 = mysql_num_rows(dbquery("SELECT null FROM  replacements WHERE timestamp >= ".mktime(0,0,0, date("n"), date("j")+1)." AND timestamp <= ".mktime(23,59,59, date("n"), date("j")+1)));
@@ -33,40 +43,40 @@
 
   echo '<b>'.lang()->loc('today',false).'</b><br>';
 
-  if($left1 == 0) {
+  if($today['repl_count'] == 0) {
       lang()->loc('no.plan');
       echo "<br>";
   }  else {
-      echo $left1.' ';
+      echo $today['repl_count'].' ';
       lang()->loc('replacements');
       echo '<br>';
   }
 
-  if($left2 == 0) {
+  if(count($left->pages) == 0) {
       lang()->loc('no.page');
       echo "<br>";
   } else {
-      echo $left2.' ';
+      echo count($left->pages).' ';
       lang()->loc('pages');
       echo '<br>';
   }
 
-  echo '<br><b>'.lang()->loc('tomorrow',false).'</b><br>';
+  echo '<br><b>'.lang()->loc('next.day',false).'</b><br>';
 
-  if($right1 == 0) {
+  if($nextday['repl_count'] == 0) {
       lang()->loc('no.plan');
       echo "<br>";
   }  else {
-      echo $right1.' ';
+      echo $nextday['repl_count'].' ';
       lang()->loc('replacements');
       echo '<br>';
   }
 
-  if($right2 == 0) {
+  if(count($right->pages) == 0) {
       lang()->loc('no.page');
       echo "<br>";
   } else {
-      echo $right2.' ';
+      echo count($right->pages).' ';
       lang()->loc('pages');
       echo '<br>';
   }

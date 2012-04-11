@@ -91,7 +91,7 @@
 $sql = dbquery("SELECT * FROM ticker");
 
 while($tick = mysql_fetch_assoc($sql)) {
-    echo  '<tr><form method="post"><td><input type="text" value="'.$tick['id'].'" name="id" style="display:none;">'.$tick['id'].'</td><td>&nbsp;<input type="text" name="value" style="width:95%" value="'.$tick['value'].'">&nbsp;</td><td><input type="text" style="" class="tcal" name="time_from" value="'.date("d.m.Y", $tick['from_stamp']).'"></td><td><input type="text" style="" class="tcal" name="time_end" value="'.date("d.m.Y", $tick['to_stamp']).'"></td><td><input type="submit" value="'.lang()->loc('save',false).'"></td><td><a href="?del='.$tick['id'].'">'.lang()->loc('delete',false).'</a></td></form></tr>';
+    echo  '<tr><form method="post"><td><input type="text" value="'.$tick['id'].'" name="id" style="display:none;">'.$tick['id'].'</td><td>&nbsp;<input type="text" name="value" style="width:95%" value="'.$tick['value'].'">&nbsp;</td><td><input type="text" style="" class="tcal" name="time_from" value="'.date(lang()->info('date.format',false), $tick['from_stamp']).'"></td><td><input type="text" style="" class="tcal" name="time_end" value="'.date(lang()->info('date.format',false), $tick['to_stamp']).'"></td><td><input type="submit" value="'.lang()->loc('save',false).'"></td><td><a href="?del='.$tick['id'].'">'.lang()->loc('delete',false).'</a></td></form></tr>';
 }
 ?>
 <tr><form method="post"><td><input type="text" value="-1" name="id" style="display:none;"></td><td>&nbsp;<input type="text" name="value" style="width:95%" value="">&nbsp;</td><td><input type="text" style="" class="tcal" name="time_from"></td><td><input type="text" style="" class="tcal" name="time_end" ></td><td><input type="submit" value="<?php lang()->loc('add'); ?>"></td><td></td></form></tr>

@@ -22,13 +22,19 @@
 
 
 class lang {
-      var $language;
-      var $local;
-      var $file;
+      private $language;
+      private $local;
+      private $file;
+      private $info;
+
       public function lang($lang) {
             $this->language = $lang;
             $this->local = Array();
             $this->file = CWD.DS."inc".DS."lang".DS.$lang.".php";
+
+            $key = "";
+            require($this->file);
+            $this->info = $info;
 
             if(!file_exists($this->file)) {
                core::SystemError('Language system error', 'Could not load language: ' . $this->language);
@@ -59,5 +65,16 @@ class lang {
              return $this->local[$id];
           }
           core::SystemError('Language System Error', 'Could not find index '. $id);
+      }
+
+      public function info($id, $output = true) {
+          if(array_key_exists($id, $this->info)) {
+             if($output) {
+                echo $this->info[$id];
+                return;
+             }
+             return $this->info[$id];
+          }
+          core::SystemError('Language System Error', 'Could not find Info index '. $id);
       }
 }

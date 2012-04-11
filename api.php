@@ -22,11 +22,11 @@
 
 require_once("global.php");
 
-if(trim($apikey) == "") {
+if(trim(config("apikey")) == "") {
     die("NO API KEY SET!");
 }
 
-      if(!isset($_GET['key']) ||  $_GET['key'] != $apikey) {
+      if(!isset($_GET['key']) ||  $_GET['key'] != config("apikey")) {
            die("ERR|You have not been authenticated!");
       }
 

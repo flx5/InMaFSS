@@ -23,6 +23,8 @@
 
 $info = Array();
 $info['language'] = 'Deutsch';
+$info['lang.short'] = 'de';
+$info['date.format'] = 'd.m.Y';
 
 $loc = Array();
 switch($key) {
@@ -126,7 +128,7 @@ case 'info':
   $loc['no.plan'] = 'Kein Vertretungsplan';
   $loc['replacements'] = 'Vertretung(en)';
   $loc['today'] = 'Heute';
-  $loc['tomorrow'] = 'Morgen';
+  $loc['next.day'] = 'N&auml;chster Schultag';
   $loc['no.page'] = 'Keine Seite';
   $loc['pages'] = 'Seite(n)';
 break;

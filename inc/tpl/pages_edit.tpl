@@ -102,8 +102,8 @@
 <form method="post">
 <table width="100%">
 <tr><td><?php lang()->loc('caption'); ?>:</td><td><input type="text" name="caption" size="100"  value="<?php echo $data['title']; ?>"></td></tr>
-<tr><td><?php lang()->loc('from'); ?>:</td><td><input type="text" style="" class="tcal" name="time_from" value="<?php echo date("d.m.Y", $data['timestamp_from']); ?>"></td></tr>
-<tr><td><?php lang()->loc('until'); ?>:</td><td><input type="text" style="" class="tcal" name="time_end" value="<?php echo date("d.m.Y", $data['timestamp_end']); ?>"></td></tr>
+<tr><td><?php lang()->loc('from'); ?>:</td><td><input type="text" style="" class="tcal" name="time_from" value="<?php echo date(lang()->info('date.format',false), $data['timestamp_from']); ?>"></td></tr>
+<tr><td><?php lang()->loc('until'); ?>:</td><td><input type="text" style="" class="tcal" name="time_end" value="<?php echo date(lang()->info('date.format',false), $data['timestamp_end']); ?>"></td></tr>
 <tr><td><?php lang()->loc('content'); ?>:</td><td><textarea name="content"><?php echo $data['content']; ?></textarea></td></tr>
 <tr><td></td><td><input type="submit" value="<?php lang()->loc('save'); ?>"></td></tr>
 </table>

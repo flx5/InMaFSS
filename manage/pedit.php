@@ -33,7 +33,7 @@ getVar("tpl")->addHeader('<script type="text/javascript" >
 tinyMCE.init({
         mode : "textareas",
         theme : "advanced",
-        language  : "de",
+        language  : "'.lang()->info('lang.short',false).'",
         plugins : "emotions,spellchecker,advhr,insertdatetime,preview",
 
         // Theme options - button# indicated the row# only
