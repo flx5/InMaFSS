@@ -22,7 +22,7 @@
 
 
 class core {
-       public function SystemError($title, $text)
+       public static function SystemError($title, $text)
         {
                 echo '<div style="width: 80%; padding: 15px 15px 15px 15px; margin: 50px auto; background-color: #F6CECE; font-family: arial; font-size: 12px; color: #000000; border: 1px solid #FF0000;">';
                 echo '<img src="' . WWW . '/images/exclamation.png" style="float: left;" title="Error">&nbsp;';

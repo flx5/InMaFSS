@@ -24,12 +24,16 @@ define('DS', DIRECTORY_SEPARATOR);
 define('CWD', str_replace('manage' . DS, '', dirname(__FILE__) . DS));
 define('PLUGIN_DIR',CWD.DS."plugins".DS);
 
-$www = str_replace('manage', '', $_SERVER['REQUEST_URI']);
+
+$www = str_replace('manage', '', $_SERVER['SCRIPT_NAME']);
+
 $www = substr($www,0, strrpos($www,"/"));
 if(substr($www,strlen($www)-1) == "/") {
      $www = substr($www,0, -1);
 }
 define('WWW', $www);
+
+register_shutdown_function('error_handler');
 
 if(file_exists(CWD."install.php") && file_exists(CWD."inc/config.php")) {
      die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
@@ -109,5 +113,13 @@ function setVar($var,$val) {
 function setPlugin($val, $actor) {
        global $vars;
        $vars->setPlugin($val, $actor);
+}
+
+function error_handler()
+{
+    if ($error = error_get_last()) {
+        ob_end_clean();
+        core::SystemError($error['message'], ' in '. $error['file']. ' on line '.$error['line']);
+    }
 }
 ?>

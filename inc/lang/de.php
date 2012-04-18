@@ -121,6 +121,7 @@ case 'menu':
   $loc['home'] = 'Home';
   $loc['ticker'] = 'Ticker';
   $loc['pages'] = 'Seiten';
+  $loc['users'] = 'Nutzer';   
   $loc['import'] = 'Importieren';
 break;
 
@@ -160,6 +161,24 @@ case 'pages':
   $loc['err.enddate'] = 'Das Enddatum ist nicht korrekt!';
   $loc['err.end.before.start'] = 'Anfangsdatum darf nicht sp&auml;ter/gleich sein als das Enddatum';
   $loc['save'] = 'Speichern';
+break;
+
+case 'users':
+  $loc['id'] = 'ID';
+  $loc['title'] = 'Nutzer';
+  $loc['name'] = 'Name';
+  $loc['edit'] = 'Bearbeiten';
+  $loc['delete'] = 'L&ouml;schen';
+  $loc['save'] = 'Speichern';
+  $loc['new.password'] = 'Neues Passwort';
+  $loc['name.too.short'] = 'Der Nutzername muss mindestens 3 Zeichen haben.';
+  $loc['pw.too.short'] = 'Das Passwort muss mindestens 5 Zeichen haben.';
+  $loc['saved'] = 'Erfolgreich gespeichert.';
+  $loc['del.rly'] = 'Den Nutzer mit der ID %id% wirklich l&ouml;schen?';
+  $loc['abort'] = 'Abbrechen';
+  $loc['deleted'] = 'Der Nutzer mit der ID %id% wurde gel&ouml;scht.';
+  $loc['not.found'] = 'Nutzer existiert nicht.';
+  $loc['del.self'] = 'Der eigene Nutzer kann nicht gelöscht werden!';
 break;
 
 case 'date':

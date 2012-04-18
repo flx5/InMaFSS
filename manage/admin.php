@@ -34,5 +34,5 @@ getVar("tpl")->setParam('right',$updatetpl->GetHTML());
 getVar("tpl")->setParam('left',$info->GetHTML());
 
 getVar("tpl")->addTemplate('main');
-getVar("tpl")->Output();
+getVar("tpl")->Output(); 
 ?>

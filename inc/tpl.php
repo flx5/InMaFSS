@@ -73,14 +73,15 @@ class tpl {
     }
 
     public function Output() {
-         $output = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+         $output = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">'."\n";
 
          $header = "";
          foreach($this->headers as $head) {
-              $header .= $head;
+              $header .= $head."\n";
          }
 
-         $output .= '<html><head>'.$header.'</head><body>'.$this->content.'</body></html>';
+         $output .= "<html>\n<head>\n".$header."\n</head>\n<body>\n".$this->content."\n</body>\n</html>";
+
          foreach($this->params as $key=>$value) {
              $output = preg_replace('/%'.$key.'%/', $value, $output);
          }

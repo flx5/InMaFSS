@@ -25,7 +25,7 @@ class parse {
        var $notes = Array();
 
        function parseHTML($html) {
-               include(CWD.DS."inc".DS."parse".DS.config("system").".php");
+               require_once(CWD.DS."inc".DS."parse".DS.config("system").".php");
                $data = parseHTML($html);
 
                $this->replacements[] = $data['replacements'];
