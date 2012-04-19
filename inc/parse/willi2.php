@@ -21,14 +21,15 @@
 \*=================================================================================*/
 
        function parseHTML($html) {
-               $date = substr($html,strpos($html,'Vertretungsplan f&uuml;r')+strlen('Vertretungsplan f&uuml;r'), strpos($html, ')')-strpos($html,'Vertretungsplan f&uuml;r'));
+               $date = substr($html,strpos($html,'Vertretungsplan ')+strlen('Vertretungsplan '), strpos($html, ')')-strpos($html,'Vertretungsplan '));
+               $date = substr($date, strpos($date,','));       
                $date = explode("-", $date);
 
                $time = trim(substr($date[1],0, strpos($date[1], ")")));
                $time = explode(":", $time);
 
                $date = substr($date[0], strpos($date[0],",")+2);
-               $date_for = substr($date, 0, strpos($date,"</br>"));
+               $date_for = substr($date, 0, strpos($date,"<"));
                $date_update = substr($date, strpos($date,"(")+1);
                $date_update = trim(substr($date, strpos($date," ")));
 
