@@ -56,11 +56,10 @@ class german_holidays {
 
   public function check($param) {
          foreach($this->events as $event) {
-              if($param > $event['start'] && $param < $event['end']) {
-                      $param = mktime(0,0,0, date("n",$event['end']), date("j",$event['end'])+1);
+              if($param >= $event['start'] && $param < $event['end']) {   
+                      $param = mktime(0,0,0, date("n",$event['end']), date("j",$event['end']));
               }
          }
-
   }
 }
 ?>

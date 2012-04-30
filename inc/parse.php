@@ -55,7 +55,7 @@ class parse {
                            $sql = dbquery("SELECT id FROM replacements WHERE grade_pre = '".$pre."' AND grade = '".$k1."' AND grade_last = '".$last."' AND lesson = '".$data['lesson']."' AND timestamp = '".$data['stamp_for']."' AND teacher = '".$data['teacher']."'");
 
                            if(mysql_num_rows($sql) == 1) {
-                                  dbquery("UPDATE replacements SET teacher = '".$data['teacher']."', replacement = '".$data['replacement']."', room = '".$data['room']."',  hint = '".$data['hint']."', timestamp_update = '".$data['stamp_update']."' WHERE id = ".mysql_result($sql,0));
+                                  dbquery("UPDATE replacements SET teacher = '".$data['teacher']."', replacement = '".$data['replacement']."', room = '".$data['room']."',  hint = '".$data['hint']."', timestamp_update = '".$data['stamp_update']."', addition = '".$data['addition']."' WHERE id = ".mysql_result($sql,0));
                                   continue;
                            }
 
@@ -66,7 +66,10 @@ class parse {
 
             foreach($this->notes as $notes) {
                 foreach($notes as $note) {
-                       dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
+                        dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");  
+                }
+
+                foreach($notes as $note) {
                        dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp) VALUES (1, '".$note['content']."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."')");
                 }
             }

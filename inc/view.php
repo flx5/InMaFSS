@@ -5,6 +5,8 @@
        var $limit;
        var $menu = Array();
        var $pages = Array();
+       var $type = 0;  // 0 Pupils ; 1 teachers
+       var $tfrom = null;
 
        public function View($site, $limit) {
             $this->site = $site;
@@ -53,7 +55,7 @@
                             foreach($grade as $val) {
                                $output .= '<tr class="'.(($val['addition']) ? 'update' : '').'">';
                                if($first) {
-                                  $output .= '<th rowspan="'.count($grade).'">'.$k.'</th>';
+                                  $output .= '<th rowspan="'.count($grade).'">'.(($this->type == 0) ? $k : $val['teacher']).'</th>';
                                }
 
                                $output .= '<td>'.$val['teacher'].'</td><td>'.$val['lesson'].'</td><td align="left">&nbsp;'.$val['replacement'].'</td><td>'.$val['room'].'</td><td align="left">&nbsp;'.$val['hint'].'</td></tr>';
@@ -99,10 +101,21 @@
 
        public function GetReplacements() {
                  $where = "timestamp >= ".$this->GetTFrom()." AND timestamp <= ".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()));
+
+                 $content = Array();
+
+                 if($this->type == 1) {
+                        $sql = dbquery("SElECT * FROM replacements WHERE ".$where." ORDER BY teacher");
+
+                        while($data = mysql_fetch_assoc($sql)) {
+                           $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
+                        }
+                        return $content;
+                 }
+
                  $sql = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade != 0 ORDER BY grade, grade_pre, grade_last");
                  $sql2 = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade = 0 ORDER BY grade, grade_pre, grade_last");
 
-                  $content = Array();
                   while($data = mysql_fetch_assoc($sql)) {
                            $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
                   }
@@ -136,21 +149,34 @@
        }
 
        private function GetTFrom() {
+               if($this->tfrom != null) {
+                     return $this->tfrom;
+               }
+   
                if($this->site == 'left') {
                      $tfrom = mktime(0,0,0);
                } else {
                      $tfrom = mktime(0,0,0, date("n"), date("j")+1);
+               }
+
+               $tfrom = $this->RemoveWeekend($tfrom);
+               getVar("pluginManager")->ExecuteEvent("generate_tfrom_".$this->site, &$tfrom);
+               $tfrom = $this->RemoveWeekend($tfrom);
+
+               $this->tfrom = $tfrom;
+               return $tfrom;
+       }
+
+       private function RemoveWeekend($tfrom) {
                      if(date("w",$tfrom) == 6) {
-                           $tfrom = mktime(0,0,0, date("n"), date("j")+3);
+                           $tfrom = $tfrom + 2*24*60*60;
+                     }
+                     elseif(date("w",$tfrom) == 0)
+                     {
+                           $tfrom = $tfrom + 1*24*60*60;
                      }
 
-                     if(date("w",$tfrom) == 0)
-                     {
-                           $tfrom = mktime(0,0,0, date("n"), date("j")+2);
-                     }
-                     getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", &$tfrom);
-               }
-               return $tfrom;
+                     return $tfrom;
        }
 
        public function GetTickers() {
