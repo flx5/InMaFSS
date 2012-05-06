@@ -40,7 +40,7 @@ class pluginManager {
        }
 
        public function ExecuteEvent($event, $params = null) {
-               return $this->handler->ExecuteEvent($event, &$params);
+               return $this->handler->ExecuteEvent($event, $params);
        }
 }
 
@@ -83,7 +83,7 @@ class handler {
              setPlugin(true, $this);
              foreach($this->executers[$event] as $action) {
                     ob_start();
-                    $action["plugin"]->$action["action"](&$params);
+                    $action["plugin"]->$action["action"]($params);
                     ob_end_clean();
              }
              setPlugin(false, $this);

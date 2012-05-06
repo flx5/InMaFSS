@@ -34,6 +34,7 @@ if(substr($www,strlen($www)-1) == "/") {
 define('WWW', $www);
 
 register_shutdown_function('error_handler');
+date_default_timezone_set('Europe/Berlin');
 
 if(file_exists(CWD."install.php") && file_exists(CWD."inc/config.php")) {
      die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");

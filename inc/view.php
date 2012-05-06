@@ -113,8 +113,8 @@
                         return $content;
                  }
 
-                 $sql = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade != 0 ORDER BY grade, grade_pre, grade_last");
-                 $sql2 = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade = 0 ORDER BY grade, grade_pre, grade_last");
+                 $sql = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade != 0 ORDER BY grade, grade_pre, grade_last, lesson");
+                 $sql2 = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade = 0 ORDER BY grade, grade_pre, grade_last, lesson");
 
                   while($data = mysql_fetch_assoc($sql)) {
                            $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
@@ -152,16 +152,15 @@
                if($this->tfrom != null) {
                      return $this->tfrom;
                }
-   
+
                if($this->site == 'left') {
                      $tfrom = mktime(0,0,0);
                } else {
                      $tfrom = mktime(0,0,0, date("n"), date("j")+1);
+                     $tfrom = $this->RemoveWeekend($tfrom);
+                     getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
+                     $tfrom = $this->RemoveWeekend($tfrom);
                }
-
-               $tfrom = $this->RemoveWeekend($tfrom);
-               getVar("pluginManager")->ExecuteEvent("generate_tfrom_".$this->site, &$tfrom);
-               $tfrom = $this->RemoveWeekend($tfrom);
 
                $this->tfrom = $tfrom;
                return $tfrom;

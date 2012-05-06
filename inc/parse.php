@@ -33,7 +33,13 @@ class parse {
        }
 
        public function UpdateDatabase() {
+
             foreach($this->replacements as $replacements) {
+
+               $key = array_keys($replacements);
+
+               dbquery("DELETE FROM replacements WHERE timestamp = '".$replacements[$key[0]][0]['stamp_for']."'");
+
                foreach($replacements as $k=>$grade) {
                     foreach($grade as $data) {
                            $pre = "";
@@ -51,14 +57,7 @@ class parse {
                                     }
                                  }
                            }
-
-                           $sql = dbquery("SELECT id FROM replacements WHERE grade_pre = '".$pre."' AND grade = '".$k1."' AND grade_last = '".$last."' AND lesson = '".$data['lesson']."' AND timestamp = '".$data['stamp_for']."' AND teacher = '".$data['teacher']."'");
-
-                           if(mysql_num_rows($sql) == 1) {
-                                  dbquery("UPDATE replacements SET teacher = '".$data['teacher']."', replacement = '".$data['replacement']."', room = '".$data['room']."',  hint = '".$data['hint']."', timestamp_update = '".$data['stamp_update']."', addition = '".$data['addition']."' WHERE id = ".mysql_result($sql,0));
-                                  continue;
-                           }
-
+                                                                                                                                                                                                                                                                                                                                                                                                        
                            dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, hint, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".$data['teacher']."','".$data['replacement']."', '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
                     }
                }
@@ -66,7 +65,7 @@ class parse {
 
             foreach($this->notes as $notes) {
                 foreach($notes as $note) {
-                        dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");  
+                        dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
                 }
 
                 foreach($notes as $note) {

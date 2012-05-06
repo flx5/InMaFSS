@@ -5,7 +5,7 @@
 |* ############################################################################### *|
 |* Copyright (C) flx5                                                              *|
 |* E-Mail: me@flx5.com                                                             *|
-|* ############################################################################### *|
+|* #####################<p align="center"></p>########################################################## *|
 |* InMaFSS is free software; you can redistribute it and/or modify                 *|
 |* it under the terms of the GNU Affero General Public License as published by     *|
 |* the Free Software Foundation; either version 3 of the License,                  *|
@@ -22,7 +22,7 @@
 
        function parseHTML($html) {
                $date = substr($html,strpos($html,'Vertretungsplan ')+strlen('Vertretungsplan '), strpos($html, ')')-strpos($html,'Vertretungsplan '));
-               $date = substr($date, strpos($date,','));       
+               $date = substr($date, strpos($date,','));
                $date = explode("-", $date);
 
                $time = trim(substr($date[1],0, strpos($date[1], ")")));
@@ -83,7 +83,7 @@
                           $hint = preg_replace("/&nbsp;/","",$hint);
 
 
-                          $addition = false;
+                          $addition = 0;
                           if(strpos($teacher,'<font color="red">') !== false) {
                             $teacher = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$teacher));
                             $lesson = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$lesson));
@@ -91,7 +91,7 @@
                             $raum = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$raum));
                             $hint = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$hint));
 
-                            $addition = true;
+                            $addition = 1;
                           }
                           $replacements[$grade][] = Array('stamp_update'=>$stamp_update, 'stamp_for'=>$stamp_for, 'addition'=>$addition,'teacher'=>$teacher,'lesson'=>$lesson,'replacement'=>$teacher2,'room'=>$raum,'hint'=>$hint);
                      }
