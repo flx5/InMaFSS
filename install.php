@@ -225,8 +225,22 @@ function getPage() {
 }
 
 function getSql() {
-return Array("
-CREATE TABLE IF NOT EXISTS `pages` (
+return Array('SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";',
+'SET time_zone = "+00:00";',
+
+"CREATE TABLE IF NOT EXISTS `others` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` enum('t','g','r','s','a','n') NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `lesson` varchar(100) NOT NULL,
+  `comment` varchar(100) NOT NULL,
+  `timestamp` int(20) NOT NULL,
+  `timestamp_update` int(20) NOT NULL,
+  `addition` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;",
+
+"CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `order_num` int(10) NOT NULL,
   `title` varchar(200) NOT NULL,
@@ -236,22 +250,43 @@ CREATE TABLE IF NOT EXISTS `pages` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
 
+"CREATE TABLE IF NOT EXISTS `plugins` (
+  `id` int(20) NOT NULL AUTO_INCREMENT,
+  `val1` varchar(200) NOT NULL,
+  `val2` varchar(200) NOT NULL,
+  `plugin` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;",
+
 "CREATE TABLE IF NOT EXISTS `replacements` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `grade_pre` varchar(200) NOT NULL,
-  `grade` int(10) NOT NULL,
+  `grade` varchar(10) NOT NULL,
   `grade_last` varchar(10) NOT NULL,
   `lesson` varchar(10) NOT NULL,
   `teacher` varchar(200) NOT NULL,
   `replacement` varchar(200) NOT NULL,
   `room` varchar(10) NOT NULL,
-  `hint` varchar(200) NOT NULL,
+  `comment` varchar(200) NOT NULL,
   `timestamp` int(10) NOT NULL,
   `timestamp_update` int(10) NOT NULL,
   `addition` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;",
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
 
+"CREATE TABLE IF NOT EXISTS `teacher_substitude` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `short` varchar(200) NOT NULL,
+  `teacher` varchar(200) NOT NULL,
+  `lesson` varchar(100) NOT NULL,
+  `grade` varchar(20) NOT NULL,
+  `room` varchar(10) NOT NULL,
+  `comment` varchar(200) NOT NULL,
+  `timestamp` int(10) NOT NULL,
+  `timestamp_update` int(10) NOT NULL,
+  `addition` int(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;",
 
 "CREATE TABLE IF NOT EXISTS `ticker` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -259,24 +294,16 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `value` text NOT NULL,
   `from_stamp` varchar(20) NOT NULL,
   `to_stamp` varchar(20) NOT NULL,
-  `order` int(10) NOT NULL,
+  `order` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;",
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
 
 "CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(200) NOT NULL,
   `password` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
-
-"CREATE TABLE IF NOT EXISTS `plugins` (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `val1` varchar(200) NOT NULL,
-  `val2` varchar(200) NOT NULL,
-  `plugin` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;"
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;"
 );
 }
 
