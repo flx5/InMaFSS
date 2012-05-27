@@ -39,7 +39,7 @@ class pluginManager {
             }
        }
 
-       public function ExecuteEvent($event, $params = null) {
+       public function ExecuteEvent($event, &$params = null) {
                return $this->handler->ExecuteEvent($event, $params);
        }
 }
@@ -76,15 +76,15 @@ class handler {
            $this->executers[$event][] = Array("plugin"=>$plugin, "action"=>$action);
      }
 
-     public function ExecuteEvent($event, $params = null) {
+     public function ExecuteEvent($event, &$params = null) {
              if(!isset($this->executers[$event])) {
                    return false;
              }
              setPlugin(true, $this);
              foreach($this->executers[$event] as $action) {
-                    ob_start();
+                    //ob_start();
                     $action["plugin"]->$action["action"]($params);
-                    ob_end_clean();
+                    //ob_end_clean();
              }
              setPlugin(false, $this);
      }

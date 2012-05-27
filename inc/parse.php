@@ -21,24 +21,35 @@
 \*=================================================================================*/
 
 class parse {
-       var $replacements = Array();
-       var $notes = Array();
+       var $replacements = Array(0=>Array(), 1=>Array());
+       var $notes = Array(0=>Array(), 1=>Array());
+       var $teachers = Array();
+       var $grades = Array();
+       var $school = Array();
+       var $rooms = Array();
+       var $supervisor = Array();
 
        function parseHTML($html) {
+               $html = html_entity_decode($html);
                require_once(CWD.DS."inc".DS."parse".DS.config("system").".php");
+
+
                $data = parseHTML($html);
 
-               $this->replacements[] = $data['replacements'];
-               $this->notes[] = $data['notes'];
+               if(isset($data['not_available'])) {   $this->teachers[]                    = $data['not_available'];  }
+               if(isset($data['school']))        {   $this->school[]                      = $data['school'];         }
+               if(isset($data['rooms']))         {   $this->rooms[]                       = $data['rooms'];          }
+               if(isset($data['aufsicht']))      {   $this->supervisor[]                  = $data['aufsicht'];       }
+               if(isset($data['replacements']))  {   $this->replacements[$data['type']][] = $data['replacements'];   }
+               if(isset($data['notes']))         {   $this->notes[$data['type']][]        = $data['notes'];          }
+               if(isset($data['grades']))        {   $this->grades[]                      = $data['grades'];         }
        }
 
        public function UpdateDatabase() {
 
-            foreach($this->replacements as $replacements) {
+            foreach($this->replacements[0] as $replacements) {
 
-               $key = array_keys($replacements);
-
-               dbquery("DELETE FROM replacements WHERE timestamp = '".$replacements[$key[0]][0]['stamp_for']."'");
+               $stamps = Array();
 
                foreach($replacements as $k=>$grade) {
                     foreach($grade as $data) {
@@ -57,20 +68,65 @@ class parse {
                                     }
                                  }
                            }
-                                                                                                                                                                                                                                                                                                                                                                                                        
-                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, hint, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".$data['teacher']."','".$data['replacement']."', '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
+
+                            if(!in_array($data['stamp_for'], $stamps)) {
+                              dbquery("DELETE FROM replacements WHERE timestamp = '".$data['stamp_for']."'");
+                            }
+
+                            $stamps[] = $data['stamp_for'];
+
+                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, comment, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".$data['teacher']."','".$data['replacement']."', '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
                     }
                }
             }
 
-            foreach($this->notes as $notes) {
-                foreach($notes as $note) {
-                        dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
-                }
+            foreach($this->replacements[1] as $replacements) {
+
+               $stamps = Array();
+
+               foreach($replacements as $k=>$teacher) {
+                    foreach($teacher as $data) {
+
+                            if(!in_array($data['stamp_for'], $stamps)) {
+                              dbquery("DELETE FROM teacher_substitude WHERE timestamp = '".$data['stamp_for']."'");
+                            }
+
+                            $stamps[] = $data['stamp_for'];
+
+                           dbquery("INSERT INTO teacher_substitude (short, lesson, teacher, grade, room, comment, timestamp, timestamp_update, addition) VALUES ('".$k."','".$data['lesson']."','".$data['teacher']."', '".$data['grade']."' , '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
+                    }
+               }
+            }
+
+            foreach($this->notes[0] as $notes) {
+
+                $stamps = Array();
 
                 foreach($notes as $note) {
-                       dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp) VALUES (1, '".$note['content']."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."')");
+                       if(!in_array($data['stamp_for'], $stamps)) {
+                          dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
+                          $stamps[] = $note['stamp_for'];
+                       }
+                       dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp, `order`) SELECT 1, '".$note['content']."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."', COALESCE(MAX(`order`),0)+1 FROM ticker");
                 }
+            }
+
+            $others = Array('t'=>$this->teachers, 'g'=>$this->grades, 's'=>$this->school, 'r'=>$this->rooms, 'a'=>$this->supervisor, 'n'=>$this->notes[1]);
+
+            $stamps = Array();
+
+            foreach($others as $type=>$val) {
+              foreach($val as $datas) {
+
+                foreach($datas as $data) {
+                        if(!in_array($data['stamp_for'], $stamps)) {
+                           dbquery("DELETE FROM others WHERE timestamp = '".$data['stamp_for']."'");
+                           $stamps[] = $data['stamp_for'];
+                        }
+
+                        dbquery("INSERT INTO others (type, name, lesson, comment, timestamp, timestamp_update, addition) VALUES ('".$type."', '".$data['teacher']."', '".$data['lesson']."', '".$data['reason']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
+                }
+              }
             }
        }
 

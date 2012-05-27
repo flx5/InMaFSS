@@ -44,32 +44,115 @@
               }
        }
 
+
        public function CreateTables() {
-              foreach($this->replacements  as $ti=>$table) {
+
+               foreach($this->replacements  as $ti=>$table) {
+
+                        $t = '';
+
                         $output = '<table width="95%" align="center" border="0" cellspacing="1" >';
-                        $output .= $this->CreateTableHeader();
+
+                        if($this->type == 0) {
+                          $output .= $this->CreateTableHeader();
+                        } else {
+                          $output .= $this->CreateTeacherTableHeader();
+                        }
+
+                        $info = $this->type;
 
                         foreach($table as $k=>$grade) {
+
+                            if($t != $k && $info) {
+                               $t = $k;
+                               switch($t) {
+                                  case 't':
+                                      $output .= '<tr><th colspan="6">'.lang()->loc('absent.t',false).'</th></tr>';
+                                  break;
+                                  case 'g':
+                                      $output .= '<tr><th colspan="6">'.lang()->loc('absent.g',false).'</th></tr>';
+                                  break;
+                                  case 'a':
+                                      $output .= '<tr><th colspan="6">'.lang()->loc('supervision',false).'</th></tr>';
+                                  break;
+                                  case 's':
+                                      $output .= '<tr><th colspan="6">'.lang()->loc('entire.school',false).'</th></tr>';
+                                  break;
+                                  case 'r':
+                                      $output .= '<tr><th colspan="6">'.lang()->loc('na.rooms',false).'</th></tr>';
+                                  break;
+
+                                  case 'n':
+                                      $output .= '<tr><th colspan="6">zus&auml;tzliche Informationen</th></tr>';
+                                  break;
+
+                                  default:
+                                      $output .= '<tr><th colspan="6">'.lang()->loc('subs',false).'</th></tr>';
+                                      $output .= '<tr><th width="200px">'.lang()->loc('teacher.short',false).'</th><th width="60px">'.lang()->loc('lesson.short',false).'</th><th width="100px">'.lang()->loc('grade',false).'</th><th width="75px">'.lang()->loc('room',false).'</th><th width="*">'.lang()->loc('comment',false).'</th></tr>';
+                                      $info = false;
+                                  break;
+                               }
+                            }
+
                             $first = true;
 
                             foreach($grade as $val) {
-                               $output .= '<tr class="'.(($val['addition']) ? 'update' : '').'">';
-                               if($first) {
-                                  $output .= '<th rowspan="'.count($grade).'">'.(($this->type == 0) ? $k : $val['teacher']).'</th>';
+
+                               $output .= '<tr align="left" class="'.(($val['addition']) ? 'update' : '').'">';
+
+                               switch($t) {
+                                  case 't':
+                                         $output .= '<th colspan="2">'.$val['name'].'</th><td colspan="2">'.$val['lesson'].'</td><td colspan="2">&nbsp;'.$val['comment'].'</td></tr>';
+                                  break;
+                                  case 'g':
+                                         $output .= '<th colspan="2">'.$val['name'].'</th><td colspan="4" >'.$val['lesson'].'</td></tr>';
+                                  break;
+                                  case 'a':
+                                         $output .= '<th colspan="2">'.$val['comment'].'</th><td colspan="4">'.$val['name'].'</td></tr>';
+                                  break;
+                                  case 's':
+                                         $output .= '<th colspan="2">'.$val['lesson'].'</th><td colspan="4">'.$val['comment'].'</td></tr>';
+                                  break;
+                                  case 'r':
+                                         $output .= '<th colspan="2">'.$val['name'].'</th><td  colspan="4">'.$val['lesson'].'</td></tr>';
+                                  break;
+
+                                  case 'n':
+                                      $output .= '<td  colspan="6">'.$val['comment'].'</td></tr>';
+                                  break;
+
+                                  default:
+                                         if($first) {
+                                             $output .= '<th rowspan="'.count($grade).'">'.(($this->type == 0) ? $k : $val['teacher']).'</th>';
+                                         }
+
+                                         if($this->type == 1) {
+                                            $output .= '<td>'.$val['lesson'].'</td><td>'.$val['grade'].'</td><td>'.$val['room'].'</td><td>'.$val['comment'].'</td>';
+                                         } else {
+                                            $output .= '<td>'.$val['teacher'].'</td><td>'.$val['lesson'].'</td><td>'.$val['replacement'].'</td><td>'.$val['room'].'</td><td>'.$val['comment'].'</td>';
+                                         }
+                                  break;
                                }
 
-                               $output .= '<td>'.$val['teacher'].'</td><td>'.$val['lesson'].'</td><td align="left">&nbsp;'.$val['replacement'].'</td><td>'.$val['room'].'</td><td align="left">&nbsp;'.$val['hint'].'</td></tr>';
                                $first = false;
+                            }
+
+                            if($info) {
+                                unset($table[$k]);
                             }
                         }
                     $output .= '</table>';
 
                     $keys = array_keys($table);
-                    if(count($keys) != 1) {
+
+                    if(count($keys) == 0) {
+                      $title = lang()->loc('info',false);
+                    } elseif(count($keys) > 1) {
                       $title = $keys[0].'-'.$keys[count($keys)-1];
                     } else {
                       $title = $keys[0];
                     }
+
                     $this->AddPage($title,$output);
               }
        }
@@ -83,6 +166,14 @@
              return $output;
        }
 
+       private function CreateTeacherTableHeader() {
+             $output  = '<tr><th colspan="6" >';
+             $output .= '<span style="float:left;" >'.lang()->loc(strtolower(substr(date("D",$this->GetTFrom()),0,2)),false).', '.date("d.m.Y",$this->GetTFrom()).'</span>';
+             $output .= '<span style="float:right;" >'.preg_replace("/%update%/", date("d.m. - H:i",$this->GetLastUpdate()), lang()->loc('last.update',false)).'</span>';
+             $output .= '</th></tr>';
+             return $output;
+       }
+
        public function CreateMenu() {
                 $menu = "";
                 foreach($this->pages as $i=>$page) {
@@ -92,11 +183,37 @@
                    } else {
                      $menu .= (($this->site == 'left') ? 'C0C0E0' : 'A5CDCD');
                    }
+
                    $menu .= '">'.$page['title'].'</span> * ';
                 }
 
                 $menu = substr($menu,0,-3);
                 return $menu;
+       }
+
+       private function my_sort($a, $b)
+       {
+
+          if ($a['lesson'] == $b['lesson']) {
+              return 0;
+          }
+
+          if($a['lesson'] == 'M' && $b['lesson'] > 6) {
+            return -1;
+          }
+
+          if($b['lesson'] == 'M' && $a['lesson'] > 6) {
+            return 1;
+          }
+
+          if($a['lesson'] == 'M' && $b['lesson'] <= 6) {
+            return 1;
+          }
+
+          if($b['lesson'] == 'M' && $a['lesson'] <= 6) {
+            return -1;
+          }
+          return ($a['lesson'] < $b['lesson']) ? -1 : 1;
        }
 
        public function GetReplacements() {
@@ -105,16 +222,24 @@
                  $content = Array();
 
                  if($this->type == 1) {
-                        $sql = dbquery("SElECT * FROM replacements WHERE ".$where." ORDER BY teacher");
+
+                        $sql = dbquery("SElECT * FROM others WHERE ".$where." ORDER BY type, id");
 
                         while($data = mysql_fetch_assoc($sql)) {
-                           $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
+                           $content[$data['type']][] = $data;
                         }
+
+                        $sql = dbquery("SElECT * FROM teacher_substitude WHERE ".$where." ORDER BY id");
+
+                        while($data = mysql_fetch_assoc($sql)) {
+                           $content[$data['short']][] = $data;
+                        }
+
                         return $content;
                  }
 
-                 $sql = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade != 0 ORDER BY grade, grade_pre, grade_last, lesson");
-                 $sql2 = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade = 0 ORDER BY grade, grade_pre, grade_last, lesson");
+                 $sql = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade != 0 ORDER BY CAST(grade AS SIGNED) , grade_pre, grade_last, lesson");
+                 $sql2 = dbquery("SElECT * FROM replacements WHERE ".$where." AND grade = 0 ORDER BY grade_pre, grade_last, lesson");
 
                   while($data = mysql_fetch_assoc($sql)) {
                            $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
@@ -122,6 +247,12 @@
                   while($data = mysql_fetch_assoc($sql2)) {
                            $content[$data['grade_pre'] . $data['grade_last']][] = $data;
                   }
+
+                  foreach($content as $k=>$lessons) {
+                     usort($lessons,Array($this,'my_sort'));
+                     $content[$k] = $lessons;
+                  }
+
                   return $content;
        }
 
@@ -179,7 +310,7 @@
        }
 
        public function GetTickers() {
-             $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()))."' AND to_stamp > '".$this->GetTFrom()."' ORDER BY to_stamp");
+             $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()))."' AND to_stamp > '".$this->GetTFrom()."' ORDER BY to_stamp, `order`");
              $tickers = Array();
              while($ticker = mysql_fetch_object($sql)) {
                   $tickers[] = Array('day'=>$ticker->from_stamp, 'content'=>$ticker->value, 'automatic'=>$ticker->automatic);

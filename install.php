@@ -241,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `grade_pre` varchar(200) NOT NULL,
   `grade` int(10) NOT NULL,
   `grade_last` varchar(10) NOT NULL,
-  `lesson` int(10) NOT NULL,
+  `lesson` varchar(10) NOT NULL,
   `teacher` varchar(200) NOT NULL,
   `replacement` varchar(200) NOT NULL,
   `room` varchar(10) NOT NULL,
@@ -259,8 +259,9 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `value` text NOT NULL,
   `from_stamp` varchar(20) NOT NULL,
   `to_stamp` varchar(20) NOT NULL,
+  `order` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;",
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;",
 
 "CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,

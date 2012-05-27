@@ -44,22 +44,26 @@ class german_holidays {
           $xml2 = simplexml_load_string($xml2);
           $events = Array();
 
-          foreach($xml->VEVENT as $event) {
+          foreach($xml2->VEVENT as $event) {
                  $events[] = Array("start"=>parse::ICS2UnixStamp($event->DTSTART),"end"=>parse::ICS2UnixStamp($event->DTEND),"value"=>(String)$event->SUMMARY);
           }
 
-          foreach($xml2->VEVENT as $event) {
+          foreach($xml->VEVENT as $event) {
                  $events[] = Array("start"=>parse::ICS2UnixStamp($event->DTSTART),"end"=>parse::ICS2UnixStamp($event->DTEND),"value"=>(String)$event->SUMMARY);
           }
           $this->events = $events;
   }
 
-  public function check($param) {
+  public function check(&$param) {
+       do {
+         $found = false;
          foreach($this->events as $event) {
-              if($param >= $event['start'] && $param < $event['end']) {   
+              if($param >= $event['start'] && $param < $event['end']) {
                       $param = mktime(0,0,0, date("n",$event['end']), date("j",$event['end']));
+                      $found = true;
               }
          }
+       }  while ($found);
   }
 }
 ?>

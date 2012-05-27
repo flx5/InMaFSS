@@ -21,5 +21,55 @@
 \*=================================================================================*/
 
 
-$version = 116;
+require_once("global.php");
+
+lang()->add('home');
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addTemplate('clock');
+getVar("tpl")->addTemplate('header');
+
+getVar("tpl")->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
+if(!isset($_GET['size']) || !is_numeric($_GET['size'])) {
+      getVar("tpl")->Write('</div>');
+} elseif($_GET['size'] < 533) {
+      getVar("tpl")->addTemplate('too_small');
+} else {
+
+$size = $_GET['size'];
+$limit = floor(($size-30)/26)-10;
+
+require_once("inc/view.php");
+
+$left = getVar("tpl")->getTemplate('plan');
+$left->setVar('site','left');
+$view_left = new view('left', $limit);
+$view_left->type = 1;
+$left->setVar('view',$view_left);
+getVar("tpl")->addTemplateClass($left);
+getVar("tpl")->Write('</div>');
+
+getVar("tpl")->Write('<div class="main tomorrow" style="right:0px; border-left:0px solid black;" >');
+$right = getVar("tpl")->getTemplate('plan');
+$right->setVar('site','right');
+$view_right = new view('right', $limit);
+$view_right->type = 1;
+$right->setVar('view',$view_right);
+getVar("tpl")->addTemplateClass($right);
+getVar("tpl")->Write('</div>');
+
+$footer = getVar("tpl")->getTemplate('footer');
+$footer->setVar('view_left',$view_left);
+$footer->setVar('view_right',$view_right);
+getVar("tpl")->addTemplateClass($footer);
+}
+
+getVar("tpl")->Write('
+<script language="JavaScript">
+Init('.config("time_for_next_page").');
+</script>
+<noscript>');
+
+getVar("tpl")->addTemplate('no_js');
+getVar("tpl")->Write('</noscript>');
+getVar("tpl")->Output();
 ?>

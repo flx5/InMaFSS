@@ -116,6 +116,11 @@ function setPlugin($val, $actor) {
        $vars->setPlugin($val, $actor);
 }
 
+function getVersion() {
+      include("inc/version.php");
+      return $version;
+}
+
 function error_handler()
 {
     if ($error = error_get_last()) {

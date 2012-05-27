@@ -63,6 +63,13 @@ case 'home':
   $loc['grade'] = 'Klasse';
   $loc['replaced.by'] = 'vertreten durch';
   $loc['comment'] = 'Bemerkung';
+  $loc['info'] = 'Info';
+  $loc['absent.t'] = 'Abwesenede Lehrkr&auml;fte';
+  $loc['absent.g'] = 'Abwesenede Klassen';
+  $loc['supervision'] = 'Aufsichten';
+  $loc['entire.school'] = 'Gesamte Schule';
+  $loc['subs'] = 'Vertretungen';
+  $loc['na.rooms'] = 'Nicht verf&uuml;gbare R&auml;ume';
 break;
 
 case 'errors':
@@ -108,6 +115,8 @@ case 'ticker':
   $loc['del.rly'] = 'Den Ticker der ID %id% wirklich l&ouml;schen?';
   $loc['abort'] = 'Abbrechen';
   $loc['deleted'] = 'Der Ticker mit der ID %id% wurde gel&ouml;scht.';
+  $loc['ordernum'] = 'Ordnung';
+  $loc['order.string'] = 'Ordnungsnummer muss numerisch sein.';
 break;
 
 case 'updates':
@@ -121,7 +130,7 @@ case 'menu':
   $loc['home'] = 'Home';
   $loc['ticker'] = 'Ticker';
   $loc['pages'] = 'Seiten';
-  $loc['users'] = 'Nutzer';   
+  $loc['users'] = 'Nutzer';
   $loc['import'] = 'Importieren';
 break;
 

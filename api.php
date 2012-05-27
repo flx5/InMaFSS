@@ -22,22 +22,32 @@
 
 require_once("global.php");
 
+header('content-type: application/json; charset=utf-8');
+
 if(trim(config("apikey")) == "") {
     die("NO API KEY SET!");
 }
 
-      if(!isset($_GET['key']) ||  $_GET['key'] != config("apikey")) {
-           die("ERR|You have not been authenticated!");
+
+
+      if(isset($_GET['licence'])) {
+               if(file_get_contents("http://licence.flx5.com/inmafss.php?ver=".getVersion()."&licence=".$_GET['licence']) == "OK") {
+                           $_GET['key'] = config("apikey");
+               }
+      }
+
+      if(!isset($_GET['key']) || $_GET['key'] != config("apikey")) {
+           Error("You have not been authenticated!");
       }
 
       if(!isset($_GET['action'])) {
-           die("ERR|You must specify an action!");
+           Error("No action specified");
       }
 
       switch($_GET['action']) {
               case 'plan_update':
                       if(!isset($_POST['data'])) {
-                            die("ERR|You have to POST the content of your files!");
+                            Error("No file content found!");
                       }
                       $files = explode(chr(1),$_POST['data']);
                       $p = new parse();
@@ -49,11 +59,117 @@ if(trim(config("apikey")) == "") {
                       }
 
                       $p->UpdateDatabase();
-                      echo "OK|";
+                      Output(Array('STATUS'=>"OK",'message'=>'Import completed'));
+              break;
+
+              case 'replacements':
+                   $view = GetView();
+                   $view->AddRepacements();
+
+                   $output = Array();
+
+                   if(isset($_GET['g'])) {
+                        foreach($view->replacements as $page) {
+                              foreach($page as $grade=>$val) {
+                                      if($grade == $_GET['g']) {
+                                            $output = $val;
+                                      }
+                              }
+                        }
+                   }   else {
+                       $output = $view->replacements[1];
+                   }
+
+                   Output($output);
+              break;
+
+              case 'other':
+
+                   if(!isset($_GET['type'])) {
+                       Error("Specify a type");
+                   }
+
+                   $view = GetView();
+                   $view->type = 1;
+                   $view->AddRepacements();
+
+                   $output = Array();
+
+
+                   foreach($view->replacements[1] as $k=>$val) {
+                          if($k == $_GET['type']) {
+                               $output[$k] = $val;
+                          }
+                   }
+
+
+                   Output($output);
+
+              break;
+
+              case 'teacher_sub':
+                   $view = GetView();
+                   $view->type = 1;
+                   $view->AddRepacements();
+
+                   $output = Array();
+
+
+                   foreach($view->replacements[1] as $k=>$val) {
+                          switch($k) {
+                            case 't':
+                            case 'n':
+                            case 'g':
+                            case 's':
+                            case 'a':
+                            case 'r':
+                                continue;
+                            break;
+
+                            default:
+                               $output[$k] = $val;
+                            break;
+                          }
+                   }
+
+
+                   Output($output);
+              break;
+
+              case 'ticker':
+                   $view = GetView();
+                   Output($view->GetTickers());
+
               break;
 
               default:
-                     die("ERR|Unknown action!");
+                     Error("Unknown action!");
               break;
       }
+
+
+function Error($msg) {
+   Output(Array('STATUS'=>"ERROR",'message'=>$msg));
+   exit;
+}
+
+function Output($output) {
+   echo getVar('core')->FormatJson(json_encode($output));
+}
+
+function GetView() {
+      if(!isset($_GET['day']) || !is_numeric($_GET['day']) || strlen($_GET['day']) != 10) {
+             Error("Day must be Unix Timestamp");
+      }
+
+      require_once("inc/view.php");
+
+      $day = $_GET['day'];
+
+      $tfrom = mktime(0,0,0, date('m',$day), date('d',$day), date('Y',$day));
+
+      $view = new View(null,99e99);
+      $view->tfrom = $tfrom;
+      return $view;
+}
 ?>
