@@ -93,8 +93,9 @@
                                   break;
                                }
                             }
-
                             $first = true;
+                            $prev_t = "";
+                            $i = 0;
 
                             foreach($grade as $val) {
 
@@ -102,7 +103,16 @@
 
                                switch($t) {
                                   case 't':
-                                         $output .= '<th colspan="2">'.$val['name'].'</th><td colspan="2">'.$val['lesson'].'</td><td colspan="2">&nbsp;'.$val['comment'].'</td></tr>';
+                                         if($prev_t != $val['name']) {
+                                            $output = preg_replace("#_rowspan_#",$i,$output);
+
+                                            $output .= '<th colspan="2" rowspan="_rowspan_" >'.$val['name'].'</th>';
+                                            $prev_t = $val['name'];
+                                            $i = 0;
+                                         }
+
+                                         $i++;
+                                         $output .= '<td colspan="2">'.$val['lesson'].'</td><td colspan="2">&nbsp;'.$val['comment'].'</td></tr>';
                                   break;
                                   case 'g':
                                          $output .= '<th colspan="2">'.$val['name'].'</th><td colspan="4" >'.$val['lesson'].'</td></tr>';
@@ -136,6 +146,8 @@
 
                                $first = false;
                             }
+                            
+                            $output = preg_replace("#_rowspan_#",$i,$output);
 
                             if($info) {
                                 unset($table[$k]);

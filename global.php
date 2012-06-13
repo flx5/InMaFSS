@@ -64,6 +64,7 @@ $vars = new variables(new core(), new lang($config->Get("lang")), new MySQL(), n
 
 getVar("sql")->connect($config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname"));
 getVar("pluginManager")->Init();
+getVar("update")->Init();
 
 
 session_start();
@@ -102,7 +103,7 @@ function config($var) {
 }
 
 function getVar($var) {
-       global $vars;
+       global $vars;   
        return $vars->Get($var);
 }
 

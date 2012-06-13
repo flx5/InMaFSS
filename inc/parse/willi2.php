@@ -222,23 +222,29 @@
               $final['not_available'] = Array();
 
               foreach($not_available as $teacher) {
-                       preg_match('#<th rowspan="1" class="L">(.*)</th>#',$teacher,$name);
-                       preg_match('#<td>(.*)</td><td>#',$teacher,$lesson);
-                       preg_match('#</td><td>(.*)</td>#',$teacher,$reason);
+                       preg_match('#<th rowspan="[0-9]*" class="L">(.*)</th>#',$teacher,$name);
 
                        if(!isset($name[1]) || trim($name[1]) == "") {
                                continue;
                        }
 
-                       $addition = 0;
+                       $teacher = explode("<tr>",$teacher);
+                       foreach($teacher as $val) {
+                          preg_match('#<td>(.*)</td><td>#',$val,$lesson);
+                          preg_match('#</td><td>(.*)</td>#',$val,$reason);
 
-                       if(strpos($lesson[1],'<font color="red">') !== false) {
+                          $addition = 0;
+
+                          if(strpos($lesson[1],'<font color="red">') !== false) {
                              $addition = 1;
                              $lesson[1] = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$lesson[1]));
                              $reason[1] = trim(preg_replace(Array('#<font color="red">#','#</font>#'),"",$reason[1]));
+                          }
+
+                          $final['not_available'][] = Array('teacher'=>trim($name[1]), 'lesson'=>$lesson[1], 'reason'=>$reason[1], 'stamp_update'=>$stamp_update, 'stamp_for'=>$stamp_for, 'addition'=>$addition);
                        }
 
-                       $final['not_available'][] = Array('teacher'=>trim($name[1]), 'lesson'=>$lesson[1], 'reason'=>$reason[1], 'stamp_update'=>$stamp_update, 'stamp_for'=>$stamp_for, 'addition'=>$addition);
+
               }
 
               $final['grades'] = Array();

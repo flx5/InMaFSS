@@ -24,7 +24,7 @@
 class Update {
         var $version;
 
-        public function Update() {
+        public function Init() {
               include(CWD."inc/version.php");
               $this->version = $version;
         }

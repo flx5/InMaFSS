@@ -31,12 +31,12 @@ getVar("tpl")->Write('<div class="content">');
 getVar("tpl")->Output();
 flush();
 
-  $updates = $update->GetUpdates();
-  $changes = $update->GetAllChanges($updates);
-
+  $updates = getVar('update')->GetUpdates();
+  $changes = getVar('update')->GetAllChanges($updates);
+          print_r( $changes);
 echo '<div style="width:90%; margin:50px auto;">';
 
-  $update->PerformUpdate($changes);
+  getVar('update')->PerformUpdate($changes);
 
 echo '</div>';
 ?>
