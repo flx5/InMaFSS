@@ -36,7 +36,7 @@ if(!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 } else {
 
 $size = $_GET['size'];
-$limit = floor(($size-30)/26)-10;
+$limit = floor(($size-30)/26)-2;
 
 require_once("inc/view.php");
 

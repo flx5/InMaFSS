@@ -93,7 +93,7 @@ case 'database':
   $loc['connection.error'] = 'Konnte nicht zur Datenbank verbinden!';
   $loc['database.not.found'] = 'Datenbank nicht gefunden!';
   $loc['welcome'] = 'Willkommen, %username%';
-  $loc['back.to.home'] = 'Zur&uuml;ck zur Haupseite';
+  $loc['back.to.home'] = 'Zur&uuml;ck zur Hauptseite';
   $loc['logout'] = 'Abmelden';
 break;
 

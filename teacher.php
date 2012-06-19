@@ -56,11 +56,6 @@ $view_right->type = 1;
 $right->setVar('view',$view_right);
 getVar("tpl")->addTemplateClass($right);
 getVar("tpl")->Write('</div>');
-
-$footer = getVar("tpl")->getTemplate('footer');
-$footer->setVar('view_left',$view_left);
-$footer->setVar('view_right',$view_right);
-getVar("tpl")->addTemplateClass($footer);
 }
 
 getVar("tpl")->Write('
