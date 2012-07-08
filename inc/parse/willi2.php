@@ -106,7 +106,7 @@
                           $replacements[$grade][] = Array('stamp_update'=>$stamp_update, 'stamp_for'=>$stamp_for, 'addition'=>$addition,'teacher'=>$teacher,'lesson'=>$lesson,'replacement'=>$teacher2,'room'=>$raum,'hint'=>$hint);
                      }
                }
-
+                   
                return Array('type'=>0, "replacements"=>$replacements,"notes"=>$final_notes);
        }
 

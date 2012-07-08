@@ -103,7 +103,7 @@ class parse {
                 $stamps = Array();
 
                 foreach($notes as $note) {
-                       if(!in_array($data['stamp_for'], $stamps)) {
+                       if(!in_array($note['stamp_for'], $stamps)) {
                           dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
                           $stamps[] = $note['stamp_for'];
                        }

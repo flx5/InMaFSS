@@ -27,6 +27,7 @@ lang()->add('home');
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->addTemplate('clock');
 getVar("tpl")->addTemplate('header');
+getVar("tpl")->addHeader('<link rel="stylesheet" type="text/css" href="'.WWW.'/teacher.css">');
 
 getVar("tpl")->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
 if(!isset($_GET['size']) || !is_numeric($_GET['size'])) {
@@ -36,7 +37,7 @@ if(!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 } else {
 
 $size = $_GET['size'];
-$limit = floor(($size-30)/26)-10;
+$limit = floor(($size-30)/26)-2;
 
 require_once("inc/view.php");
 

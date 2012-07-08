@@ -47,6 +47,8 @@
 
        public function CreateTables() {
 
+               $spalten_t = config("spalten_t");
+
                foreach($this->replacements  as $ti=>$table) {
 
                         $t = '';
@@ -88,7 +90,7 @@
 
                                   default:
                                       $output .= '<tr><th colspan="6">'.lang()->loc('subs',false).'</th></tr>';
-                                      $output .= '<tr><th width="200px">'.lang()->loc('teacher.short',false).'</th><th width="60px">'.lang()->loc('lesson.short',false).'</th><th width="100px">'.lang()->loc('grade',false).'</th><th width="75px">'.lang()->loc('room',false).'</th><th width="*">'.lang()->loc('comment',false).'</th></tr>';
+                                      $output .= '<tr><th width="'.$spalten_t[0].'">'.lang()->loc('teacher.short',false).'</th><th width="'.$spalten_t[1].'">'.lang()->loc('lesson.short',false).'</th><th width="'.$spalten_t[2].'">'.lang()->loc('grade',false).'</th><th width="'.$spalten_t[3].'">'.lang()->loc('room',false).'</th><th width="'.$spalten_t[4].'">'.lang()->loc('comment',false).'</th></tr>';
                                       $info = false;
                                   break;
                                }
@@ -106,47 +108,47 @@
                                          if($prev_t != $val['name']) {
                                             $output = preg_replace("#_rowspan_#",$i,$output);
 
-                                            $output .= '<th colspan="2" rowspan="_rowspan_" >'.$val['name'].'</th>';
+                                            $output .= '<th colspan="1" rowspan="_rowspan_" >&nbsp;'.$val['name'].'</th>';
                                             $prev_t = $val['name'];
                                             $i = 0;
                                          }
 
                                          $i++;
-                                         $output .= '<td colspan="2">'.$val['lesson'].'</td><td colspan="2">&nbsp;'.$val['comment'].'</td></tr>';
+                                         $output .= '<td colspan="2">&nbsp;'.$val['lesson'].'</td><td colspan="2">&nbsp;'.$val['comment'].'</td></tr>';
                                   break;
                                   case 'g':
-                                         $output .= '<th colspan="2">'.$val['name'].'</th><td colspan="4" >'.$val['lesson'].'</td></tr>';
+                                         $output .= '<th colspan="1">&nbsp;'.$val['name'].'</th><td colspan="4" >&nbsp;'.$val['lesson'].'</td></tr>';
                                   break;
                                   case 'a':
-                                         $output .= '<th colspan="2">'.$val['comment'].'</th><td colspan="4">'.$val['name'].'</td></tr>';
+                                         $output .= '<th colspan="1">&nbsp;'.$val['comment'].'</th><td colspan="4">&nbsp;'.$val['name'].'</td></tr>';
                                   break;
                                   case 's':
-                                         $output .= '<th colspan="2">'.$val['lesson'].'</th><td colspan="4">'.$val['comment'].'</td></tr>';
+                                         $output .= '<th colspan="1">&nbsp;'.$val['lesson'].'</th><td colspan="4">&nbsp;'.$val['comment'].'</td></tr>';
                                   break;
                                   case 'r':
-                                         $output .= '<th colspan="2">'.$val['name'].'</th><td  colspan="4">'.$val['lesson'].'</td></tr>';
+                                         $output .= '<th colspan="1">&nbsp;'.$val['name'].'</th><td  colspan="4">&nbsp;'.$val['lesson'].'</td></tr>';
                                   break;
 
                                   case 'n':
-                                      $output .= '<td  colspan="6">'.$val['comment'].'</td></tr>';
+                                      $output .= '<td  colspan="6">&nbsp;'.$val['comment'].'</td></tr>';
                                   break;
 
                                   default:
                                          if($first) {
-                                             $output .= '<th rowspan="'.count($grade).'">'.(($this->type == 0) ? $k : $val['teacher']).'</th>';
+                                             $output .= '<th rowspan="'.count($grade).'">&nbsp;'.(($this->type == 0) ? $k : $val['teacher']).'</th>';
                                          }
 
                                          if($this->type == 1) {
-                                            $output .= '<td>'.$val['lesson'].'</td><td>'.$val['grade'].'</td><td>'.$val['room'].'</td><td>'.$val['comment'].'</td>';
+                                            $output .= '<td>&nbsp;'.$val['lesson'].'</td><td>&nbsp;'.$val['grade'].'</td><td>&nbsp;'.$val['room'].'</td><td>&nbsp;'.$val['comment'].'</td>';
                                          } else {
-                                            $output .= '<td>'.$val['teacher'].'</td><td>'.$val['lesson'].'</td><td>'.$val['replacement'].'</td><td>'.$val['room'].'</td><td>'.$val['comment'].'</td>';
+                                            $output .= '<td>&nbsp;'.$val['teacher'].'</td><td>&nbsp;'.$val['lesson'].'</td><td>'.$val['replacement'].'</td><td>&nbsp;'.$val['room'].'</td><td>'.$val['comment'].'</td>';
                                          }
                                   break;
                                }
 
                                $first = false;
                             }
-                            
+
                             $output = preg_replace("#_rowspan_#",$i,$output);
 
                             if($info) {
@@ -170,11 +172,14 @@
        }
 
        private function CreateTableHeader() {
+
+             $spalten = config("spalten");
+
              $output  = '<tr><th colspan="6" >';
              $output .= '<span style="float:left;" >'.lang()->loc(strtolower(substr(date("D",$this->GetTFrom()),0,2)),false).', '.date("d.m.Y",$this->GetTFrom()).'</span>';
              $output .= '<span style="float:right;" >'.preg_replace("/%update%/", date("d.m. - H:i",$this->GetLastUpdate()), lang()->loc('last.update',false)).'</span>';
              $output .= '</th></tr>';
-             $output .= '<tr><th width="75px">'.lang()->loc('grade',false).'</th><th width="75px">'.lang()->loc('teacher.short',false).'</th><th width="60px">'.lang()->loc('lesson.short',false).'</th><th width="180px">'.lang()->loc('replaced.by',false).'</th><th width="75px">'.lang()->loc('room',false).'</th><th width="*">'.lang()->loc('comment',false).'</th></tr>';
+             $output .= '<tr><th width="'.$spalten[0].'">'.lang()->loc('grade',false).'</th><th width="'.$spalten[1].'">'.lang()->loc('teacher.short',false).'</th><th width="'.$spalten[2].'">'.lang()->loc('lesson.short',false).'</th><th width="'.$spalten[3].'">'.lang()->loc('replaced.by',false).'</th><th width="'.$spalten[4].'">'.lang()->loc('room',false).'</th><th width="'.$spalten[5].'">'.lang()->loc('comment',false).'</th></tr>';
              return $output;
        }
 

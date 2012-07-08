@@ -64,8 +64,8 @@ case 'home':
   $loc['replaced.by'] = 'vertreten durch';
   $loc['comment'] = 'Bemerkung';
   $loc['info'] = 'Info';
-  $loc['absent.t'] = 'Abwesenede Lehrkr&auml;fte';
-  $loc['absent.g'] = 'Abwesenede Klassen';
+  $loc['absent.t'] = 'Abwesende Lehrkr&auml;fte';
+  $loc['absent.g'] = 'Abwesende Klassen';
   $loc['supervision'] = 'Aufsichten';
   $loc['entire.school'] = 'Gesamte Schule';
   $loc['subs'] = 'Vertretungen';

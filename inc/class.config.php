@@ -33,6 +33,8 @@ class config {
     private $use_ftp;
     private $ftp;
     private $system;
+    private $spalten_t = Array('200px', '30px', '100px', '75px', '*');
+    private $spalten = Array('75px', '75px', '30px', '180px', '75px', '*');
 
     public function config() {
          include(CWD."inc/config.php");

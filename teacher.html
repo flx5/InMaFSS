@@ -1,0 +1,19 @@
+<html>
+<head>
+<!-- Mime Weiterleitung-->
+
+<script language="JavaScript">
+var new_loc = location.toString();
+var param = "";
+
+if(new_loc.indexOf("?") > -1) {
+      param = new_loc.substr(new_loc.indexOf("?"));
+}
+
+window.location = "teacher.php"+param;
+</script>
+</head>
+<body>
+Please wait a moment!
+</body>
+</html>
