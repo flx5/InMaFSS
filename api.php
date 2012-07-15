@@ -68,16 +68,16 @@ if(trim(config("apikey")) == "") {
 
                    $output = Array();
 
-                   if(isset($_GET['g'])) {
-                        foreach($view->replacements as $page) {
+                   foreach($view->replacements as $page) {
                               foreach($page as $grade=>$val) {
-                                      if($grade == $_GET['g']) {
-                                            $output = $val;
+                                      if(!isset($_GET['g']) || $grade == $_GET['g']) {
+                                            foreach($val as $k=>$v) {
+                                                   $val[$k]['comment'] = preg_replace("/&nbsp;/","",htmlentities($v['comment']));
+                                                   $val[$k]['replacement'] = preg_replace("/&nbsp;/","",htmlentities($v['replacement']));
+                                            }
+                                            $output[$grade] = $val;
                                       }
                               }
-                        }
-                   }   else {
-                       $output = $view->replacements[1];
                    }
 
                    Output($output);
@@ -154,7 +154,8 @@ function Error($msg) {
 }
 
 function Output($output) {
-   echo getVar('core')->FormatJson(json_encode($output));
+   $output = getVar('core')->FormatJson(json_encode($output));
+   echo $output;
 }
 
 function GetView() {
