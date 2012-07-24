@@ -30,6 +30,7 @@ class config {
     private $lang;
     private $auto_addition;
     private $time_for_next_page;
+    private $teacher_time_for_next_page;
     private $use_ftp;
     private $ftp;
     private $system;
@@ -47,6 +48,7 @@ class config {
          $this->lang = $lang;
          $this->auto_addition = $auto_addition;
          $this->time_for_next_page = $time_for_next_page;
+         $this->teacher_time_for_next_page = $teacher_time_for_next_page;
          $this->use_ftp = $use_ftp;
          $this->ftp = $ftp;
          $this->system = $system;

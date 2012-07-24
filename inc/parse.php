@@ -31,6 +31,8 @@ class parse {
 
        function parseHTML($html) {
                $html = html_entity_decode($html);
+               $html = preg_replace("#\r\n#","\n",$html);
+
                require_once(CWD.DS."inc".DS."parse".DS.config("system").".php");
 
 
@@ -45,7 +47,18 @@ class parse {
                if(isset($data['grades']))        {   $this->grades[]                      = $data['grades'];         }
        }
 
+
+       public function CleanDatabase() {
+               $stamp = mktime(0,0,0);
+               dbquery("DELETE FROM others WHERE timestamp<".$stamp);
+               dbquery("DELETE FROM replacements WHERE timestamp<".$stamp);
+               dbquery("DELETE FROM teacher_substitude WHERE timestamp<".$stamp);
+               dbquery("DELETE FROM ticker WHERE to_stamp<".$stamp);
+       }
+
        public function UpdateDatabase() {
+
+            $this->CleanDatabase();
 
             foreach($this->replacements[0] as $replacements) {
 
@@ -75,7 +88,7 @@ class parse {
 
                             $stamps[] = $data['stamp_for'];
 
-                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, comment, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".$data['teacher']."','".$data['replacement']."', '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
+                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, comment, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".filter($data['teacher'])."','".filter($data['replacement'])."', '".filter($data['room'])."', '".filter($data['hint'])."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
                     }
                }
             }
@@ -93,7 +106,7 @@ class parse {
 
                             $stamps[] = $data['stamp_for'];
 
-                           dbquery("INSERT INTO teacher_substitude (short, lesson, teacher, grade, room, comment, timestamp, timestamp_update, addition) VALUES ('".$k."','".$data['lesson']."','".$data['teacher']."', '".$data['grade']."' , '".$data['room']."', '".$data['hint']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
+                           dbquery("INSERT INTO teacher_substitude (short, lesson, teacher, grade, room, comment, timestamp, timestamp_update, addition) VALUES ('".$k."','".$data['lesson']."','".filter($data['teacher'])."', '".$data['grade']."' , '".filter($data['room'])."', '".filter($data['hint'])."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
                     }
                }
             }
@@ -107,7 +120,7 @@ class parse {
                           dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
                           $stamps[] = $note['stamp_for'];
                        }
-                       dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp, `order`) SELECT 1, '".$note['content']."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."', COALESCE(MAX(`order`),0)+1 FROM ticker");
+                       dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp, `order`) SELECT 1, '".filter($note['content'])."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."', COALESCE(MAX(`order`),0)+1 FROM ticker");
                 }
             }
 
@@ -124,7 +137,7 @@ class parse {
                            $stamps[] = $data['stamp_for'];
                         }
 
-                        dbquery("INSERT INTO others (type, name, lesson, comment, timestamp, timestamp_update, addition) VALUES ('".$type."', '".$data['teacher']."', '".$data['lesson']."', '".$data['reason']."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
+                        dbquery("INSERT INTO others (type, name, lesson, comment, timestamp, timestamp_update, addition) VALUES ('".$type."', '".filter($data['teacher'])."', '".$data['lesson']."', '".filter($data['reason'])."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
                 }
               }
             }

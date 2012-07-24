@@ -78,16 +78,16 @@
                      }
 
                      $vertretung =  explode("<tr>",$grade);
-                     preg_match('#<th rowspan="(.*)" class="k">\r\n(.*)</th>#i',$vertretung[0],$data);
+                     preg_match('#<th rowspan="(.*)" class="k">\n(.*)</th>#i',$vertretung[0],$data);
                      $grade = $data[2];
 
                      foreach($vertretung as $v) {
                           $v = explode("<td>",$v);
                           preg_match('#<center>(.*)</center>#i',$v[1],$data); $teacher = trim($data[1]);
                           preg_match('#<center>(.*)</center>#i',$v[2],$data); $lesson = trim($data[1]);
-                          preg_match('#\r\n(.*)</td>#i',$v[3],$data); $teacher2 = trim($data[1]);
+                          preg_match('#\n(.*)</td>#i',$v[3],$data); $teacher2 = trim($data[1]);
                           preg_match('#<center>(.*)</center>#i',$v[4],$data); $raum = trim($data[1]);
-                          preg_match('#\r\n(.*)</td>#i',$v[5],$data); $hint = trim($data[1]);
+                          preg_match('#\n(.*)</td>#i',$v[5],$data); $hint = trim($data[1]);
 
                           $teacher2 = preg_replace("/&nbsp;/","",$teacher2);
                           $hint = preg_replace("/&nbsp;/","",$hint);
@@ -106,7 +106,7 @@
                           $replacements[$grade][] = Array('stamp_update'=>$stamp_update, 'stamp_for'=>$stamp_for, 'addition'=>$addition,'teacher'=>$teacher,'lesson'=>$lesson,'replacement'=>$teacher2,'room'=>$raum,'hint'=>$hint);
                      }
                }
-                   
+
                return Array('type'=>0, "replacements"=>$replacements,"notes"=>$final_notes);
        }
 

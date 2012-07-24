@@ -332,6 +332,7 @@ $system = \'willi2\';
 $lang = \''.$lang.'\';
 $auto_addition = false;
 $time_for_next_page = 5; // time to go to next page (in seconds)
+$teacher_time_for_next_page = 5; // time to go to next page (in seconds)
 
 $use_ftp = false;
 $ftp[\'server\'] = \'localhost\';

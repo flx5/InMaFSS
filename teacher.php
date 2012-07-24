@@ -61,7 +61,7 @@ getVar("tpl")->Write('</div>');
 
 getVar("tpl")->Write('
 <script language="JavaScript">
-Init('.config("time_for_next_page").');
+Init('.config("teacher_time_for_next_page").');
 </script>
 <noscript>');
 
