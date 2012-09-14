@@ -20,13 +20,13 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 ?>
-
 <div class="bar" style="position:absolute; bottom:0px;"><marquee>
 <?php
 
    lang()->add('ticker');
    $tickers = $view_left->GetTickers();
    $tickers = array_merge($tickers,$view_right->GetTickers());
+   $tickers = array_unique($tickers);
    ksort($tickers);
 
    if(count($tickers) == 0) {

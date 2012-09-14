@@ -275,6 +275,15 @@
 
        public function GetPages() {
                  $where = "timestamp_from <= ".$this->GetTFrom()." AND timestamp_end >= ".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()));
+
+                 if($this->type == 1) {
+                     $where .= " AND teachers = 1";
+                 }
+
+                 if($this->type == 0) {
+                     $where .= " AND pupils = 1";
+                 }
+
                  $sql = dbquery("SELECT * FROM pages WHERE ".$where." ORDER BY order_num,id ASC");
 
                  while($page = mysql_fetch_array($sql)) {

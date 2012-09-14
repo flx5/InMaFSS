@@ -45,6 +45,9 @@
         $time_from = explode(".",$time_from);
         $time_end = explode(".",$time_end);
 
+        $teachers = 0;
+        $pupils = 0;
+
         $error = Array();
 
         if($caption == "") {
@@ -77,13 +80,21 @@
            }
         }
 
+        if(isset($_POST['teachers'])) {
+              $teachers = 1;
+        }
+
+        if(isset($_POST['pupils'])) {
+              $pupils = 1;
+        }
+
         if(count($error) == 0) {
           if(isset($_GET['new'])) {
-              dbquery("INSERT INTO pages (title, content, timestamp_from, timestamp_end) VALUES ('".$caption."', '".$content."', '".$time_from."', '".$time_end."')");
+              dbquery("INSERT INTO pages (title, content, timestamp_from, timestamp_end, teachers, pupils, order_num) VALUES ('".$caption."', '".$content."', '".$time_from."', '".$time_end."', ".$teachers.",".$pupils.",'".time()."')");
               header("Location: ?id=".mysql_insert_id());
               exit;
           }
-         dbquery("UPDATE pages SET title = '".$caption."', content = '".$content."', timestamp_from = '".$time_from."', timestamp_end = '".$time_end."' WHERE id = ".$id);
+         dbquery("UPDATE pages SET title = '".$caption."', content = '".$content."', timestamp_from = '".$time_from."', timestamp_end = '".$time_end."', teachers = ".$teachers.", pupils = ".$pupils." WHERE id = ".$id);
         } else {
            foreach($error as $err) {
               echo $err.'<br>';
@@ -92,7 +103,7 @@
   }
 
   if(isset($_GET['new']) && !isset($_POST['caption'])) {
-         $data = Array('title'=>'', 'content'=>'', 'timestamp_from'=>time(),'timestamp_end'=>time());
+         $data = Array('title'=>'', 'content'=>'', 'timestamp_from'=>time(),'timestamp_end'=>time(), 'pupils'=>true, 'teachers'=>true);
   }  else {
          $sql = dbquery("SELECT * FROM pages WHERE id = ".$id);
          $data = mysql_fetch_assoc($sql);
@@ -104,6 +115,9 @@
 <tr><td><?php lang()->loc('caption'); ?>:</td><td><input type="text" name="caption" size="100"  value="<?php echo $data['title']; ?>"></td></tr>
 <tr><td><?php lang()->loc('from'); ?>:</td><td><input type="text" style="" class="tcal" name="time_from" value="<?php echo date(lang()->info('date.format',false), $data['timestamp_from']); ?>"></td></tr>
 <tr><td><?php lang()->loc('until'); ?>:</td><td><input type="text" style="" class="tcal" name="time_end" value="<?php echo date(lang()->info('date.format',false), $data['timestamp_end']); ?>"></td></tr>
+<tr><td><b><?php lang()->loc('show.at'); ?></b></td><td>&nbsp;</td></tr>
+<tr><td>&nbsp;&nbsp;<?php lang()->loc('pupils'); ?></td><td><input type="checkbox" name="pupils" value="1" <?php if($data['pupils']) echo 'checked'; ?>></td></tr>
+<tr><td>&nbsp;&nbsp;<?php lang()->loc('teachers'); ?></td><td><input type="checkbox" name="teachers" value="1" <?php if($data['teachers']) echo 'checked'; ?>></td></tr>
 <tr><td><?php lang()->loc('content'); ?>:</td><td><textarea name="content"><?php echo $data['content']; ?></textarea></td></tr>
 <tr><td></td><td><input type="submit" value="<?php lang()->loc('save'); ?>"></td></tr>
 </table>

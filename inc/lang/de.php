@@ -170,6 +170,9 @@ case 'pages':
   $loc['err.enddate'] = 'Das Enddatum ist nicht korrekt!';
   $loc['err.end.before.start'] = 'Anfangsdatum darf nicht sp&auml;ter/gleich sein als das Enddatum';
   $loc['save'] = 'Speichern';
+  $loc['show.at'] = 'Anzeige bei';
+  $loc['pupils'] = 'Sch&uuml;ler';
+  $loc['teachers'] = 'Lehrer';
 break;
 
 case 'users':

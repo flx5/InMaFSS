@@ -71,7 +71,7 @@ class parse {
                            $last = "";
 
                            for($i = 0; $i<strlen($k);$i++) {
-                                 if(is_numeric($k[$i])) {
+                                 if(is_numeric($k[$i]) && $last == "") {
                                     $k1 .= $k[$i];
                                  } else {
                                     if($k1 == "") {

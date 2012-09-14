@@ -247,6 +247,8 @@ return Array('SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";',
   `content` text NOT NULL,
   `timestamp_from` int(20) NOT NULL,
   `timestamp_end` int(10) NOT NULL,
+  `pupils` tinyint(1) NOT NULL DEFAULT '1',
+  `teachers` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
 

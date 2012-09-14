@@ -31,7 +31,7 @@ if(trim(config("apikey")) == "") {
 
 
       if(isset($_GET['licence'])) {
-               if(file_get_contents("http://licence.flx5.com/inmafss.php?ver=".getVersion()."&licence=".$_GET['licence']) == "OK") {
+               if(strpos(file_get_contents("http://licence.flx5.com/inmafss.php?ver=".getVersion()."&licence=".$_GET['licence']), "OK") !== false) {
                            $_GET['key'] = config("apikey");
                }
       }
