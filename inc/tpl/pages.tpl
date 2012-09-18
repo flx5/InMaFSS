@@ -35,17 +35,27 @@
   }
 ?>
 <table width="100%" border="1">
-<tr><th rowspan="2" ><?php lang()->loc('id'); ?></th><th rowspan="2"><?php lang()->loc('caption'); ?></th><th colspan="2" ><?php lang()->loc('shown'); ?></th><th colspan="2" rowspan="2">Optionen</th></tr>
-<tr><th><?php lang()->loc('from'); ?></th><th><?php lang()->loc('until'); ?></th></tr>
+<tr><th rowspan="2" ><?php lang()->loc('id'); ?></th><th rowspan="2"><?php lang()->loc('caption'); ?></th><th colspan="2"><?php lang()->loc('show.at'); ?></th><th colspan="2" ><?php lang()->loc('shown'); ?></th><th colspan="2" rowspan="2">Optionen</th></tr>
+<tr><th><?php lang()->loc('pupils'); ?></th><th><?php lang()->loc('teachers'); ?></th><th><?php lang()->loc('from'); ?></th><th><?php lang()->loc('until'); ?></th></tr>
 <?php
 
 $sql = dbquery("SELECT * FROM pages ORDER BY order_num");
 
 while($page = mysql_fetch_assoc($sql)) {
-    echo  '<tr><td>'.$page['id'].'</td><td>'.$page['title'].'</td><td>'.date('d.m.Y',$page['timestamp_from']).'</td><td>'.date('d.m.Y',$page['timestamp_end']).'</td>';
+    echo  '<tr><td>'.$page['id'].'</td><td>'.$page['title'].'</td><td>'.GetSign($page['pupils']).'</td><td>'.GetSign($page['teachers']).'</td><td>'.date('d.m.Y',$page['timestamp_from']).'</td><td>'.date('d.m.Y',$page['timestamp_end']).'</td>';
     echo  '<td><a href="pedit.php?id='.$page['id'].'">'.lang()->loc('edit',false).'</a></td><td><a href="?del='.$page['id'].'">'.lang()->loc('delete',false).'</a></td></tr>';
 }
 ?>
-<tr><td>&nbsp;</td><td></td><td></td><td></td><td colspan="2" ><a href="pedit.php?new">NEU</a></td></tr>
+<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td colspan="2" ><a href="pedit.php?new">NEU</a></td></tr>
 </table>
 </div></div>
+
+<?php
+ function GetSign($bool) {
+      if($bool) {
+          return '&#10004;';
+      }
+
+      return '&#10006;';
+  }
+?>

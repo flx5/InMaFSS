@@ -26,7 +26,7 @@
    lang()->add('ticker');
    $tickers = $view_left->GetTickers();
    $tickers = array_merge($tickers,$view_right->GetTickers());
-   $tickers = array_unique($tickers);
+
    ksort($tickers);
 
    if(count($tickers) == 0) {
@@ -35,16 +35,22 @@
       echo '&nbsp;';
    }
 
+   $output = Array();
 
    foreach($tickers as $ticker) {
-        echo "+++&nbsp;";
+        $out = "+++&nbsp;";
         if($ticker['automatic']) {
-          echo lang()->loc(strtolower(substr(date("D",$ticker['day']),0,2)),false).":&nbsp";
+          $out .= lang()->loc(strtolower(substr(date("D",$ticker['day']),0,2)),false).":&nbsp";
         }
 
-        echo $ticker['content']."&nbsp;";
-   }
+        $out .= $ticker['content']."&nbsp;";
 
+        if(!in_array($out, $output)) {
+                $output[] = $out;
+        }
+   }
+     
+   echo implode("",$output);
    echo "+++";
 ?>
 </marquee></div>
