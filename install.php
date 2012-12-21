@@ -169,7 +169,7 @@ function getPage() {
                  mysql_query($cmd);
            }
 
-           $tomorrow = mktime(date("H"), date("i"), date("s"), date("m"), date("d")+1);
+           $tomorrow = gmmktime(date("H"), date("i"), date("s"), date("m"), date("d")+1);
 
            mysql_query("INSERT INTO pages (order_num, title, content, timestamp_from, timestamp_end) VALUES ('1', '".$loc['welcome']."', '".$loc['firstpage']."', '".time()."', '".$tomorrow."')");
 

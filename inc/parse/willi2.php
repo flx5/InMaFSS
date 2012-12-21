@@ -5,7 +5,7 @@
 |* ############################################################################### *|
 |* Copyright (C) flx5                                                              *|
 |* E-Mail: me@flx5.com                                                             *|
-|* #####################<p align="center"></p>########################################################## *|
+|* ############################################################################### *|
 |* InMaFSS is free software; you can redistribute it and/or modify                 *|
 |* it under the terms of the GNU Affero General Public License as published by     *|
 |* the Free Software Foundation; either version 3 of the License,                  *|
@@ -45,8 +45,8 @@
 
                $date_for = explode(".",$date_for);
                $date_update = explode(".",$date_update);
-               $stamp_for = mktime(0,0,0, intval($date_for[1]), intval($date_for[0]), intval($date_for[2]));
-               $stamp_update = mktime($time[0],$time[1],0, intval($date_update[1]), intval($date_update[0]));
+               $stamp_for = gmmktime(0,0,0, intval($date_for[1]), intval($date_for[0]), intval($date_for[2]));
+               $stamp_update = gmmktime($time[0],$time[1],0, intval($date_update[1]), intval($date_update[0]));
 
                $html = substr($html,strpos($html,'Bemerkung</th>')+strlen('Bemerkung</th>')+9);
 
@@ -68,8 +68,14 @@
                }
 
                $html = substr($html,0,strpos($html,'</table>'));
-               $graden = explode('<tr class="k">',$html);
+
+               $graden = Array();
+               if(strpos($html, '<tr class="k">') !== false) {
+                  $graden = explode('<tr class="k">',$html);
+               }
+
                $replacements = Array();
+
 
                foreach($graden as $grade) {
 
@@ -133,8 +139,8 @@
                $date_for = explode(".",$date_for);
                $date_update = explode(".",$date_update);
 
-               $stamp_for = mktime(0,0,0, intval($date_for[1]), intval($date_for[0]), intval($date_for[2]));
-               $stamp_update = mktime(intval($time[0]),intval($time[1]),0, intval($date_update[1]), intval($date_update[0]));
+               $stamp_for = gmmktime(0,0,0, intval($date_for[1]), intval($date_for[0]), intval($date_for[2]));
+               $stamp_update = gmmktime(intval($time[0]),intval($time[1]),0, intval($date_update[1]), intval($date_update[0]));
 
                $replacements = substr($html,strpos($html,'Vertretungen:')+strlen('Vertretungen:'));
                $replacements = substr($replacements,strpos($replacements,'</tr>')+strlen('</tr>'));
@@ -148,7 +154,7 @@
                $grades = substr($grades,strpos($grades,'<tr'));
                $grades = substr($grades,0,strpos($grades,'</table>'));
 
-               $rooms = substr($html,strpos($html,'Räume'));
+               $rooms = substr($html,strpos($html,'Rï¿½ume'));
                $rooms = substr($rooms,strpos($rooms,'<tr'));
                $rooms = substr($rooms,0,strpos($rooms,'</table>'));
 
@@ -181,7 +187,13 @@
                }
 
 
-               $replacements = explode('<tr class="l">', $replacements);
+               if(strpos($replacements, '<tr class="l">') !== false) {
+                  $replacements = explode('<tr class="l">', $replacements);
+               } else {
+                 $replacements = Array();
+               }
+
+
 
                $final['replacements'] = Array();
 

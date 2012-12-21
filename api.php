@@ -1,176 +1,199 @@
 <?php
-/*=================================================================================*\
-|* This file is part of InMaFSS                                                    *|
-|* InMaFSS - INformation MAnagement for School Systems - Keep yourself up to date! *|
-|* ############################################################################### *|
-|* Copyright (C) flx5                                                              *|
-|* E-Mail: me@flx5.com                                                             *|
-|* ############################################################################### *|
-|* InMaFSS is free software; you can redistribute it and/or modify                 *|
-|* it under the terms of the GNU Affero General Public License as published by     *|
-|* the Free Software Foundation; either version 3 of the License,                  *|
-|* or (at your option) any later version.                                          *|
-|* ############################################################################### *|
-|* InMaFSS is distributed in the hope that it will be useful,                      *|
-|* but WITHOUT ANY WARRANTY; without even the implied warranty of                  *|
-|* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                            *|
-|* See the GNU Affero General Public License for more details.                     *|
-|* ############################################################################### *|
-|* You should have received a copy of the GNU Affero General Public License        *|
-|* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
-\*=================================================================================*/
+
+/* =================================================================================*\
+  |* This file is part of InMaFSS                                                    *|
+  |* InMaFSS - INformation MAnagement for School Systems - Keep yourself up to date! *|
+  |* ############################################################################### *|
+  |* Copyright (C) flx5                                                              *|
+  |* E-Mail: me@flx5.com                                                             *|
+  |* ############################################################################### *|
+  |* InMaFSS is free software; you can redistribute it and/or modify                 *|
+  |* it under the terms of the GNU Affero General Public License as published by     *|
+  |* the Free Software Foundation; either version 3 of the License,                  *|
+  |* or (at your option) any later version.                                          *|
+  |* ############################################################################### *|
+  |* InMaFSS is distributed in the hope that it will be useful,                      *|
+  |* but WITHOUT ANY WARRANTY; without even the implied warranty of                  *|
+  |* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                            *|
+  |* See the GNU Affero General Public License for more details.                     *|
+  |* ############################################################################### *|
+  |* You should have received a copy of the GNU Affero General Public License        *|
+  |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
+  \*================================================================================= */
 
 require_once("global.php");
 
-header('content-type: application/json; charset=utf-8');
+new API();
 
-if(trim(config("apikey")) == "") {
-    die("NO API KEY SET!");
-}
+class API {
 
+    private $data = "";
 
+    public function __construct() {
+        header('content-type: application/json; charset=utf-8');
 
-      if(isset($_GET['licence'])) {
-               if(strpos(file_get_contents("http://licence.flx5.com/inmafss.php?ver=".getVersion()."&licence=".$_GET['licence']), "OK") !== false) {
-                           $_GET['key'] = config("apikey");
-               }
-      }
+        if (!isset($_GET['key']) || !$this->CheckAuth($_GET['key'])) {
+            $this->Error("You have not been authenticated!");
+        }
 
-      if(!isset($_GET['key']) || $_GET['key'] != config("apikey")) {
-           Error("You have not been authenticated!");
-      }
+        if (!isset($_GET['action'])) {
+            $this->Error("No action specified");
+        }
 
-      if(!isset($_GET['action'])) {
-           Error("No action specified");
-      }
+        if (!$this->HasPerm($_GET['action'])) {
+            $this->Error("This action does not exist or you don't have sufficient rights for this action");
+        }
 
-      switch($_GET['action']) {
-              case 'plan_update':
-                      if(!isset($_POST['data'])) {
-                            Error("No file content found!");
-                      }
-                      $files = explode(chr(1),$_POST['data']);
-                      $p = new parse();
+        switch ($_GET['action']) {
+            case 'plan_update':
+                if (!isset($_POST['data'])) {
+                    $this->Error("No file content found!");
+                }
+                $files = explode(chr(1), $_POST['data']);
+                $p = new parse();
 
-                      foreach($files as $file) {
-                             $file = stripslashes(urldecode($file));
-                             $file = substr($file, strpos($file,"<html>"));
-                             $p->parseHTML($file);
-                      }
+                foreach ($files as $file) {
+                    $file = stripslashes(urldecode($file));
+                    $file = substr($file, strpos($file, "<html>"));
+                    $p->parseHTML($file);
+                }
 
-                      $p->UpdateDatabase();
-                      Output(Array('STATUS'=>"OK",'message'=>'Import completed'));
-              break;
+                $p->UpdateDatabase();
+                $this->Output(Array('STATUS' => "OK", 'message' => 'Import completed'));
+                break;
 
-              case 'replacements':
-                   $view = GetView();
-                   $view->AddRepacements();
+            case 'replacements':
+                $view = $this->GetView();
+                $view->AddRepacements();
 
-                   $output = Array();
+                $output = Array();
 
-                   foreach($view->replacements as $page) {
-                              foreach($page as $grade=>$val) {
-                                      if(!isset($_GET['g']) || $grade == $_GET['g']) {
-                                            foreach($val as $k=>$v) {
-                                                   $val[$k]['comment'] = preg_replace("/&nbsp;/","",htmlentities($v['comment']));
-                                                   $val[$k]['replacement'] = preg_replace("/&nbsp;/","",htmlentities($v['replacement']));
-                                            }
-                                            $output[$grade] = $val;
-                                      }
-                              }
-                   }
+                foreach ($view->replacements as $page) {
+                    foreach ($page as $grade => $val) {
+                        if (!isset($_GET['g']) || $grade == $_GET['g']) {
+                            foreach ($val as $k => $v) {
+                                $val[$k]['comment'] = preg_replace("/&nbsp;/", "", htmlentities($v['comment']));
+                                $val[$k]['replacement'] = preg_replace("/&nbsp;/", "", htmlentities($v['replacement']));
+                            }
+                            $output[$grade] = $val;
+                        }
+                    }
+                }
 
-                   Output($output);
-              break;
+                $this->Output($output);
+                break;
 
-              case 'other':
+            case 'other':
 
-                   if(!isset($_GET['type'])) {
-                       Error("Specify a type");
-                   }
+                if (!isset($_GET['type'])) {
+                    $this->Error("Specify a type");
+                }
 
-                   $view = GetView();
-                   $view->type = 1;
-                   $view->AddRepacements();
+                $view = $this->GetView();
+                $view->type = 1;
+                $view->AddRepacements();
 
-                   $output = Array();
-
-
-                   foreach($view->replacements[1] as $k=>$val) {
-                          if($k == $_GET['type']) {
-                               $output[$k] = $val;
-                          }
-                   }
+                $output = Array();
 
 
-                   Output($output);
-
-              break;
-
-              case 'teacher_sub':
-                   $view = GetView();
-                   $view->type = 1;
-                   $view->AddRepacements();
-
-                   $output = Array();
+                foreach ($view->replacements[1] as $k => $val) {
+                    if ($k == $_GET['type']) {
+                        $output[$k] = $val;
+                    }
+                }
 
 
-                   foreach($view->replacements[1] as $k=>$val) {
-                          switch($k) {
-                            case 't':
-                            case 'n':
-                            case 'g':
-                            case 's':
-                            case 'a':
-                            case 'r':
-                                continue;
+                $this->Output($output);
+
+                break;
+
+            case 'teacher_sub':
+                $view = $this->GetView();
+                $view->type = 1;
+                $view->AddRepacements();
+
+                $output = Array();
+
+
+                foreach ($view->replacements[1] as $k => $val) {
+                    switch ($k) {
+                        case 't':
+                        case 'n':
+                        case 'g':
+                        case 's':
+                        case 'a':
+                        case 'r':
+                            continue;
                             break;
 
-                            default:
-                               $output[$k] = $val;
+                        default:
+                            if (!isset($_GET['short']) || $k == $_GET['short']) {
+                                $output[$k] = $val;
+                            }
                             break;
-                          }
-                   }
+                    }
+                }
 
 
-                   Output($output);
-              break;
+                $this->Output($output);
+                break;
 
-              case 'ticker':
-                   $view = GetView();
-                   Output($view->GetTickers());
+            case 'ticker':
+                $view = $this->GetView();
+                $this->Output($view->GetTickers());
 
-              break;
+                break;
 
-              default:
-                     Error("Unknown action!");
-              break;
-      }
+            default:
+                $this->Error("Unknown action!");
+                break;
+        }
+    }
 
+    function Error($msg) {
+        $this->Output(Array('STATUS' => "ERROR", 'message' => $msg));
+        exit;
+    }
 
-function Error($msg) {
-   Output(Array('STATUS'=>"ERROR",'message'=>$msg));
-   exit;
+    function Output($output) {
+        $output = getVar('core')->FormatJson(json_encode($output));
+        echo $output;
+    }
+
+    function CheckAuth($api) {
+        $api = filter($api);
+        $sql = dbquery("SELECT permissions FROM api WHERE apikey = '" . $api . "'");
+
+        if (mysql_num_rows($sql) != 1) {
+            return false;
+        }
+
+        $data = mysql_result($sql, 0);
+        $data = explode("|", $data);
+        $this->data = $data;
+        return true;
+    }
+
+    function HasPerm($perm) {
+        return in_array($perm, $this->data);
+    }
+
+    function GetView() {
+        if (!isset($_GET['day']) || !is_numeric($_GET['day']) || strlen($_GET['day']) != 10) {
+            $this->Error("Day must be Unix Timestamp");
+        }
+
+        require_once("inc/view.php");
+
+        $day = $_GET['day'];
+
+        $tfrom = gmmktime(0, 0, 0, date('m', $day), date('d', $day), date('Y', $day));
+
+        $view = new View(null, 99e99);
+        $view->tfrom = $tfrom;     
+        return $view;
+    }
+
 }
 
-function Output($output) {
-   $output = getVar('core')->FormatJson(json_encode($output));
-   echo $output;
-}
-
-function GetView() {
-      if(!isset($_GET['day']) || !is_numeric($_GET['day']) || strlen($_GET['day']) != 10) {
-             Error("Day must be Unix Timestamp");
-      }
-
-      require_once("inc/view.php");
-
-      $day = $_GET['day'];
-
-      $tfrom = mktime(0,0,0, date('m',$day), date('d',$day), date('Y',$day));
-
-      $view = new View(null,99e99);
-      $view->tfrom = $tfrom;
-      return $view;
-}
 ?>

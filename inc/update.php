@@ -64,6 +64,7 @@ class Update {
         }
 
         public function GetChanges($version) {
+                set_time_limit(0);
                 $updateData = file_get_contents($version);
 
                 if(!$updateData) {
@@ -84,6 +85,8 @@ class Update {
         public function GetAllChanges($updates) {
                  $changes = Array();
 
+                 set_time_limit(0);
+
                  foreach($updates as $url) {
                       foreach($this->GetChanges($url) as $file=>$change) {
                               $changes[$file] = $change;
@@ -92,20 +95,20 @@ class Update {
                  return $changes;
         }
 
-        public function PerformUpdate($changes) {
-              if(count($changes) == 0) {
-                return false;
-              }
+        public function PerformUpdate($file, $action, $url) {
 
               set_time_limit(0);
 
-              $perfile = 90/count($changes);
-              $value = 0;
               $use_ftp = config("use_ftp");
               $ftp = config("ftp");
 
               if($use_ftp) {
-                    $conn_id = ftp_connect(gethostbyname($ftp['server']), 21, 5) or die("Konnte keine Verbindung zum FTP Server aufbauen");
+                    $conn_id = ftp_connect(gethostbyname($ftp['server']), 21, 5);
+
+                     if(!$conn_id) {
+                        echo "Konnte keine Verbindung zum FTP Server aufbauen";
+                        return false;
+                     }
 
                     echo "FTP Connection established<br>";
                     flush();
@@ -120,27 +123,37 @@ class Update {
                     flush();
               }
 
-              foreach($changes as $file=>$change) {
-                    if($file == 'inc/config.php' || $file == 'install.php') {
-                         continue;
-                    }
+              if($file == 'inc/config.php' || $file == 'install.php') {
+                         return;
+              }
 
-                    switch($change['status']) {
+                    switch($action) {
                        default:
 
-                         core::SystemError("Unknown Update Status", $change['status']);
+                         core::SystemError("Unknown Update Status", $action);
                        break;
 
                        case 'added':
                        case 'modified':
 
-                          $data = file_get_contents($change['url']);
-                          if(!$data) {
-                               core::SystemError("Network Error", "Couldn't download ".$file);
+                          $fp = fopen($url, "r");
+                          if(!$fp) {
+                                   core::SystemError("Network Error", "Couldn't download ".$file);
+                          }
+
+                          $data = "";
+
+                          while (($buffer = fgets($fp, 4096)) !== false) {
+                             $data .= $buffer;
+                          }
+
+                          if($file == 'update.txt') {
+                             eval($data);
+                             return;
                           }
 
                           if($use_ftp) {
-                              if(!ftp_put($conn_id, $ftp['path'].$file, $change['url'], FTP_ASCII)) {
+                              if(!ftp_fput($conn_id, $ftp['path'].$file, $fp, FTP_BINARY)) {
                                    echo "FTP UPLOAD ERROR<br>";
                                    ftp_close($conn_id);
                                    return false;
@@ -165,22 +178,12 @@ class Update {
                           echo 'REMOVED: '.$file.'<br>';
                        break;
                     }
-                    $value = $value+$perfile;
-
-                    echo '<div style="position:absolute; top:10px; left:30px; width:90%; background-color:#C0C0C0; border-color:black; height:30px;"></div>';
-                    echo '<div style="position:absolute; top:10px; left:30px; width:'.$value.'%; background-color:#00FF00; border-color:black; height:30px;"></div>';
-                    echo '<div style="position:absolute; top:10px; left:30px; width:90%; text-align:center; padding:5px;">'.(($value/90)*100).'%</div>';
-                    flush();
-              }
 
               if($use_ftp) {
                 ftp_close($conn_id);
+                echo "FTP Connection closed<br>";
               }
 
-              if(isset($changes["update.php"])) {
-                  define("IN_UPDATE_CLASS",true);
-                  include(CWD."update.php");
-              }
               return true;
         }
 }

@@ -49,7 +49,7 @@ class parse {
 
 
        public function CleanDatabase() {
-               $stamp = mktime(0,0,0);
+               $stamp = gmmktime(0,0,0);
                dbquery("DELETE FROM others WHERE timestamp<".$stamp);
                dbquery("DELETE FROM replacements WHERE timestamp<".$stamp);
                dbquery("DELETE FROM teacher_substitude WHERE timestamp<".$stamp);
@@ -120,7 +120,7 @@ class parse {
                           dbquery("DELETE FROM ticker WHERE automatic = 1 AND from_stamp = '".$note['stamp_for']."'");
                           $stamps[] = $note['stamp_for'];
                        }
-                       dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp, `order`) SELECT 1, '".filter($note['content'])."', '".$note['stamp_for']."', '". mktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."', COALESCE(MAX(`order`),0)+1 FROM ticker");
+                       dbquery("INSERT INTO ticker (automatic, value, from_stamp, to_stamp, `order`) SELECT 1, '".filter($note['content'])."', '".$note['stamp_for']."', '". gmmktime(23,59,59, date("n",$note['stamp_for']), date("j",$note['stamp_for']), date("Y",$note['stamp_for']))."', COALESCE(MAX(`order`),0)+1 FROM ticker");
                 }
             }
 
@@ -159,7 +159,7 @@ class parse {
 
        public static function ICS2UnixStamp($data) {
                  $data = substr($data,5);
-                 return mktime(0,0,0, substr($data,4,2), substr($data,6,2), substr($data,0,4));
+                 return gmmktime(0,0,0, substr($data,4,2), substr($data,6,2), substr($data,0,4));
        }
 }
 ?>

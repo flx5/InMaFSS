@@ -28,7 +28,12 @@ class tpl {
 
     public function Init($title) {
          $this->content = '';
-         $this->headers = Array('<title>InMaFSS // '.$title.'</title>','<link rel="stylesheet" type="text/css" href="'.WWW.'/main.css">');
+         $this->headers = Array(
+                                '<title>InMaFSS // '.$title.'</title>',
+                                '<link rel="stylesheet" type="text/css" href="'.WWW.'/main.css">',
+                                '<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">'
+                          );
+
          $this->params = Array('username'=>USERNAME);
          $this->addJS(WWW."/main.js");
     }

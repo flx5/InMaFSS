@@ -72,8 +72,8 @@
 
         if($time) {
 
-           $time_from = mktime(0,0,0, $time_from[1], $time_from[0], $time_from[2]);
-           $time_end = mktime(23,59,59, $time_end[1], $time_end[0], $time_end[2]);
+           $time_from = gmmktime(0,0,0, $time_from[1], $time_from[0], $time_from[2]);
+           $time_end = gmmktime(23,59,59, $time_end[1], $time_end[0], $time_end[2]);
 
            if($time_from >= $time_end) {
                   $error[] = lang()->loc('err.end.before.start',false);

@@ -132,6 +132,7 @@ case 'menu':
   $loc['pages'] = 'Seiten';
   $loc['users'] = 'Nutzer';
   $loc['import'] = 'Importieren';
+  $loc['api'] = 'API';
 break;
 
 case 'info':
@@ -184,13 +185,8 @@ case 'users':
   $loc['save'] = 'Speichern';
   $loc['new.password'] = 'Neues Passwort';
   $loc['name.too.short'] = 'Der Nutzername muss mindestens 3 Zeichen haben.';
-  $loc['pw.too.short'] = 'Das Passwort muss mindestens 5 Zeichen haben.';
-  $loc['saved'] = 'Erfolgreich gespeichert.';
-  $loc['del.rly'] = 'Den Nutzer mit der ID %id% wirklich l&ouml;schen?';
-  $loc['abort'] = 'Abbrechen';
-  $loc['deleted'] = 'Der Nutzer mit der ID %id% wurde gel&ouml;scht.';
-  $loc['not.found'] = 'Nutzer existiert nicht.';
-  $loc['del.self'] = 'Der eigene Nutzer kann nicht gelöscht werden!';
+  $loc['pw.too.short'] = 'Das Passwort muss mindestens 5 Zeichen haben.'; 
+  $loc['del.self'] = 'Der eigene Nutzer kann nicht gelï¿½scht werden!';
 break;
 
 case 'date':
@@ -228,6 +224,24 @@ case 'date':
 
   $loc['prev.year'] = 'Vorheriges Jahr';
   $loc['next.year'] = 'N&auml;chstes Jahr';
+break;
+
+case 'api':
+  $loc['title'] = 'API Management';
+  $loc['id'] = 'ID';
+  $loc['name'] = 'Name';
+  $loc['key'] = 'API Schl&uuml;ssel';
+  $loc['edit'] = 'Bearbeiten';
+  $loc['delete'] = 'L&ouml;schen';
+  $loc['save'] = 'Speichern';
+  $loc['name.too.short'] = 'Der Name ist zu kurz!';
+  $loc['api.too.short'] = 'Der API Key ist zu kurz!';
+  
+  $loc['saved'] = 'Erfolgreich gespeichert.';
+  $loc['del.rly'] = 'Den API-Key mit der ID %id% wirklich l&ouml;schen?';
+  $loc['abort'] = 'Abbrechen';
+  $loc['deleted'] = 'Der API-Key mit der ID %id% wurde gel&ouml;scht.';
+  $loc['not.found'] = 'Der API-Key existiert nicht.';
 break;
 }
 ?>

@@ -195,3 +195,28 @@ h2 {
    margin-top:0px;
    text-align:center;
 }
+
+#progress {
+   width:0%;
+   left:0px;
+   background-color:#00ff00;
+   text-align:center;
+   height:40px;
+}
+
+#progress_bg {
+   width:90%;
+   background-color:#C0C0C0;
+   height:40px;
+   margin:50px auto;
+}
+
+#progress_content {
+   width:100%;
+   background:transparent;
+   text-align:center;
+   font-size:30px;
+   height:40px;
+   position:relative;
+   top:-40px;
+}

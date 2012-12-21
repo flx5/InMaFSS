@@ -21,24 +21,33 @@
 \*=================================================================================*/
 ?>
 
-<div class="menu">
-<h1>InMaFSS</h1>
-<font color="#C0C0C0" size="+1" style="padding:4px;" >Information Management for School Systems</font><br><br>
+<div class="content">
+<div style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
+<h2><?php lang()->loc('title'); ?></h2>
 <?php
-lang()->add('menu');
+  if(isset($_GET['del']) && is_numeric($_GET['del']) && (!isset($_GET['do']) || $_GET['do'] != 'del')) {
+      $sql = dbquery("SELECT name FROM api WHERE id = ".$_GET['del']);
+      if(mysql_num_rows($sql) == 0) {
+              echo '<font size="+2" color="#FF0000">'.lang()->loc('not.found',false).'</font>';     
+      } else {
+              echo '<font size="+2" color="#FF0000">'.lang()->loc('del.rly',false).' <a href="?del='.$_GET['del'].'&do=del">'.lang()->loc('delete',false).'</a>&nbsp;|&nbsp;<a href="?">'.lang()->loc('abort',false).'</a></font>';
+      }
+  }
 
-$current = substr($_SERVER["REQUEST_URI"], strrpos($_SERVER["REQUEST_URI"], "manage/")+strlen("manage/"));
-if(strpos($current,'?') !== false) {
-   $current = substr($current,0,strpos($current,'?'));
-}
-
-
-echo '<a '. (($current == 'admin.php') ? 'class="selected"' : '').' href="admin.php" >'.lang()->loc('home',false).'</a>';
-echo '<a '. (($current == 'ticker.php') ? 'class="selected"' : '').' href="ticker.php" >'.lang()->loc('ticker',false).'</a>';
-echo '<a '. (($current == 'pages.php') ? 'class="selected"' : '').' href="pages.php" >'.lang()->loc('pages',false).'</a>';
-echo '<a '. (($current == 'users.php') ? 'class="selected"' : '').' href="users.php" >'.lang()->loc('users',false).'</a>';
-echo '<a '. (($current == 'import.php') ? 'class="selected"' : '').' href="import.php" >'.lang()->loc('import',false).'</a>';
-echo '<a '. (($current == 'api.php') ? 'class="selected"' : '').' href="api.php" >'.lang()->loc('api',false).'</a>';
+  if(isset($_GET['del'])  && isset($_GET['do']) && $_GET['do'] == 'del' && is_numeric($_GET['del'])) {
+          dbquery("DELETE FROM api WHERE id = ".$_GET['del']);
+          echo '<font size="+2" color="#00ff00">'.lang()->loc('deleted',false).'</font>';
+  }
 ?>
-
-</div>
+<table width="100%" border="1">
+<tr><th width="10%"><?php lang()->loc('id'); ?></th><th><?php lang()->loc('name'); ?></th><th><?php lang()->loc('key'); ?></th><th colspan="2" width="30%" >Optionen</th></tr>
+<?php
+      $users = dbquery("SELECT id,name,apikey FROM api ORDER BY id ASC");
+      while($api = mysql_fetch_array($users)) {
+          echo '<tr><td>'.$api['id'].'</td><td>'.$api['name'].'</td><td>'.$api['apikey'].'</td>';
+          echo  '<td><a href="api_edit.php?id='.$api['id'].'">'.lang()->loc('edit',false).'</a></td><td><a href="?del='.$api['id'].'">'.lang()->loc('delete',false).'</a></td></tr>';
+      }
+?>
+<tr><td></td><td></td><td></td><td colspan="2"><a href="api_edit.php?new">NEU</a></td></tr>
+</table>
+</div></div>

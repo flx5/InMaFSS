@@ -234,7 +234,7 @@
        }
 
        public function GetReplacements() {
-                 $where = "timestamp >= ".$this->GetTFrom()." AND timestamp <= ".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()));
+                 $where = "timestamp >= ".$this->GetTFrom()." AND timestamp <= ".gmmktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()), date("Y", $this->GetTFrom()));
 
                  $content = Array();
 
@@ -274,7 +274,7 @@
        }
 
        public function GetPages() {
-                 $where = "timestamp_from <= ".$this->GetTFrom()." AND timestamp_end >= ".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()));
+                 $where = "timestamp_from <= ".$this->GetTFrom()." AND timestamp_end >= ".gmmktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()), date("Y", $this->GetTFrom()));
 
                  if($this->type == 1) {
                      $where .= " AND teachers = 1";
@@ -311,9 +311,9 @@
                }
 
                if($this->site == 'left') {
-                     $tfrom = mktime(0,0,0);
+                     $tfrom = gmmktime(0,0,0);
                } else {
-                     $tfrom = mktime(0,0,0, date("n"), date("j")+1);
+                     $tfrom = gmmktime(0,0,0, date("n"), date("j")+1);
                      $tfrom = $this->RemoveWeekend($tfrom);
                      getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
                      $tfrom = $this->RemoveWeekend($tfrom);
@@ -336,7 +336,7 @@
        }
 
        public function GetTickers() {
-             $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '".mktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()))."' AND to_stamp > '".$this->GetTFrom()."' ORDER BY to_stamp, `order`");
+             $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '".gmmktime(23,59,59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()), date("Y", $this->GetTFrom()))."' AND to_stamp > '".$this->GetTFrom()."' ORDER BY to_stamp, `order`");
              $tickers = Array();
              while($ticker = mysql_fetch_object($sql)) {
                   $tickers[] = Array('day'=>$ticker->from_stamp, 'content'=>$ticker->value, 'automatic'=>$ticker->automatic);

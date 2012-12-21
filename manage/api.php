@@ -22,37 +22,16 @@
 
 
 require_once("global.php");
-
-lang()->add('updates');
+lang()->add('api');
 
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->addStandards('admin');
-getVar("tpl")->addJS("update.js");
+getVar("tpl")->setParam("id",'');
 
-getVar("tpl")->Write('<div class="content">');
+if(isset($_GET['del'])) {
+  getVar("tpl")->setParam("id",$_GET['del']);
+}
 
-getVar("tpl")->Write('Die folgenden Dateien werden verändert:<ul id="liste">');
-
-  $updates = getVar('update')->GetUpdates();
-  $changes = getVar('update')->GetAllChanges($updates);
-
-getVar("tpl")->Write('
-<script language="JavaScript">
-liste = new Array();');
-
-  $i = 0;
-  foreach($changes as $name=>$change) {
-      getVar("tpl")->Write('liste['.$i.'] = new Array("'.$name.'", "'.$change['status'].'", "'.$change['url'].'");');
-      $i++;
-  }
-
-getVar("tpl")->Write('DoUpdate(liste);</script></ul>');
-
+getVar("tpl")->addTemplate('api');
 getVar("tpl")->Output();
-
-#echo '<div style="width:90%; margin:50px auto;">';
-
-  #getVar('update')->PerformUpdate($changes);
-
-#echo '</div>';
 ?>
