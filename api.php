@@ -45,7 +45,7 @@ class API {
         }
 
         switch ($_GET['action']) {
-            case 'plan_update':
+            case 'plan_update':                           
                 if (!isset($_POST['data'])) {
                     $this->Error("No file content found!");
                 }
@@ -63,6 +63,11 @@ class API {
                 break;
 
             case 'replacements':
+                
+                if(!$this->HasPerm('replacements_all') && !isset($_GET['g'])) {
+                    $this->Error("You must provide a Grade!");
+                }
+                
                 $view = $this->GetView();
                 $view->AddRepacements();
 

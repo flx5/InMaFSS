@@ -124,5 +124,5 @@ function error_handler()
         ob_end_clean();
         core::SystemError($error['message'], ' in '. $error['file']. ' on line '.$error['line']);
     }
-}
+} 
 ?>
