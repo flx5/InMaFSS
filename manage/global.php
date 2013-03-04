@@ -21,7 +21,7 @@
 \*=================================================================================*/
 
 
-require_once("../global.php");
+require_once(dirname(__FILE__)."/../global.php");
   if(!LOGGED_IN) {
      header("Location: ".WWW."/manage");
      exit;

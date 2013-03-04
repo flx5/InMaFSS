@@ -114,7 +114,7 @@ class Update {
                 return false;
             }
 
-            echo "FTP Connection established<br>";
+            echo "FTP Connection established\n";
             flush();
 
             if (!@ftp_login($conn_id, $ftp['usr'], $ftp['pwd'])) {
@@ -123,7 +123,7 @@ class Update {
                 return false;
             }
 
-            echo "FTP: Logged in<br>";
+            echo "FTP: Logged in\n";
             flush();
         }      
 
@@ -138,7 +138,7 @@ class Update {
 
                 $fp = fopen($url, "r");
                 if (!$fp) {
-                    core::SystemError("Network Error", "Couldn't download " . $file);
+                    core::SystemError("Network Error", "Couldn't download " . $file."\n");
                 }
 
                 $data = "";
@@ -162,20 +162,20 @@ class Update {
                     file_put_contents(CWD . $file, $data);
                 }
 
-                echo 'UPDATE: ' . $file . '<br>';
+                echo 'UPDATE: ' . $file . "\n";
                 break;
 
             case 'removed':
                 if ($use_ftp) {
                     if (!ftp_delete($conn_id, $ftp['path'] . $file)) {
-                        echo "FTP: could not delete " . $ftp['path'] . $file . "<br>";
+                        echo "FTP: could not delete " . $ftp['path'] . $file . "\n";
                         ftp_close($conn_id);
                         return false;
                     }
                 } else {
                     unlink(DS . $file);
                 }
-                echo 'REMOVED: ' . $file . '<br>';
+                echo 'REMOVED: ' . $file . '\n';
                 break;
         }
 
