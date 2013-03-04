@@ -1,0 +1,161 @@
+BEGIN:VCALENDAR
+METHOD:PUBLISH
+PRODID:-//Mozilla.org/NONSGML Mozilla Calendar V1.1//EN
+VERSION:2.0
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Neujahr
+DTSTART;VALUE=DATE:20130101
+DTEND;VALUE=DATE:20130102
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Neujahr ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Neujahr-Bayern-201301011023130690@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Heilige Drei Koenige
+DTSTART;VALUE=DATE:20130106
+DTEND;VALUE=DATE:20130107
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Heilige Drei Koenige ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Heilige Drei Koenige-Bayern-201301061063217803@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Karfreitag
+DTSTART;VALUE=DATE:20130329
+DTEND;VALUE=DATE:20130330
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Karfreitag ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Karfreitag-Bayern-201303291131567858@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Ostermontag
+DTSTART;VALUE=DATE:20130401
+DTEND;VALUE=DATE:20130402
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Ostermontag ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Ostermontag-Bayern-201304011211390520@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Tag der Arbeit
+DTSTART;VALUE=DATE:20130501
+DTEND;VALUE=DATE:20130502
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Tag der Arbeit ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Tag der Arbeit-Bayern-201305011103047937@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Christi Himmelfahrt
+DTSTART;VALUE=DATE:20130509
+DTEND;VALUE=DATE:20130510
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Christi Himmelfahrt ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Christi Himmelfahrt-Bayern-201305091205477452@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Pfingstmontag
+DTSTART;VALUE=DATE:20130520
+DTEND;VALUE=DATE:20130521
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Pfingstmontag ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Pfingstmontag-Bayern-201305201201546089@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Fronleichnam
+DTSTART;VALUE=DATE:20130530
+DTEND;VALUE=DATE:20130531
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Fronleichnam ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Fronleichnam-Bayern-201305301382498185@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Mariae Himmelfahrt
+DTSTART;VALUE=DATE:20130815
+DTEND;VALUE=DATE:20130816
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Mariae Himmelfahrt ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Mariae Himmelfahrt-Bayern-201308151263029414@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Tag der Deutschen Einheit
+DTSTART;VALUE=DATE:20131003
+DTEND;VALUE=DATE:20131004
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Tag der Deutschen Einheit ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Tag der Deutschen Einheit-Bayern-201310031391645217@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:Allerheiligen
+DTSTART;VALUE=DATE:20131101
+DTEND;VALUE=DATE:20131102
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:Allerheiligen ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:Allerheiligen-Bayern-201311011289844707@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:1. Weihnachtsfeiertag
+DTSTART;VALUE=DATE:20131225
+DTEND;VALUE=DATE:20131226
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:1. Weihnachtsfeiertag ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:1. Weihnachtsfeiertag-Bayern-201312251351438238@schulferien.org
+END:VEVENT
+BEGIN:VEVENT
+CREATED:20120101T145331Z
+LAST-MODIFIED:20120101T145331Z
+DTSTAMP:20120101T145331Z
+SUMMARY:2. Weihnachtsfeiertag
+DTSTART;VALUE=DATE:20131226
+DTEND;VALUE=DATE:20131227
+URL:http://www.schulferien.org/Feiertage
+DESCRIPTION:2. Weihnachtsfeiertag ist gesetzlicher Feiertag in Bayern. Alle Termine auf www.schulferien.org/Feiertage
+TRANSP:TRANSPARENT
+UID:2. Weihnachtsfeiertag-Bayern-201312261237808967@schulferien.org
+END:VEVENT
+END:VCALENDAR

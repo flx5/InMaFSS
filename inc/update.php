@@ -33,9 +33,10 @@ class Update {
         if (isset($_SESSION['updates'][$this->version]) && $cache) {
             return $_SESSION['updates'][$this->version];
         }
-
+       
         $updateData = @file_get_contents("https://api.github.com/repos/flx5/InMaFSS/tags");
-        if (!$updateData) {
+        
+        if (!$updateData) { 
             return Array();
         }
 

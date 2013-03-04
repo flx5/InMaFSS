@@ -27,7 +27,7 @@ new API();
 
 class API {
 
-    private $data = "";
+    private $data = Array();
 
     public function __construct() {
         header('content-type: application/json; charset=utf-8');
@@ -45,15 +45,19 @@ class API {
         }
 
         switch ($_GET['action']) {
-            case 'plan_update':                           
+            case 'plan_update':
                 if (!isset($_POST['data'])) {
                     $this->Error("No file content found!");
                 }
+
+                $_POST['data'] = urldecode($_POST['data']);
+
                 $files = explode(chr(1), $_POST['data']);
                 $p = new parse();
 
                 foreach ($files as $file) {
-                    $file = stripslashes(urldecode($file));
+                    # $file = stripslashes($file);
+                    $file = utf8_decode($file);
                     $file = substr($file, strpos($file, "<html>"));
                     $p->parseHTML($file);
                 }
@@ -63,11 +67,11 @@ class API {
                 break;
 
             case 'replacements':
-                
-                if(!$this->HasPerm('replacements_all') && !isset($_GET['g'])) {
+
+                if (!$this->HasPerm('replacements_all') && !isset($_GET['g'])) {
                     $this->Error("You must provide a Grade!");
                 }
-                
+
                 $view = $this->GetView();
                 $view->AddRepacements();
 
@@ -119,26 +123,31 @@ class API {
 
                 $output = Array();
 
+                foreach ($view->replacements as $page) { // Can only be one page!
+                    foreach ($page as $k => $val) {
+                        switch ($k) {
+                            case 't':
+                            case 'n':
+                            case 'g':
+                            case 's':
+                            case 'a':
+                            case 'r':
+                                continue;
+                                break;
 
-                foreach ($view->replacements[1] as $k => $val) {
-                    switch ($k) {
-                        case 't':
-                        case 'n':
-                        case 'g':
-                        case 's':
-                        case 'a':
-                        case 'r':
-                            continue;
-                            break;
-
-                        default:
-                            if (!isset($_GET['short']) || $k == $_GET['short']) {
-                                $output[$k] = $val;
-                            }
-                            break;
+                            default:
+                                if (!isset($_GET['short']) || $k == $_GET['short']) {                                 
+                                    foreach($val as $i=>$entry) {   
+                                        foreach($entry as $f=>$x) 
+                                            $val[$i][$f] = html_entity_decode($x, ENT_COMPAT, "UTF-8");
+                                    }
+                        
+                                    $output[$k] = $val;
+                                }
+                                break;
+                        }
                     }
                 }
-
 
                 $this->Output($output);
                 break;
@@ -166,6 +175,13 @@ class API {
     }
 
     function CheckAuth($api) {
+
+        if (isset($_GET['licence'])) {
+            if (strpos(file_get_contents("http://licence.flx5.com/inmafss.php?ver=" . getVersion() . "&licence=" . $_GET['licence']), "OK") !== false) {
+                $this->data = Array("all");
+            }
+        }
+
         $api = filter($api);
         $sql = dbquery("SELECT permissions FROM api WHERE apikey = '" . $api . "'");
 
@@ -180,6 +196,7 @@ class API {
     }
 
     function HasPerm($perm) {
+        return true; // todo!
         return in_array($perm, $this->data);
     }
 
@@ -195,7 +212,7 @@ class API {
         $tfrom = gmmktime(0, 0, 0, date('m', $day), date('d', $day), date('Y', $day));
 
         $view = new View(null, 99e99);
-        $view->tfrom = $tfrom;     
+        $view->tfrom = $tfrom;
         return $view;
     }
 

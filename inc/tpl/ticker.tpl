@@ -90,7 +90,7 @@
 
 ?>
 <table width="100%" border="1">
-<tr><th><?php lang()->loc('id'); ?></th><th><?php lang()->loc('ordernum'); ?></th><th><?php lang()->loc('text'); ?></th><th><th><?php lang()->loc('from'); ?></th><th><?php lang()->loc('until'); ?></th><th colspan="2" ><?php lang()->loc('options'); ?></th></tr>
+<tr><th><?php lang()->loc('id'); ?></th><th><?php lang()->loc('ordernum'); ?></th><th><?php lang()->loc('text'); ?></th><th><?php lang()->loc('from'); ?></th><th><?php lang()->loc('until'); ?></th><th colspan="2" ><?php lang()->loc('options'); ?></th></tr>
 <?php
 
 $sql = dbquery("SELECT * FROM ticker ORDER BY `order`");
