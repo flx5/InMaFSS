@@ -141,7 +141,7 @@ function getPage() {
             global $lang;
 
             $text = getConfig($_POST['host'], $_POST['username'], $_POST['password'], $_POST['database'], $lang);
-            
+
             if (!is_writable("./inc/")) {
                 echo $loc['config.rights'];
                 echo '<br><textarea style="width:90%; height:200px">' . $text . '</textarea>';
@@ -307,7 +307,14 @@ function getSql() {
   `username` varchar(200) NOT NULL,
   `password` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;"
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;",
+        "CREATE TABLE IF NOT EXISTS `api` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `apikey` varchar(200) NOT NULL,
+  `permissions` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;"
     );
 }
 

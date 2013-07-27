@@ -30,7 +30,7 @@ class german_holidays {
     var $handler;
     var $events;
 
-    public function Init($handler) {
+    public function Init($handler) { 
         $this->handler = $handler;
         $this->parse_holidays();
         $this->handler->RegisterEvent($this, "generate_tfrom_right", "check");

@@ -1,4 +1,5 @@
 <?php
+
 class View {
 
     var $replacements = Array();
@@ -182,7 +183,7 @@ class View {
         return $output;
     }
 
-    private function CreateTeacherTableHeader() {
+    private function CreateTeacherTableHeader() {  
         $output = '<tr><th colspan="6" >';
         $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->GetTFrom()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->GetTFrom()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
@@ -312,16 +313,24 @@ class View {
             $tfrom = gmmktime(0, 0, 0);
         } else {
             $tfrom = gmmktime(0, 0, 0, date("n"), date("j") + 1);
-            $tfrom = $this->RemoveWeekend($tfrom);
+            $tfrom = self::RemoveWeekend($tfrom);
             getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
-            $tfrom = $this->RemoveWeekend($tfrom);
+            $tfrom = self::RemoveWeekend($tfrom);
         }
 
         $this->tfrom = $tfrom;
         return $tfrom;
     }
 
-    private function RemoveWeekend($tfrom) {
+    public static function GetNextDay() {
+        $tfrom = gmmktime(0, 0, 0, date("n"), date("j") + 1);
+        $tfrom = self::RemoveWeekend($tfrom);
+        getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
+        $tfrom = self::RemoveWeekend($tfrom);
+        return $tfrom;
+    }
+
+    private static function RemoveWeekend($tfrom) {
         if (date("w", $tfrom) == 6) {
             $tfrom = $tfrom + 2 * 24 * 60 * 60;
         } elseif (date("w", $tfrom) == 0) {

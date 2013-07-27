@@ -34,8 +34,8 @@ class pluginManager {
             $this->ready = false;
 
             foreach (glob(CWD."plugins/*.php") as $file) {
-                  $file = substr($file,strlen(CWD."plugins/"),-4);
-                  $this->plugins[$file] = new plugin($file,$this->handler);
+                  $file = substr($file,strlen(CWD."plugins/"),-4);     
+                  $this->plugins[$file] = new plugin($file,$this->handler);          
             }
        }
 
@@ -55,6 +55,12 @@ class plugin {
              include(CWD."plugins/".$file.".php");
              ob_clean();
 
+             if(!class_exists($file))
+             {
+                 setVar("PLUGIN",false);
+                 return;
+             }
+             
              $this->plugin = new $file();
              setVar("PLUGIN",true);
              if(!$this->plugin->Init($this->handler)) {

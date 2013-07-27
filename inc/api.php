@@ -1,18 +1,20 @@
 <?php
-require_once(dirname(__FILE__).'/../global.php');
+
+require_once(dirname(__FILE__) . '/../global.php');
+require_once(INC . "view.php");
 
 class API {
 
     private $permissions = Array();
     private $data = Array();
-    
+    public $tfrom = 0;
     public $UseExceptions = false;
 
     public function __construct($key, $useAuth = true, $useEx = false) {
-        
+
         $this->UseExceptions = $useEx;
-        
-        header('content-type: application/json; charset=utf-8');
+
+        header('Content-type: application/json; charset=utf-8');
 
         if ($useAuth && (is_null($key) || !$this->CheckAuth($key))) {
             $this->Error("You have not been authenticated!");
@@ -23,7 +25,7 @@ class API {
         if (isset($_POST))
             $this->data = array_merge($this->data, $_POST);
     }
-    
+
     public function AddData($data) {
         $this->data = array_merge($this->data, $data);
     }
@@ -38,6 +40,26 @@ class API {
             $this->Error("This action does not exist or you don't have sufficient rights for this action");
         }
 
+        if (isset($this->data['day'])) {
+            $tfrom = $this->data['day'];
+
+            if (!is_numeric($tfrom)) {
+                switch ($this->data['day']) {
+                    case 'today':
+                        $tfrom = gmmktime(0, 0, 0);
+                        break;
+                    case 'tomorrow':
+                        $tfrom = View::GetNextDay();
+                        break;
+                    default:
+                        $this->Error("Param day is neither today|tomorrow|numeric");
+                        break;
+                }
+            }
+
+            $this->tfrom = $tfrom;
+        }
+
         switch ($this->data['action']) {
             case 'plan_update':
                 return $this->plan_update($return);
@@ -48,7 +70,7 @@ class API {
             case 'other':
                 return $this->other($return);
 
-            case 'teacher_sub': 
+            case 'teacher_sub':
                 return $this->teacherSub($return);
 
             case 'ticker':
@@ -62,23 +84,26 @@ class API {
 
     function Error($msg) {
         $this->Output(Array('STATUS' => "ERROR", 'message' => $msg));
-        
-        if($this->UseExceptions) {
-            throw new Exception($msg);         
-        }
-        else {
+
+        if ($this->UseExceptions) {
+            throw new Exception($msg);
+        } else {
             exit;
         }
     }
-    
+
     function Output($output) {
+        if ($this->tfrom != 0)
+            $output['day'] = $this->tfrom;
+
         $output = getVar('core')->FormatJson(json_encode($output));
+        $output = html_entity_decode($output, ENT_NOQUOTES, "UTF-8");
         echo $output;
     }
 
     function CheckAuth($api) {
 
-        if (isset($_GET['licence'])) {
+        if (isset($this->data['licence'])) {
             if (strpos(file_get_contents("http://licence.flx5.com/inmafss.php?ver=" . getVersion() . "&licence=" . $_GET['licence']), "OK") !== false) {
                 $this->permissions = Array("all");
                 return true;
@@ -104,18 +129,8 @@ class API {
     }
 
     function GetView() {
-        if (!isset($_GET['day']) || !is_numeric($_GET['day']) || strlen($_GET['day']) != 10) {
-            $this->Error("Day must be Unix Timestamp");
-        }
-
-        require_once("inc/view.php");
-
-        $day = $_GET['day'];
-
-        $tfrom = gmmktime(0, 0, 0, date('m', $day), date('d', $day), date('Y', $day));
-
         $view = new View(null, 99e99);
-        $view->tfrom = $tfrom;
+        $view->tfrom = $this->tfrom;
         return $view;
     }
 
@@ -161,11 +176,30 @@ class API {
 
         foreach ($view->replacements as $page) {
             foreach ($page as $grade => $val) {
-                if (!isset($this->data['g']) || $grade == $this->data['g']) {
-                    foreach ($val as $k => $v) {
-                        $val[$k]['comment'] = preg_replace("/&nbsp;/", "", htmlentities($v['comment']));
-                        $val[$k]['replacement'] = preg_replace("/&nbsp;/", "", htmlentities($v['replacement']));
+
+                $pos = $this->findFirstLetter($grade);
+
+                $gN = substr($grade, 0, $pos);
+                $gS = substr($grade, $pos);
+
+                if (strlen($gS) > 1 && $pos > 0) {
+                    $gS = substr($gS, 0, 1);
+                }
+
+                $_grade = $gN . $gS;
+
+                if (!isset($this->data['g']) || $_grade == $this->data['g'] ||
+                        ($this->data['g'] == "11q" && ($_grade == "Q11" || $gN == "11")) ||
+                        ($this->data['g'] == "12q" && ($_grade == "Q12" || $gN == "12")) ||
+                        (strlen($gN) == 0 && $_grade != "Q11" && $_grade != "Q12")
+                ) {
+
+                    foreach ($val as $i => $entry) {
+                        foreach ($entry as $f => $x) {
+                            $val[$i][$f] = trim(preg_replace("/&nbsp;/", "", $x)); 
+                        }
                     }
+
                     $output[$grade] = $val;
                 }
             }
@@ -178,9 +212,6 @@ class API {
     }
 
     public function other($return = false) {
-        if (!isset($this->data['type'])) {
-            $this->Error("Specify a type");
-        }
 
         $view = $this->GetView();
         $view->type = 1;
@@ -188,10 +219,25 @@ class API {
 
         $output = Array();
 
+        if (isset($this->data['type']))
+            $this->data['type'] = explode(",", $this->data['type']);
 
-        foreach ($view->replacements[1] as $k => $val) {
-            if ($k == $_GET['type']) {
-                $output[$k] = $val;
+        if (isset($view->replacements[1])) {
+            foreach ($view->replacements[1] as $k => $val) {
+                if (isset($this->data['type']) && !in_array($k, $this->data['type']))
+                    continue;
+
+                switch ($k) {
+                    case 't':
+                    case 'g':
+                    case 'a':
+                    case 's':
+                    case 'r':
+                    case 'n':
+
+                        $output[$k] = $val;
+                        break;
+                }
             }
         }
 
@@ -221,13 +267,66 @@ class API {
                         break;
 
                     default:
-                        if (!isset($_GET['short']) || $k == $_GET['short']) {
+                        if (!isset($this->data['short']) || $k == $this->data['short']) {
+                            if (isset($this->data['teacher']) && isset($val[0])) {
+
+                                $req = urldecode($this->data['teacher']);
+
+                                $s = Array('/ae/', '/oe/', '/ue/', '/Ae/', '/Ue/', '/Oe/', '/ß/');
+                                $r = Array('&auml;', '&ouml;', '&uuml;', '&Auml;', '&Uuml;', '&Ouml;', '&szlig;');
+
+                                $req = preg_replace($s, $r, $req);
+
+                                $name_options = Array();
+
+                                $name_options[] = $req;
+                                $name_options[] = preg_replace("/ss/", '&szlig;', $req);
+
+                                $found = false;
+
+                                $teacher = trim($val[0]['teacher']);
+
+                                $split = strrpos($teacher, " ");
+
+                                $lastname = substr($teacher, 0, $split);
+                                $prename = substr($teacher, $split + 1);
+
+                                foreach ($name_options as $name) {
+                                    $req = Array();
+                                    $req[0] = substr($name, strrpos($name, " ") + 1);
+                                    $req[1] = substr($name, 0, strrpos($name, " "));
+
+                                    if (count($req) != 2)
+                                        continue;
+
+                                    if ($req[0] != $lastname) {
+                                        continue;
+                                    }
+
+                                    $abr = strpos($prename, ".");
+
+                                    if ($abr !== false)
+                                        $req[1] = substr($req[1], 0, $abr) . ".";
+
+                                    if ($req[1] != $prename)
+                                        continue;
+
+                                    $found = true;
+                                }
+
+                                if (!$found)
+                                    continue;
+                            }
+
                             foreach ($val as $i => $entry) {
                                 foreach ($entry as $f => $x)
                                     $val[$i][$f] = html_entity_decode($x, ENT_COMPAT, "UTF-8");
                             }
 
-                            $output[$k] = $val;
+                            if (isset($this->data['teacher']) || isset($this->data['short']))
+                                $output = $val;
+                            else
+                                $output[$k] = $val;
                         }
                         break;
                 }
@@ -248,6 +347,18 @@ class API {
             return $output;
 
         $this->Output($output);
+    }
+
+    private function findFirstLetter($str) {
+        $i = 0;
+        while ($i < strlen($str)) {
+            if (ctype_alpha($str[$i]))
+                return $i;
+
+            $i++;
+        }
+
+        return false;
     }
 
 }

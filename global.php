@@ -26,7 +26,8 @@ define('CWD', dirname(__FILE__) . DS);
 define('INC', CWD . "inc" . DS);
 define('PLUGIN_DIR', CWD . DS . "plugins" . DS);
 
-$www = "/" . substr(dirname(__FILE__), strlen($_SERVER['DOCUMENT_ROOT']) + 1);
+$www = $_SERVER['REQUEST_URI'];
+$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))).basename(dirname(__FILE__));
 define('WWW', $www);
 
 #register_shutdown_function('Shutdown');
@@ -117,6 +118,10 @@ class vars {
     public static function setVar($var, $val) {
         self::$vars->Set($var, $val);
     }
+    
+    public static function get() {
+        return self::$vars;
+    }
 }
 
 function getVar($var) {
@@ -129,7 +134,7 @@ function setVar($var, $val) {
 
 function setPlugin($val, $actor) {
     global $vars;
-    $vars->setPlugin($val, $actor);
+    vars::get()->setPlugin($val, $actor);
 }
 
 function getVersion() {
