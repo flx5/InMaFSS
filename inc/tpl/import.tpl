@@ -20,8 +20,8 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 ?>
-
-<div style="width:70%; border:2px solid black; margin:5px auto; text-align:center;">
+<div class="content">
+<div style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
 <h2><?php lang()->loc('title'); ?></h2>
 <font color="#00FF00" size="+1">%msg%</font><br>
 <form enctype="multipart/form-data" action="" method="POST">
@@ -29,4 +29,5 @@
 <?php lang()->loc('file.upload'); ?>: <input name="uploadedfile" type="file" /><br />  <br />
 <input type="submit" value="<?php lang()->loc('upload'); ?>" />
 </form>
+</div>
 </div>

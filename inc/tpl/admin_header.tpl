@@ -21,7 +21,7 @@
 \*=================================================================================*/
 ?>
 
-<div class="bar" style="text-align:left;">
+<div class="bar admin_bar" style="text-align:left;">
 <a href="../">&laquo;&laquo; <?php lang()->loc('back.to.home'); ?></a>
 <span id="clock" style="left:50%; right:50%; position:absolute; width: 300px;"></span>
 <div class="dropdown"><?php lang()->loc('welcome'); ?><br><br>

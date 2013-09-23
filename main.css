@@ -35,9 +35,13 @@ html, body {
    text-align:center;
 }
 
+.admin_bar {
+    border-bottom:2px solid black;
+}
+
 .main {
    width:50%;
-   top:30px;
+   top:32px;
    bottom:30px;
    position:absolute;
    text-align:center;
@@ -121,11 +125,14 @@ a {
    background-color:#6F6F6F;
    height:100%;
    overflow: hidden;
+   text-align: center;
 }
 
 .dropdown:hover {
-   background-color:#ff0000;
+   background-color:#6F6F6F;
    height:100px;
+   border-bottom-right-radius: 15px;
+   border-bottom-left-radius: 15px;
 }
 
 .menu {
@@ -133,7 +140,7 @@ a {
    background-color:#0080FF;
    position:absolute;
    bottom:0px;
-   top:30px;
+   top:32px;
    width:200px;
    text-align:center;
    color:#fff;
@@ -146,9 +153,7 @@ a {
 }
 
 .menu a:hover {
-   font-size:30px;
-   color:#ff0000;
-   background-color:#000;
+   background-color:#0030DD;
 }
 
 .menu a:active {
@@ -158,16 +163,16 @@ a {
 .selected {
     pointer-events: none;
     cursor: default;
-    background-color:#00FF80;
+    background-color: #0050DD;
 }
 
 .content {
    position:absolute;
    left:200px;
-   top:30px;
+   top:32px;
    right:0px;
    bottom:0px;
-   background-color:#A6FFFF;
+   background-color:#fff;
    overflow: auto;
 }
 
@@ -189,11 +194,11 @@ a {
 }
 
 h2 {
-   color:#fff;
-   border:3px solid orange;
-   background-color: #FF8000;
+   color:#000;
+   background-color: #0080FF;
    margin-top:0px;
    text-align:center;
+   padding:5px;
 }
 
 #progress {
