@@ -55,7 +55,7 @@
           if(isset($_GET['new'])) {
               dbquery("INSERT INTO api (name, apikey, permissions) VALUES ('".$name."', '".$apikey."', '".$permissions."')");
               $_SESSION['api_add_success'] = true;
-              header("Location: ?id=".mysql_insert_id());
+              header("Location: ?id=".getVar("sql")->insertID());
               exit;
           }
 
@@ -72,7 +72,7 @@
          $data = Array('name'=>'', 'apikey'=>GenerateAPI());
   }  else {
          $sql = dbquery("SELECT * FROM api WHERE id = ".$id);
-         $data = mysql_fetch_assoc($sql);
+         $data = $sql->fetchAssoc();
   }
 
   if(isset($_SESSION['api_add_success']) && $_SESSION['api_add_success']) {

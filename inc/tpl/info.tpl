@@ -35,11 +35,11 @@
   $left->GetPages();
 
 
-  $left1 = mysql_num_rows(dbquery("SELECT null FROM  replacements WHERE timestamp >= ".gmmktime(0,0,0)." AND timestamp <= ".gmmktime(23,59,59, date("n"), date("j"))));
-  $right1 = mysql_num_rows(dbquery("SELECT null FROM  replacements WHERE timestamp >= ".gmmktime(0,0,0, date("n"), date("j")+1)." AND timestamp <= ".gmmktime(23,59,59, date("n"), date("j")+1)));
+  $left1 = dbquery("SELECT null FROM  replacements WHERE timestamp >= ".gmmktime(0,0,0)." AND timestamp <= ".gmmktime(23,59,59, date("n"), date("j")))->count();
+  $right1 = dbquery("SELECT null FROM  replacements WHERE timestamp >= ".gmmktime(0,0,0, date("n"), date("j")+1)." AND timestamp <= ".gmmktime(23,59,59, date("n"), date("j")+1))->count();
 
-  $left2 = mysql_num_rows(dbquery("SELECT null FROM pages WHERE timestamp_end >= ".gmmktime(0,0,0, date("n"), date("j"))." AND timestamp_from <= ".gmmktime(0,0,0, date("n"), date("j")+1)));
-  $right2 = mysql_num_rows(dbquery("SELECT null FROM  pages WHERE timestamp_end >= ".gmmktime(0,0,0, date("n"), date("j")+1)." AND timestamp_from <= ".gmmktime(0,0,0, date("n"), date("j")+2)));
+  $left2 = dbquery("SELECT null FROM pages WHERE timestamp_end >= ".gmmktime(0,0,0, date("n"), date("j"))." AND timestamp_from <= ".gmmktime(0,0,0, date("n"), date("j")+1))->count();
+  $right2 = dbquery("SELECT null FROM  pages WHERE timestamp_end >= ".gmmktime(0,0,0, date("n"), date("j")+1)." AND timestamp_from <= ".gmmktime(0,0,0, date("n"), date("j")+2))->count();
 
   echo '<b>'.lang()->loc('today',false).'</b><br>';
 

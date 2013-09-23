@@ -241,13 +241,13 @@ class View {
 
             $sql = dbquery("SElECT * FROM others WHERE " . $where . " ORDER BY type, id");
 
-            while ($data = mysql_fetch_assoc($sql)) {
+            while ($data = $sql->fetchAssoc()) {
                 $content[$data['type']][] = $data;
             }
 
             $sql = dbquery("SElECT * FROM teacher_substitude WHERE " . $where . " ORDER BY id");
 
-            while ($data = mysql_fetch_assoc($sql)) {
+            while ($data = $sql->fetchAssoc()) {
                 $content[$data['short']][] = $data;
             }
 
@@ -257,10 +257,10 @@ class View {
         $sql = dbquery("SElECT * FROM replacements WHERE " . $where . " AND grade != 0 ORDER BY CAST(grade AS SIGNED) , grade_pre, grade_last, lesson");
         $sql2 = dbquery("SElECT * FROM replacements WHERE " . $where . " AND grade = 0 ORDER BY grade_pre, grade_last, lesson");
 
-        while ($data = mysql_fetch_assoc($sql)) {
+        while ($data = $sql->fetchAssoc()) {
             $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
         }
-        while ($data = mysql_fetch_assoc($sql2)) {
+        while ($data = $sql2->fetchAssoc()) {
             $content[$data['grade_pre'] . $data['grade_last']][] = $data;
         }
 
@@ -285,7 +285,7 @@ class View {
 
         $sql = dbquery("SELECT * FROM pages WHERE " . $where . " ORDER BY order_num,id ASC");
 
-        while ($page = mysql_fetch_array($sql)) {
+        while ($page = $sql->fetchArray()) {
             $this->AddPage($page['title'], $page['content']);
         }
     }
@@ -343,7 +343,7 @@ class View {
     public function GetTickers() {
         $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '" . gmmktime(23, 59, 59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()), date("Y", $this->GetTFrom())) . "' AND to_stamp > '" . $this->GetTFrom() . "' ORDER BY to_stamp, `order`");
         $tickers = Array();
-        while ($ticker = mysql_fetch_object($sql)) {
+        while ($ticker = $sql->fetchObject()) {
             $tickers[] = Array('day' => $ticker->from_stamp, 'content' => $ticker->value, 'automatic' => $ticker->automatic);
         }
         return $tickers;

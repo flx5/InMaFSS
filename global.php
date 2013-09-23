@@ -60,11 +60,11 @@ require_once("inc/plugin.php");
 require_once("inc/parse.php");
 
 $config = new config();
-$vars = new variables(new core(), new lang($config->Get("lang")), new MySQL(), new tpl(), new Update(), new pluginManager(), false);
-
+$vars = new variables(new core(), new lang($config->Get("lang")), null, new tpl(), new Update(), new pluginManager(), false);
+$vars->set("sql", SQL::GenerateInstance($config->Get("dbtype"), $config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname")));
 vars::Init($vars);
 
-getVar("sql")->connect($config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname"));
+getVar("sql")->connect();
 getVar("pluginManager")->Init();
 getVar("update")->Init();
 
@@ -88,11 +88,11 @@ function filter($input) {
 }
 
 function dbquery($input) {
-    if (getVar("PLUGIN") || !getVar("sql")->connected) {
+    if (getVar("PLUGIN") || !getVar("sql")->IsConnected()) {
         return null;
     }
 
-    return getVar("sql")->dbquery($input);
+    return getVar("sql")->DoQuery($input);
 }
 
 function config($var) {

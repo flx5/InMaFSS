@@ -41,7 +41,7 @@
 
 $sql = dbquery("SELECT * FROM pages ORDER BY order_num");
 
-while($page = mysql_fetch_assoc($sql)) {
+while($page = $sql->fetchAssoc()) {
     echo  '<tr><td>'.$page['id'].'</td><td>'.$page['title'].'</td><td>'.GetSign($page['pupils']).'</td><td>'.GetSign($page['teachers']).'</td><td>'.date('d.m.Y',$page['timestamp_from']).'</td><td>'.date('d.m.Y',$page['timestamp_end']).'</td>';
     echo  '<td><a href="pedit.php?id='.$page['id'].'">'.lang()->loc('edit',false).'</a></td><td><a href="?del='.$page['id'].'">'.lang()->loc('delete',false).'</a></td></tr>';
 }

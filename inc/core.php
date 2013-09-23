@@ -45,7 +45,10 @@ class core {
         }
 
         public function filter($input) {
-                 return mysql_real_escape_string(stripslashes(trim($input)));
+                 if(ini_get("magic_quotes_gpc"))
+                     $input = stripslashes($input);
+                 
+                 return getVar("sql")->real_escape_string($input);
         }
 
         function FormatJson($json) {

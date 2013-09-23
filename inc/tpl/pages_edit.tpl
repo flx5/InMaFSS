@@ -91,7 +91,7 @@
         if(count($error) == 0) {
           if(isset($_GET['new'])) {
               dbquery("INSERT INTO pages (title, content, timestamp_from, timestamp_end, teachers, pupils, order_num) VALUES ('".$caption."', '".$content."', '".$time_from."', '".$time_end."', ".$teachers.",".$pupils.",'".time()."')");
-              header("Location: ?id=".mysql_insert_id());
+              header("Location: ?id=".getVar("sql")->insertID());
               exit;
           }
          dbquery("UPDATE pages SET title = '".$caption."', content = '".$content."', timestamp_from = '".$time_from."', timestamp_end = '".$time_end."', teachers = ".$teachers.", pupils = ".$pupils." WHERE id = ".$id);
@@ -106,7 +106,7 @@
          $data = Array('title'=>'', 'content'=>'', 'timestamp_from'=>time(),'timestamp_end'=>time(), 'pupils'=>true, 'teachers'=>true);
   }  else {
          $sql = dbquery("SELECT * FROM pages WHERE id = ".$id);
-         $data = mysql_fetch_assoc($sql);
+         $data = $sql->fetchAssoc();
   }
 
 ?>

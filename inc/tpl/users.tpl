@@ -27,9 +27,9 @@
 <?php
   if(isset($_GET['del']) && is_numeric($_GET['del']) && (!isset($_GET['do']) || $_GET['do'] != 'del')) {
       $sql = dbquery("SELECT username FROM users WHERE id = ".$_GET['del']);
-      if(mysql_num_rows($sql) == 0) {
+      if($sql->count() == 0) {
               echo '<font size="+2" color="#FF0000">'.lang()->loc('not.found',false).'</font>';
-      } elseif(mysql_result($sql,0) == USERNAME) {
+      } elseif($sql->result() == USERNAME) {
               echo '<font size="+2" color="#FF0000">'.lang()->loc('del.self',false).'</font>';
       } else {
               echo '<font size="+2" color="#FF0000">'.lang()->loc('del.rly',false).' <a href="?del='.$_GET['del'].'&do=del">'.lang()->loc('delete',false).'</a>&nbsp;|&nbsp;<a href="pages.php">'.lang()->loc('abort',false).'</a></font>';
@@ -45,7 +45,7 @@
 <tr><th width="10%"><?php lang()->loc('id'); ?></th><th><?php lang()->loc('name'); ?></th><th colspan="2" width="30%" >Optionen</th></tr>
 <?php
       $users = dbquery("SELECT id,username FROM users");
-      while($user = mysql_fetch_array($users)) {
+      while($user = $users->fetchArray()) {
           echo '<tr><td>'.$user['id'].'</td><td>'.$user['username'].'</td>';
           echo  '<td><a href="uedit.php?id='.$user['id'].'">'.lang()->loc('edit',false).'</a></td><td><a href="?del='.$user['id'].'">'.lang()->loc('delete',false).'</a></td></tr>';
       }

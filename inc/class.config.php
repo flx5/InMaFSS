@@ -21,6 +21,7 @@
 \*=================================================================================*/
 
 class config {
+    private $dbtype;
     private $dbhost;
     private $dbusr;
     private $dbpass;
@@ -39,6 +40,7 @@ class config {
 
     public function config() {
          include(CWD."inc/config.php");
+         $this->dbtype = $dbtype;
          $this->dbhost = $dbhost;
          $this->dbusr = $dbusr;
          $this->dbpass = $dbpass;

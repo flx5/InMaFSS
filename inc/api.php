@@ -58,6 +58,8 @@ class API {
             }
 
             $this->tfrom = $tfrom;
+        } else {
+            $this->tfrom = gmmktime(0, 0, 0);
         }
 
         switch ($this->data['action']) {
@@ -92,12 +94,37 @@ class API {
         }
     }
 
-    function Output($output) {
+    function EntityDecodeArray($output) { 
+        $ret = Array();
+        
+        foreach($output as $k=>$o) {
+            $k = html_entity_decode($k, ENT_COMPAT, "UTF-8");
+            
+            if(is_array($o))
+            {
+                $ret[$k] = $this->EntityDecodeArray($o);
+                continue;
+            }
+            if(!is_string($o))
+            {
+                $ret[$k] = $o;
+                continue; // Don't decode integers and booleans :D
+            }
+            
+            $ret[$k] = html_entity_decode($o, ENT_COMPAT, "UTF-8");
+        }
+        
+        return $ret;
+    }
+    
+    function Output($output) {        
         if ($this->tfrom != 0)
-            $output['day'] = $this->tfrom;
-
+            $output['day'] = $this->tfrom;   
+        
+        $output = $this->EntityDecodeArray($output);
+        
         $output = getVar('core')->FormatJson(json_encode($output));
-        $output = html_entity_decode($output, ENT_NOQUOTES, "UTF-8");
+        
         echo $output;
     }
 
@@ -113,11 +140,11 @@ class API {
         $api = filter($api);
         $sql = dbquery("SELECT permissions FROM api WHERE apikey = '" . $api . "'");
 
-        if (mysql_num_rows($sql) != 1) {
+        if ($sql->count() != 1) {
             return false;
         }
 
-        $data = mysql_result($sql, 0);
+        $data = $sql->result();
         $data = explode("|", $data);
         $this->permissions = $data;
         return true;
@@ -195,8 +222,19 @@ class API {
                 ) {
 
                     foreach ($val as $i => $entry) {
-                        foreach ($entry as $f => $x) {
-                            $val[$i][$f] = trim(preg_replace("/&nbsp;/", "", $x)); 
+                        foreach ($entry as $f => $x) { 
+                            $val[$i][$f] = trim(preg_replace("/&nbsp;/", "", $x));                          
+
+                            switch ($f) {
+                                case 'id':
+                                case 'timestamp':
+                                case 'timestamp_update':
+                                    $val[$i][$f] = intval($val[$i][$f]);
+                                    break;
+                                case 'addition':
+                                    $val[$i][$f] = ($val[$i][$f] == 1);
+                                    break;
+                            }
                         }
                     }
 
@@ -234,7 +272,22 @@ class API {
                     case 's':
                     case 'r':
                     case 'n':
-
+                        foreach($val as $x=>$y) {
+                            foreach($y as $z=>$w) 
+                            {                                                             
+                                switch($z) {
+                                    case "id":
+                                    case 'timestamp':
+                                    case 'timestamp_update':    
+                                        $val[$x][$z] = intval($w);
+                                        break;   
+                                    case 'addition':
+                                         $val[$x][$z] = ($w == 1);
+                                    break;
+                                }                               
+                            }
+                        }
+                        
                         $output[$k] = $val;
                         break;
                 }
@@ -320,7 +373,19 @@ class API {
 
                             foreach ($val as $i => $entry) {
                                 foreach ($entry as $f => $x)
-                                    $val[$i][$f] = html_entity_decode($x, ENT_COMPAT, "UTF-8");
+                                    
+                                $val[$i][$f] = trim(preg_replace("/&nbsp;/", "", $x));                              
+
+                                switch ($f) {
+                                    case 'id':
+                                    case 'timestamp':
+                                    case 'timestamp_update':
+                                        $val[$i][$f] = intval($val[$i][$f]);
+                                        break;
+                                    case 'addition':
+                                        $val[$i][$f] = ($val[$i][$f] == 1);
+                                        break;
+                                }
                             }
 
                             if (isset($this->data['teacher']) || isset($this->data['short']))

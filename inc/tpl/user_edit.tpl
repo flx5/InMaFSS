@@ -54,11 +54,11 @@
           if(isset($_GET['new'])) {
               dbquery("INSERT INTO users (username, password) VALUES ('".$username."', '".getVar("core")->generatePW($username, $password)."')");
               $_SESSION['user_add_success'] = true;
-              header("Location: ?id=".mysql_insert_id());
+              header("Location: ?id=".getVar("sql")->insertID());
               exit;
           }
 
-          if(mysql_result(dbquery("SELECT username FROM users WHERE id = ".$id),0) == USERNAME) {
+          if(dbquery("SELECT username FROM users WHERE id = ".$id)->result() == USERNAME) {
                    $_SESSION['user'] = $username;
           }
 
@@ -75,7 +75,7 @@
          $data = Array('username'=>'', 'password'=>'');
   }  else {
          $sql = dbquery("SELECT * FROM users WHERE id = ".$id);
-         $data = mysql_fetch_assoc($sql);
+         $data = $sql->fetchAssoc();
   }
 
   if(isset($_SESSION['user_add_success']) && $_SESSION['user_add_success']) {

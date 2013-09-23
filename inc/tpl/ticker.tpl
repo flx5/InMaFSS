@@ -95,7 +95,7 @@
 
 $sql = dbquery("SELECT * FROM ticker ORDER BY `order`");
 
-while($tick = mysql_fetch_assoc($sql)) {
+while($tick = $sql->fetchAssoc()) {
     echo  '<tr><form method="post"><td><input type="text" value="'.$tick['id'].'" name="id" style="display:none;">'.$tick['id'].'</td><td>&nbsp;<input type="text" value="'.$tick['order'].'" name="order" size="3" ></td><td>&nbsp;<input type="text" name="value" style="width:95%" value="'.$tick['value'].'">&nbsp;</td><td><input type="text" style="" class="tcal" name="time_from" value="'.date(lang()->info('date.format',false), $tick['from_stamp']).'"></td><td><input type="text" style="" class="tcal" name="time_end" value="'.date(lang()->info('date.format',false), $tick['to_stamp']).'"></td><td><input type="submit" value="'.lang()->loc('save',false).'"></td><td><a href="?del='.$tick['id'].'">'.lang()->loc('delete',false).'</a></td></form></tr>';
 }
 ?>

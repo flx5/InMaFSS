@@ -26,4 +26,6 @@ require_once(dirname(__FILE__)."/../global.php");
      header("Location: ".WWW."/manage");
      exit;
   }
+  
+ lang()->add('admin'); 
 ?>

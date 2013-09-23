@@ -39,7 +39,7 @@ if(isset($_POST['usr']) && isset($_POST['pwd'])) {
       $pwd = getVar("core")->generatePW($usr,$pwd);
 
       $sql = dbquery("SELECT id FROM users WHERE username = '".$usr."' AND password = '".$pwd."' LIMIT 1");
-      if(mysql_num_rows($sql) == 0) {
+      if($sql->count() == 0) {
          getVar("tpl")->setParam('error','<font color="#FF0000">'.lang()->loc('wrong',false).'</font><br><br>');
       } else {
           $_SESSION['user'] = $usr;

@@ -23,7 +23,6 @@
 
 require_once("global.php");
 
-lang()->add('admin');
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->addStandards('admin');
 

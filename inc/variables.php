@@ -28,7 +28,7 @@ class variables {
      private $update;
      private $pluginManager;
      private $PLUGIN;
-     private $AllowOverride = Array("PLUGIN");
+     private $AllowOverride = Array("PLUGIN", "sql");
      private $PLUGIN_ACTOR = null;
 
      public function variables($core,$lang,$sql,$tpl,$update,$pluginManager, $PLUGIN) {
