@@ -21,7 +21,7 @@
 \*=================================================================================*/
 ?>
 <div class='bar'>
-<span style="float:left; padding-left:20px;">Gymnasium Donauw&ouml;rth </span>
+<span style="float:left; padding-left:20px;"><?php echo config("schoolname"); ?></span>
 InMaFSS
 <span id='clock' style="text-align:right; padding-right:20px; float:right;"><?php echo date("j.m.Y H:i:s"); ?></span>
 </div>

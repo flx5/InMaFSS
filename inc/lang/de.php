@@ -42,6 +42,7 @@ switch ($key) {
         $loc['config.saved'] = 'Konfigurationsdatei gespeichert';
         $loc['config.rights'] = 'Die Konfigurationsdatei konnte nicht gespeichert werden.<br>Bitte kopieren sie den folgenden Text in die Datei ./inc/config.php';
         $loc['db.settings'] = 'Datenbank Einstellungen';
+        $loc['name.of.school'] = 'Name der Schule';
         $loc['db.connect.err'] = 'Datenbankserver nicht erreichbar';
         $loc['db.select.err'] = 'Konnte Datenbank nicht ausw&auml;hlen';
         $loc['db.set.up'] = 'Datenbank eingerichtet';

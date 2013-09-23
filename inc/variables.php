@@ -28,7 +28,7 @@ class variables {
      private $update;
      private $pluginManager;
      private $PLUGIN;
-     private $AllowOverride = Array("PLUGIN", "sql");
+     private $AllowOverride = Array("PLUGIN");
      private $PLUGIN_ACTOR = null;
 
      public function variables($core,$lang,$sql,$tpl,$update,$pluginManager, $PLUGIN) {
@@ -52,7 +52,7 @@ class variables {
             if($this->PLUGIN || $var == "PLUGIN") {
               return;
             }
-            if(in_array($var, $this->AllowOverride)) {
+            if($this->$var == null || in_array($var, $this->AllowOverride)) {
                    $this->$var = $val;
             }
      }

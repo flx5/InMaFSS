@@ -37,7 +37,7 @@ date_default_timezone_set('Europe/Berlin');
 header('Content-Type: text/html');
 
 if (file_exists(CWD . "install.php") && file_exists(CWD . "inc/config.php")) {
-    die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
+   # die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
 }
 
 if (!file_exists(CWD . "inc/config.php") && !file_exists(CWD . "install.php")) {
@@ -60,11 +60,14 @@ require_once("inc/plugin.php");
 require_once("inc/parse.php");
 
 $config = new config();
-$vars = new variables(new core(), new lang($config->Get("lang")), null, new tpl(), new Update(), new pluginManager(), false);
+$vars = new variables(new core(), null, null, new tpl(), new Update(), new pluginManager(), false);
 $vars->set("sql", SQL::GenerateInstance($config->Get("dbtype"), $config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname")));
 vars::Init($vars);
 
 getVar("sql")->connect();
+$config->LoadFromDB();
+
+$vars->Set("lang", new lang($config->Get("lang")));
 getVar("pluginManager")->Init();
 getVar("update")->Init();
 
