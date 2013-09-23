@@ -56,7 +56,9 @@ foreach ($tickers as $ticker) {
 
 ?>
 <div class="bar" style="position:absolute; bottom:0px;">
-    <div id="ticker_marquee">
+    <span class="copyright">http://flx5.com/inmafss</span>
+    <div id="ticker_marquee">        
+        <br>
         <?php if($useMarquee) { ?>
         <marquee>+++&nbsp;<?php echo implode("&nbsp;+++&nbsp;", $output); ?>&nbsp;+++</marquee>
         <?php } else { ?>

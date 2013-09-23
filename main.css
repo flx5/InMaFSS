@@ -35,6 +35,16 @@ html, body {
    text-align:center;
 }
 
+.bar .copyright {
+    position: absolute;
+    top:-30px;
+    left:0px;
+    color:#888;
+    font-size: 15px;
+    width:100%;
+    text-align: center;
+}
+
 .admin_bar {
     border-bottom:2px solid black;
 }
