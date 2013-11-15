@@ -53,6 +53,8 @@ var ajaxRunning = false;
 
 var ajaxDataAvail = false;
 var ajaxData = null;
+
+// 1 Second is enougth as we have to wait 2 rounds until the Data is visible => Time for an update = PageCount*time*2+updateTime
 var updateTime = 1;
 
 var Update = {
@@ -87,14 +89,33 @@ var Update = {
                 if(xmlhttp.status==200) {
                     ajaxData = JSON.parse(xmlhttp.responseText);
                     ajaxDataAvail = true;
+                    cacheWarning(false);
+                } else {
+                    cacheWarning(true);
                 }
                 
                 ajaxRunning = false;
                 window.setTimeout(RequestUpdate, updateTime*1000);
             }
         }
-        xmlhttp.open("GET","ajax.php?limit="+limit,true);
+        xmlhttp.open("GET","ajax.php?limit="+limit+"&t="+Date.now(),true);
         xmlhttp.send();
+    }
+}
+
+function cacheWarning(setOn) {
+    var el = document.getElementsByClassName('cachedWarning')
+    
+    if(setOn) {
+        document.getElementById('header').style.backgroundColor = "#ff0000";
+              
+        for(var i = 0; i<el.length;i++)
+            el[i].style.visibility = "visible";
+    } else {
+        document.getElementById('header').style.backgroundColor = "";
+        
+        for(var i = 0; i<el.length;i++)
+            el[i].style.visibility = "hidden";
     }
 }
 
@@ -191,7 +212,7 @@ function NextPage(site) {
             UpdateDOM();
         }
         
-        if(updateRequired && runs_right > 1 && runs_left > 1) {
+        if(updateRequired && runs_right >= 1 && runs_left >= 1) {
             onUpdate();
         }
 

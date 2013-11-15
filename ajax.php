@@ -22,7 +22,10 @@
   \*================================================================================= */
 
 if (!isset($_GET['limit']) || !is_numeric($_GET['limit']))
+{
+    header("HTTP/1.1 403");
     exit;
+}
 
 require_once("global.php");
 lang()->add('home');
