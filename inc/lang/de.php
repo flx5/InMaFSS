@@ -74,6 +74,7 @@ switch ($key) {
         $loc['entire.school'] = 'Gesamte Schule';
         $loc['subs'] = 'Vertretungen';
         $loc['na.rooms'] = 'Nicht verf&uuml;gbare R&auml;ume';
+        $loc['cache.warning'] = 'ACHTUNG: DIES IST EINE ZWISCHENGESPEICHERTE ANSICHT';
         break;
 
     case 'errors':

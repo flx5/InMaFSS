@@ -245,6 +245,6 @@ h2 {
     font-weight: bold;
 }
 
-.cachedWarning {
-    visibility: hidden; 
+#header_cached {
+    display: none; 
 }
