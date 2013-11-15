@@ -22,10 +22,13 @@
 
 
 require_once("global.php");
+
 lang()->add('api');
 
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->addStandards('admin');
+
+lang()->add('api'); // Reoverride the values overwritten by Menu!
 
 getVar("tpl")->addTemplate('api_edit');
 getVar("tpl")->Output();

@@ -21,56 +21,38 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
+if (!isset($_GET['limit']) || !is_numeric($_GET['limit']))
+    exit;
 
 require_once("global.php");
-
 lang()->add('home');
-getVar("tpl")->Init(lang()->loc('title', false));
-getVar("tpl")->addTemplate('clock');
-getVar("tpl")->addTemplate('header');
 
-getVar("tpl")->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
-if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
-    getVar("tpl")->Write('</div>');
-} elseif ($_GET['size'] < 533) {
-    getVar("tpl")->addTemplate('too_small');
-} else {
+$limit = $_GET['limit'];
 
-    $size = $_GET['size'];
-    $limit = floor(($size - 30) / 26) - 2;
+require_once("inc/view.php");
 
-    require_once("inc/view.php");
+$data = Array();
 
-    $left = getVar("tpl")->getTemplate('plan');
-    $left->setVar('site', 'left');
-    $view_left = new view('left', $limit);
-    $left->setVar('view', $view_left);
-    getVar("tpl")->addTemplateClass($left);
-    getVar("tpl")->Write('</div>');
+$left = getVar("tpl")->getTemplate('plan');
+$left->setVar('site', 'left');
+$view_left = new view('left', $limit);
+$left->setVar('view', $view_left);
 
-    getVar("tpl")->Write('<div class="main tomorrow" id="plan_right" style="right:0px; border-left:0px solid black;" >');
-    $right = getVar("tpl")->getTemplate('plan');
-    $right->setVar('site', 'right');
-    $view_right = new view('right', $limit);
-    $right->setVar('view', $view_right);
-    getVar("tpl")->addTemplateClass($right);
-    getVar("tpl")->Write('</div>');
+$data['left'] = $left->GetHtml();
 
-    getVar("tpl")->Write('<div id="footer">');
-    $footer = getVar("tpl")->getTemplate('footer');
-    $footer->setVar('view_left', $view_left);
-    $footer->setVar('view_right', $view_right);
-    getVar("tpl")->addTemplateClass($footer);
-    getVar("tpl")->Write('</div>');
-}
+$right = getVar("tpl")->getTemplate('plan');
+$right->setVar('site', 'right');
+$view_right = new view('right', $limit);
+$right->setVar('view', $view_right);
 
-getVar("tpl")->Write('
-<script language="JavaScript">
-Init(' . config("time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ');
-</script>
-<noscript>');
+$data['right'] = $right->GetHtml();
 
-getVar("tpl")->addTemplate('no_js');
-getVar("tpl")->Write('</noscript>');
-getVar("tpl")->Output();
+getVar("tpl")->Write('<div id="footer">');
+$footer = getVar("tpl")->getTemplate('footer');
+$footer->setVar('view_left', $view_left);
+$footer->setVar('view_right', $view_right);
+
+$data['footer'] = $footer->GetHtml();
+
+echo json_encode($data);
 ?>

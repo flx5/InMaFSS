@@ -39,6 +39,10 @@ class core {
                 echo '</div>';
                 exit;
         }
+        
+        public static function SuccessMessage($text) {
+            echo '<div class="status_ok">'.$text.'</div>';
+        }
 
         public function generatePW($username, $password) {
             return sha1(config("salt").md5($password.config("salt").$username));

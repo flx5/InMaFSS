@@ -137,6 +137,7 @@ switch ($key) {
         $loc['users'] = 'Nutzer';
         $loc['import'] = 'Importieren';
         $loc['api'] = 'API';
+        $loc['settings'] = 'Einstellungen';
         break;
 
     case 'info':
@@ -187,12 +188,35 @@ switch ($key) {
         $loc['edit'] = 'Bearbeiten';
         $loc['delete'] = 'L&ouml;schen';
         $loc['save'] = 'Speichern';
+        $loc['saved'] = 'Gespeichert';
         $loc['new.password'] = 'Neues Passwort';
         $loc['name.too.short'] = 'Der Nutzername muss mindestens 3 Zeichen haben.';
         $loc['pw.too.short'] = 'Das Passwort muss mindestens 5 Zeichen haben.';
-        $loc['del.self'] = 'Der eigene Nutzer kann nicht gel�scht werden!';
+        $loc['del.self'] = 'Der eigene Nutzer kann nicht gel&ouml;scht werden!';
         break;
 
+    case 'settings':
+        $loc['title'] = 'Einstellungen';
+        $loc['settings.name'] = 'Einstellungsname';
+        $loc['value'] = 'Wert';
+        $loc['save'] = 'Speichern';
+        $loc['saved'] = 'Speichern erfolgreich';
+        $loc['no.settings.found'] = 'Etwas lief schief: Es konnten keine Einstellungen gefunden werden! Bitte installieren sie das System neu!';
+       
+        $loc['schoolname'] = 'Name der Schule';
+        $loc['system'] = 'Vertretungsplansystem';
+        $loc['lang'] = 'Sprache';
+        $loc['auto_addition'] = 'Markiere &Auml;nderungen automatisch farbig';
+        $loc['time_for_next_page'] = 'Zeit bis zur n&auml;chsten Seite';
+        $loc['teacher_time_for_next_page'] = 'Zeit bis zur n&auml;chsten Seite bei Lehrern';
+        $loc['use_ftp'] = 'Nutze FTP?';
+        $loc['ftp_server'] = 'FTP Server (normalerweise localhost)';
+        $loc['ftp_user'] = 'FTP Nutzer';
+        $loc['ftp_password'] = 'FTP Passwort';
+        $loc['ftp_path'] = 'Pfad zu InMaFSS auf dem FTP Server';
+        $loc['useMarquee'] = 'Nutze den Marquee Befehl und nicht das Bl&auml;ttern beim Ticker <br>(HTML Standard unterstützt Marquee offiziell NICHT!)';
+        break;
+    
     case 'date':
         $loc['january'] = 'Januar';
         $loc['february'] = 'Februar';
@@ -240,12 +264,20 @@ switch ($key) {
         $loc['save'] = 'Speichern';
         $loc['name.too.short'] = 'Der Name ist zu kurz!';
         $loc['api.too.short'] = 'Der API Key ist zu kurz!';
+        
+        $loc['permissions'] = 'Rechte';
+        $loc['replacements_all'] = 'Alle Vertretungen anzeigen (Sch&uuml;ler)';
+        $loc['replacements'] = 'Eigene Vertretungen anzeigen (Sch&uuml;ler)';
+        $loc['plan_update'] = 'Plan aktualisieren';
+        $loc['teacher_sub'] = 'Lehrervertretungsplan anzeigen';
+        $loc['ticker'] = 'Ticker anzeigen';
+        $loc['other'] = 'Andere Daten (Pausenaufsicht, Abwesenheit, etc.) anzeigen';
 
         $loc['saved'] = 'Erfolgreich gespeichert.';
         $loc['del.rly'] = 'Den API-Key mit der ID %id% wirklich l&ouml;schen?';
         $loc['abort'] = 'Abbrechen';
         $loc['deleted'] = 'Der API-Key mit der ID %id% wurde gel&ouml;scht.';
-        $loc['not.found'] = 'Der API-Key existiert nicht.';
+        $loc['not.found'] = 'Der API-Key existiert nicht.';     
         break;
 }
 ?>

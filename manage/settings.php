@@ -19,27 +19,14 @@
 |* You should have received a copy of the GNU Affero General Public License        *|
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
+
+
+require_once("global.php");
+lang()->add('settings');
+
+getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addStandards('admin');
+
+getVar("tpl")->addTemplate('settings');
+getVar("tpl")->Output();
 ?>
-
-<div class="menu">
-<h1>InMaFSS</h1>
-<font color="#C0C0C0" size="+1" style="padding:4px;" >Information Management for School Systems</font><br><br>
-<?php
-lang()->add('menu');
-
-$current = substr($_SERVER["REQUEST_URI"], strrpos($_SERVER["REQUEST_URI"], "manage/")+strlen("manage/"));
-if(strpos($current,'?') !== false) {
-   $current = substr($current,0,strpos($current,'?'));
-}
-
-
-echo '<a '. (($current == 'admin.php') ? 'class="selected"' : '').' href="admin.php" >'.lang()->loc('home',false).'</a>';
-echo '<a '. (($current == 'ticker.php') ? 'class="selected"' : '').' href="ticker.php" >'.lang()->loc('ticker',false).'</a>';
-echo '<a '. (($current == 'pages.php') ? 'class="selected"' : '').' href="pages.php" >'.lang()->loc('pages',false).'</a>';
-echo '<a '. (($current == 'users.php') ? 'class="selected"' : '').' href="users.php" >'.lang()->loc('users',false).'</a>';
-echo '<a '. (($current == 'import.php') ? 'class="selected"' : '').' href="import.php" >'.lang()->loc('import',false).'</a>';
-echo '<a '. (($current == 'api.php') ? 'class="selected"' : '').' href="api.php" >'.lang()->loc('api',false).'</a>';
-echo '<a '. (($current == 'settings.php') ? 'class="selected"' : '').' href="settings.php" >'.lang()->loc('settings',false).'</a>';
-?>
-
-</div>

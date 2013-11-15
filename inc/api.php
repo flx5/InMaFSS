@@ -151,7 +151,6 @@ class API {
     }
 
     function HasPerm($perm) {
-        return true; // todo!
         return in_array($perm, $this->permissions);
     }
 

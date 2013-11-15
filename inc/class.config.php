@@ -37,6 +37,8 @@ class config {
     private $use_ftp;
     private $ftp;
     private $system;
+    private $useMarquee;
+    private $updateStyle;
     private $spalten_t = Array('200px', '30px', '100px', '75px', '*');
     private $spalten = Array('75px', '75px', '30px', '180px', '75px', '*');
 
@@ -53,21 +55,23 @@ class config {
     public function LoadFromDB() {
         $val = dbquery("SELECT * FROM settings LIMIT 1")->fetchObject();
 
-        $this->schoolname = $val->schoolname;
-        $this->lang = $val->lang;
-        $this->auto_addition = $val->auto_addition;
-        $this->time_for_next_page = $val->time_for_next_page;
-        $this->teacher_time_for_next_page = $val->teacher_time_for_next_page;
-        $this->use_ftp = $val->use_ftp;
+        $this->schoolname = (string)$val->schoolname;
+        $this->lang = (string)$val->lang;
+        $this->auto_addition = (bool)$val->auto_addition;
+        $this->time_for_next_page = (int)$val->time_for_next_page;
+        $this->teacher_time_for_next_page = (int)$val->teacher_time_for_next_page;
+        $this->use_ftp = (bool)$val->use_ftp;
 
         $ftp = Array();
-        $ftp['server'] = $val->ftp_server;
-        $ftp['usr'] = $val->ftp_user;
-        $ftp['pwd'] = $val->ftp_password;
-        $ftp['path'] = $val->ftp_path;
+        $ftp['server'] = (string)$val->ftp_server;
+        $ftp['usr'] = (string)$val->ftp_user;
+        $ftp['pwd'] = (string)$val->ftp_password;
+        $ftp['path'] = (string)$val->ftp_path;
 
         $this->ftp = $ftp;
-        $this->system = $val->system;
+        $this->system = (string)$val->system;
+        $this->useMarquee = (bool)$val->useMarquee;
+        $this->updateStyle = (string)$val->updateStyle;
     }
 
     public function Get($var) {

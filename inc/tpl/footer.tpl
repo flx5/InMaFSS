@@ -29,11 +29,11 @@ ksort($tickers);
 $output = Array();
 
 if (count($tickers) == 0) {
-    $output[] = "'" . lang()->loc('no.ticker', false) . "'";
+    if(config("useMarquee")) 
+        $output[] = lang()->loc('no.ticker', false);
+    else
+        $output[] = "'" . lang()->loc('no.ticker', false) . "'";
 }
-
-// Marquee is NOT official HTML, thus we can decide wether we are going to use it
-$useMarquee = false;
 
 foreach ($tickers as $ticker) {
     
@@ -44,8 +44,8 @@ foreach ($tickers as $ticker) {
     }
 
     $out .= $ticker['content'];
-    
-    if(!$useMarquee)
+  
+    if(!config("useMarquee"))
         $out = "'".preg_replace("/'/","\\'", $out)."'";
 
     if (!in_array($out, $output)) {
@@ -57,9 +57,11 @@ foreach ($tickers as $ticker) {
 ?>
 <div class="bar" style="position:absolute; bottom:0px;">
     <span class="copyright">http://flx5.com/inmafss</span>
-    <div id="ticker_marquee">        
-        <br>
-        <?php if($useMarquee) { ?>
+    <div id="ticker_marquee">           
+        <?php 
+        // Marquee is NOT official HTML, thus we can decide wether we are going to use it
+        if(config("useMarquee")) { 
+        ?>
         <marquee>+++&nbsp;<?php echo implode("&nbsp;+++&nbsp;", $output); ?>&nbsp;+++</marquee>
         <?php } else { ?>
         <script language="JavaScript">

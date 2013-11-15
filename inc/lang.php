@@ -56,7 +56,7 @@ class lang {
                 return true;
         }
 
-      public function loc($id, $output = true) {
+      public function loc($id, $output = true, $noError = false) {
           if(array_key_exists($id, $this->local)) {
              if($output) {
                 echo $this->local[$id];
@@ -64,6 +64,10 @@ class lang {
              }
              return $this->local[$id];
           }
+          
+          if($noError)
+              return $id;
+          
           core::SystemError('Language System Error', 'Could not find index '. $id);
       }
 

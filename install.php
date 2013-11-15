@@ -222,9 +222,9 @@ function getPage() {
             $schoolname = $db->real_escape_string($schoolname);
             
             $db->DoQuery("INSERT INTO `settings` 
-                (`schoolname`, `system`, `lang`, `auto_addition`, `time_for_next_page`, `teacher_time_for_next_page`, `use_ftp`, `ftp_server`, `ftp_user`, `ftp_password`, `ftp_path`)
+                (`schoolname`, `system`, `lang`, `auto_addition`, `time_for_next_page`, `teacher_time_for_next_page`, `use_ftp`, `ftp_server`, `ftp_user`, `ftp_password`, `ftp_path`, `useMarquee`, `updateStyle`)
                 VALUES
-                ('".$schoolname."', 'willi2', 'de', 0, 15, 15, 0, 'localhost', '', '', '/')
+                ('".$schoolname."', 'willi2', 'de', 0, 15, 15, 0, 'localhost', '', '', '/', 0, 'ajax')
                 ");
 
             echo '<b>' . $loc['db.set.up'] . '</b>';
@@ -373,6 +373,7 @@ function getSql() {
   `ftp_user` varchar(200) NOT NULL DEFAULT '',
   `ftp_password` varchar(200) NOT NULL DEFAULT '',
   `ftp_path` text NOT NULL,
+  `useMarquee` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`schoolname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;"
     );
