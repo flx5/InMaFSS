@@ -30,9 +30,10 @@ class german_holidays {
     var $handler;
     var $events;
 
-    public function Init($handler) { 
+    public function Init($handler) {
+        $this->events = Array();
+
         $this->handler = $handler;
-        $this->parse_holidays();
         $this->handler->RegisterEvent($this, "generate_tfrom_right", "check");
         return true;
     }
@@ -72,22 +73,29 @@ class german_holidays {
                 $events[] = Array("start" => parse::ICS2UnixStamp($event->DTSTART), "end" => parse::ICS2UnixStamp($event->DTEND), "value" => (String) $event->SUMMARY);
             }
         }
-        $this->events = $events;
+        $this->events[$year] = $events;
     }
 
     public function check(&$param) {
-        do {
-            $found = false;
-            foreach ($this->events as $event) {
-                if ($param >= $event['start'] && $param < $event['end']) {
-                    if (date("Y", $param) != date("Y", $event['end'])) {
-                        $this->parse_holidays(date("Y", $event['end']));
-                    }
-                    $param = gmmktime(0, 0, 0, date("n", $event['end']), date("j", $event['end']), date("Y", $event['end']));
-                    $found = true;
+
+        $year = date("Y", $param);
+
+        if (!isset($this->events[$year]))
+            $this->parse_holidays($year);
+
+        $found = false;
+        foreach ($this->events[$year] as $event) {
+            if ($param >= $event['start'] && $param < $event['end']) {
+                if (date("Y", $param) != date("Y", $event['end'])) {
+                    $this->parse_holidays(date("Y", $event['end']));
                 }
+                $param = gmmktime(0, 0, 0, date("n", $event['end']), date("j", $event['end']), date("Y", $event['end']));
+                $found = true;
             }
-        } while ($found);   
+        }
+        
+        if($found)
+            $this->check ($param);
     }
 
 }

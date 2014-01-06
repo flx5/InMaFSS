@@ -71,7 +71,7 @@ $permissionsAvail = Array(
                 $permissions = implode("|", $permissions);
                 
                 if (isset($_GET['new'])) {
-                    dbquery("INSERT INTO api (name, apikey, permissions) VALUES ('" . $name . "', '" . $apikey . "', '')");
+                    dbquery("INSERT INTO api (name, apikey, permissions) VALUES ('" . $name . "', '" . $apikey . "', '" . $permissions . "')");
                     $_SESSION['api_add_success'] = true;
                     header("Location: ?id=" . getVar("sql")->insertID());
                     exit;
@@ -87,7 +87,7 @@ $permissionsAvail = Array(
         }
 
         if (isset($_GET['new']) && !isset($_POST['caption'])) {
-            $data = Array('name' => '', 'apikey' => GenerateAPI());
+            $data = Array('name' => '', 'apikey' => GenerateAPI(), 'permissions'=>'');
         } else {
             $sql = dbquery("SELECT * FROM api WHERE id = " . $id);
             $data = $sql->fetchAssoc();

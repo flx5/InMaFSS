@@ -51,11 +51,16 @@ var updateStyle = null;
 var limit = 0;
 var ajaxRunning = false;
 
-var ajaxDataAvail = false;
+var ajaxDataAvail = {
+    left: false, 
+    right: false, 
+    footer: false
+};
 var ajaxData = null;
 
 // 1 Second is enougth as we have to wait 2 rounds until the Data is visible => Time for an update = PageCount*time*2+updateTime
-var updateTime = 1;
+var updateTimeAjax = 1;
+var updateTimeReload = 60;
 
 var Update = {
     reload : function() {
@@ -64,7 +69,6 @@ var Update = {
     },
     
     ajax : function() {
-        
         if(ajaxRunning)
             return;
         
@@ -88,14 +92,21 @@ var Update = {
             {
                 if(xmlhttp.status==200) {
                     ajaxData = JSON.parse(xmlhttp.responseText);
-                    ajaxDataAvail = true;
+                    ajaxDataAvail = {
+                        left: true, 
+                        right: true, 
+                        footer: true
+                    };
                     cacheWarning(false);
                 } else {
                     cacheWarning(true);
                 }
                 
+                runs_right = 0;
+                runs_left = 0;
+                
                 ajaxRunning = false;
-                window.setTimeout(RequestUpdate, updateTime*1000);
+                window.setTimeout(RequestUpdate, updateTimeAjax*1000);
             }
         }
         xmlhttp.open("GET","ajax.php?limit="+limit+"&t="+Date.now(),true);
@@ -120,23 +131,30 @@ function cacheWarning(setOn) {
     }
 }
 
-function UpdateDOM() {
-    if(!ajaxDataAvail)
+function UpdateDOM(site) { 
+    if(!ajaxDataAvail[site])
         return;
     
-    ajaxDataAvail = false;
+    ajaxDataAvail[site] = false;
     
-    document.getElementById('plan_left').innerHTML = ajaxData.left;
-    document.getElementById('plan_right').innerHTML = ajaxData.right;
-    document.getElementById('footer').innerHTML = ajaxData.footer;
+    switch(site) {
+        case 'left':
+            document.getElementById('plan_left').innerHTML = ajaxData.left;
+            document.getElementById('footer').innerHTML = ajaxData.footer;
+            break;
+        case 'right':
+            document.getElementById('plan_right').innerHTML = ajaxData.right;
+            break;
+            
+    }
 }
 
-function Init(time, mupdateStyle, mLimit) {
+function Init(time, mUpdateStyle, mLimit) {
     if(time == null) {
         throw "No time given!";
     }
   
-    switch(mupdateStyle) {
+    switch(mUpdateStyle) {
         case 'reload':
         default:
             onUpdate = Update.reload;
@@ -147,9 +165,11 @@ function Init(time, mupdateStyle, mLimit) {
     }
   
     // We're not using Interval as we've either have to wait for ajax to respond or for the reload to happen
+    
+    var updateTime = (mUpdateStyle == "ajax") ? updateTimeAjax : updateTimeReload;
+
     window.setTimeout(RequestUpdate, updateTime*1000);
-  
-    SetHeight();
+ 
     aktiv = window.setInterval(Continue, time*1000);
     limit = mLimit;
 }
@@ -177,22 +197,25 @@ function NextPage(site) {
 
     current_plan = document.getElementById('plan_'+site+'_' + current_page);
 
-    if(current_plan == null) {
+    if(current_plan == null) { 
         if(site == 'left') {
             runs_left++;
             current_page_left = 0;
+            
+            if(document.getElementById('plan_right_0') == null) {
+                if(updateRequired && runs_right >= 1 && runs_left >= 1) {
+                    onUpdate();
+                }
+            }
+            
         } else {
             runs_right++;
             current_page_right = 0;
         }
         
-        if(ajaxDataAvail) {
-            UpdateDOM();
-            NextPage(site);
+        if(ajaxDataAvail[site]) { 
+            UpdateDOM(site);
         }
-        
-        if(updateRequired)
-            onUpdate();
         
         return;
     }
@@ -209,14 +232,14 @@ function NextPage(site) {
         next_info = document.getElementById('info_'+site+'_0');
         current_page = 0;
         
-        if(ajaxDataAvail) {
-            UpdateDOM();
+        if(ajaxDataAvail[site]) {
+            UpdateDOM(site);
         }
-        
+            
         if(updateRequired && runs_right >= 1 && runs_left >= 1) {
             onUpdate();
         }
-
+            
         if(site == 'left') {
             runs_left++;
         } else {

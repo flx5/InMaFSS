@@ -21,7 +21,7 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-class _MySQLI extends SQL {
+class _MySQL extends SQL {
 
     private $connected = false;
     private $hostname = "localhost";
@@ -49,16 +49,17 @@ class _MySQLI extends SQL {
     }
 
     public function Connect() {
-        $this->link = @new mysqli($this->hostname, $this->username, $this->password, $this->database);
-
-        if (PHP_VERSION_ID < 50300) {
-            $err = mysqli_connect_error();
-        } else {
-            $err = $this->link->connect_error;
+        $this->link = @mysql_connect($this->hostname, $this->username, $this->password);
+        
+        if($this->link === false) {
+            $this->Error('Connect Error (' . mysql_errno() . ') ' . mysql_error());
+            return;
         }
-
-        if ($err) {
-            $this->Error('Connect Error (' . $this->link->connect_errno . ') ' . $this->link->connect_error);
+        
+        $selectDB = @mysql_select_db($this->database, $this->link);
+         
+        if($selectDB === false) {
+            $this->Error('Connect Error (' . mysql_errno($this->link) . ') ' . mysql_error($this->link));
             return;
         }
 
@@ -67,14 +68,14 @@ class _MySQLI extends SQL {
 
     public function Disconnect() {
         if ($this->connected) {
-            $this->link->close() or $this->error("could not close conn");
+            mysql_close($this->link) or $this->error("could not close conn");
             $this->connected = false;
         }
     }
 
     public function DoQuery($query) {
         $this->requests[] = $query;
-        $resultset = $this->link->query($query, MYSQLI_STORE_RESULT) or $this->error($this->link->error);
+        $resultset = mysql_query($query, $this->link) or $this->error($this->link->error);
 
         if ($resultset === true)
             return true;
@@ -82,19 +83,19 @@ class _MySQLI extends SQL {
         if ($resultset === false)
             return false;
 
-        return new _MYSQLI_Result($resultset);
+        return new _MYSQL_Result($resultset);
     }
 
     public function insertID() {
-        return $this->link->insert_id;
+        return mysql_insert_id($this->link);
     }
 
     public function affected_rows() {
-        return $this->link->affected_rows;
+        return mysql_affected_rows($this->link);
     }
 
     public function real_escape_string($strInput = '') {
-        return $this->link->real_escape_string($strInput);
+        return mysql_real_escape_string($strInput, $this->link);
     }
 
     public function __destruct() {
@@ -109,15 +110,15 @@ class _MySQLI extends SQL {
         return $this->requests;
     }
 
-    public function getErrorList() {
-        return $this->link->error_list;
+    public function getErrorList() { 
+        return null;
     }
 
     public function getFieldsInfo($table) {
         $sql = dbquery("SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, COLUMN_TYPE FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='" . config("dbname") . "' AND `TABLE_NAME`='" . $table . "';");
 
         $info = Array();
-        while ($field = $sql->fetchObject()) { 
+        while ($field = $sql->fetchObject()) {  
             $info[$field->COLUMN_NAME] = Array(
                 'name' => $field->COLUMN_NAME,
                 'type' => $field->DATA_TYPE,
@@ -134,46 +135,44 @@ class _MySQLI extends SQL {
 
 }
 
-class _MYSQLI_Result {
+class _MYSQL_Result {
 
     private $res;
-    private $closed;
 
     public function __construct($result) {
         $this->res = $result;
-        $this->closed = true; // Use this only if the query uses MYSQLI_USE_RESULT
     }
 
     public function count() {
-        return $this->res->num_rows;
+        return mysql_num_rows($this->res);
     }
 
     public function fetchAssoc() {
-        $ret = $this->res->fetch_assoc();
+        $ret = mysql_fetch_assoc($this->res);
         return $ret;
     }
 
     public function fetchArray() {
-        $ret = $this->res->fetch_array();
+        $ret = mysql_fetch_array($this->res);
         return $ret;
     }
 
     public function fetchObject() {
-        return $this->res->fetch_object();
+        return mysql_fetch_object($this->res);
     }
 
     public function fetchRow() {
-        return $this->res->fetch_row();
+        return mysql_fetch_row($this->res);
     }
 
     function result($row = 0, $field = 0) {
-        $this->res->data_seek($row);
-        $datarow = $this->res->fetch_array();
+        mysql_data_seek($this->res, $row);
+        $datarow = mysql_fetch_array($this->res);
         return $datarow[$field];
     }
 
     function fetchFieldByName($columnName) {
-        $fields = $this->fetchFields();
+        $fields = $this->fetchFields($this->res);
         foreach ($fields as $field) {
             if ($field->name == $columnName)
                 return $field;
@@ -183,19 +182,18 @@ class _MYSQLI_Result {
     }
 
     function fetchFields() {
-        return $this->res->fetch_fields();
+        $fields = Array();
+        
+        while($field = mysql_fetch_fields($this->res))
+            $fields[] = $field;
+        
+        return $fields;
     }
 
     public function close() {
-        if ($this->closed)
-            return;
-
-        $this->res->close();
-        $this->closed = true;
     }
 
     public function __destruct() {
-        $this->close();
     }
 
     // Easy access to parent function

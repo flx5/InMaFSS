@@ -32,6 +32,12 @@ getVar("tpl")->addTemplate('header');
 getVar("tpl")->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
 if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     getVar("tpl")->Write('</div>');
+
+    getVar("tpl")->Write('
+        <script language="JavaScript">
+        SetHeight();
+        </script>');
+    
 } elseif ($_GET['size'] < 533) {
     getVar("tpl")->addTemplate('too_small');
 } else {
@@ -62,15 +68,16 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     $footer->setVar('view_right', $view_right);
     getVar("tpl")->addTemplateClass($footer);
     getVar("tpl")->Write('</div>');
+
+    getVar("tpl")->Write('
+        <script language="JavaScript">
+        Init(' . config("time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ');
+        </script>');
 }
 
-getVar("tpl")->Write('
-<script language="JavaScript">
-Init(' . config("time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ');
-</script>
-<noscript>');
-
+getVar("tpl")->Write('<noscript>');
 getVar("tpl")->addTemplate('no_js');
 getVar("tpl")->Write('</noscript>');
+
 getVar("tpl")->Output();
 ?>

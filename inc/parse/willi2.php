@@ -32,8 +32,8 @@ function parseHTML($html) {
 
 function parsePupilHTML($html) {
     $date = substr($html, strpos($html, 'Vertretungsplan ') + strlen('Vertretungsplan '), strpos($html, ')') - strpos($html, 'Vertretungsplan '));
-    $date = substr($date, strpos($date, ','));
-    $date = explode("-", $date);
+    $date = substr($date, strpos($date, ',')); 
+    $date = explode("-", $date); 
 
     $time = trim(substr($date[1], 0, strpos($date[1], ")")));
     $time = explode(":", $time);

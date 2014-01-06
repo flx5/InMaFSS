@@ -183,7 +183,7 @@ class View {
         return $output;
     }
 
-    private function CreateTeacherTableHeader() {  
+    private function CreateTeacherTableHeader() {
         $output = '<tr><th colspan="6" >';
         $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->GetTFrom()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->GetTFrom()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
@@ -312,10 +312,7 @@ class View {
         if ($this->site == 'left') {
             $tfrom = gmmktime(0, 0, 0);
         } else {
-            $tfrom = gmmktime(0, 0, 0, date("n"), date("j") + 1);
-            $tfrom = self::RemoveWeekend($tfrom);
-            getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
-            $tfrom = self::RemoveWeekend($tfrom);
+            $tfrom = self::GetNextDay();
         }
 
         $this->tfrom = $tfrom;
@@ -324,9 +321,13 @@ class View {
 
     public static function GetNextDay() {
         $tfrom = gmmktime(0, 0, 0, date("n"), date("j") + 1);
-        $tfrom = self::RemoveWeekend($tfrom);
-        getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
-        $tfrom = self::RemoveWeekend($tfrom);
+
+        do {
+            $remWeekend = self::RemoveWeekend($tfrom);
+            $tfrom = $remWeekend;
+            getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
+        } while ($tfrom != $remWeekend);
+        
         return $tfrom;
     }
 

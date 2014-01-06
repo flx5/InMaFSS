@@ -175,6 +175,10 @@ class API {
         $p = new parse();
 
         foreach ($files as $file) {
+            
+            if($file == "")
+                continue;
+            
             $file = utf8_decode($file);
             $file = substr($file, strpos($file, "<html>"));
             $p->parseHTML($file);
@@ -241,7 +245,7 @@ class API {
                 }
             }
         }
-
+        
         if ($return)
             return $output;
 

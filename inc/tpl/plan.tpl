@@ -20,7 +20,6 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-
    lang()->add('date');
 
 

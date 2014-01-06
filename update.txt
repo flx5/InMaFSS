@@ -1,9 +1,0 @@
-dbquery("CREATE TABLE IF NOT EXISTS `api` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(200) NOT NULL,
-  `apikey` varchar(200) NOT NULL,
-  `permissions` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-
-dbquery("INSERT name,apikey, permissions INTO api VALUES('CONFIG', '".config("apikey")."', 'plan_update');

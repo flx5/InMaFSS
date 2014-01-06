@@ -30,6 +30,10 @@ class parse {
        var $supervisor = Array();
 
        function parseHTML($html) {
+           
+                if($html == "")
+                    return;
+           
                $html = html_entity_decode($html);
                $html = preg_replace("#\r\n#","\n",$html);
 
