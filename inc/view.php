@@ -34,7 +34,6 @@ class View {
         $i = -1;
 
         foreach ($this->GetReplacements() as $k => $grade) {
-
             if (($i + count($grade)) > $this->limit || $i == -1) {
                 $p++;
                 $i = 0;

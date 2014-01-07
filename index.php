@@ -43,7 +43,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 } else {
 
     $size = $_GET['size'];
-    $limit = floor(($size - 30) / 26) - 2;
+    $limit = floor(($size-50 ) / 25) - 4;
 
     require_once("inc/view.php");
 
@@ -71,7 +71,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 
     getVar("tpl")->Write('
         <script language="JavaScript">
-        Init(' . config("time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ');
+        Init(' . config("time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ', false);
         </script>');
 }
 

@@ -21,8 +21,8 @@
   \*================================================================================= */
 ?>
 <div id="header" class='bar'>   
-    <span style="float:left; width:20%; text-align:left; padding-left:20px;"><?php echo config("schoolname"); ?></span>
+    <span style="float:left; width:20%; text-align:left; padding-left:20px; height:100%; overflow: visible; word-break: keep-all; white-space: nowrap; "><?php echo config("schoolname"); ?></span>
     <span style="float:left; width:60%" id="header_cached"><?php lang()->loc('cache.warning'); ?></span>
     <span style="float:left; width:60%" id="header_normal">InMaFSS</span>
-    <span id='clock' style="text-align:right; padding-right:20px; float:right;"><?php echo date("j.m.Y H:i:s"); ?></span>
+    <span id='clock' style="text-align:right; float:right; position: absolute; top:0px; right:20px;"><?php echo date("j.m.Y H:i:s"); ?></span>
 </div>

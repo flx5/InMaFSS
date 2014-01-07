@@ -62,6 +62,8 @@ var ajaxData = null;
 var updateTimeAjax = 1;
 var updateTimeReload = 60;
 
+var mIsTeacher = false;
+
 var Update = {
     reload : function() {
         location.reload(true);
@@ -109,7 +111,7 @@ var Update = {
                 window.setTimeout(RequestUpdate, updateTimeAjax*1000);
             }
         }
-        xmlhttp.open("GET","ajax.php?limit="+limit+"&t="+Date.now(),true);
+        xmlhttp.open("GET","ajax.php?limit="+limit+"&t="+Date.now()+ (mIsTeacher ? '&teacher=true' : ''),true);
         xmlhttp.send();
     }
 }
@@ -140,7 +142,9 @@ function UpdateDOM(site) {
     switch(site) {
         case 'left':
             document.getElementById('plan_left').innerHTML = ajaxData.left;
-            document.getElementById('footer').innerHTML = ajaxData.footer;
+            
+            if(document.getElementById('footer') != null)
+                document.getElementById('footer').innerHTML = ajaxData.footer;
             break;
         case 'right':
             document.getElementById('plan_right').innerHTML = ajaxData.right;
@@ -149,10 +153,12 @@ function UpdateDOM(site) {
     }
 }
 
-function Init(time, mUpdateStyle, mLimit) {
+function Init(time, mUpdateStyle, mLimit, isTeacher) {
     if(time == null) {
         throw "No time given!";
     }
+    
+    mIsTeacher = isTeacher;
   
     switch(mUpdateStyle) {
         case 'reload':
@@ -197,7 +203,7 @@ function NextPage(site) {
 
     current_plan = document.getElementById('plan_'+site+'_' + current_page);
 
-    if(current_plan == null) { 
+    if(current_plan == null) {
         if(site == 'left') {
             runs_left++;
             current_page_left = 0;
@@ -242,7 +248,7 @@ function NextPage(site) {
             
         if(site == 'left') {
             runs_left++;
-        } else {
+        } else { 
             runs_right++;
         }
     } else {

@@ -43,7 +43,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 } else {
 
     $size = $_GET['size'];
-    $limit = floor(($size - 30) / 26) - 2;
+    $limit = floor(($size - 40) / 20) - 2;
 
     require_once("inc/view.php");
 
@@ -55,7 +55,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     getVar("tpl")->addTemplateClass($left);
     getVar("tpl")->Write('</div>');
 
-    getVar("tpl")->Write('<div class="main tomorrow" style="right:0px; border-left:0px solid black;" >');
+    getVar("tpl")->Write('<div class="main tomorrow" id="plan_right" style="right:0px; border-left:0px solid black;" >');
     $right = getVar("tpl")->getTemplate('plan');
     $right->setVar('site', 'right');
     $view_right = new view('right', $limit);
@@ -66,7 +66,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 
     getVar("tpl")->Write('
 <script language="JavaScript">
-Init(' . config("teacher_time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ');
+Init(' . config("teacher_time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ', true);
 </script>');
 }
 

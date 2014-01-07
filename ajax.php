@@ -39,6 +39,7 @@ $data = Array();
 $left = getVar("tpl")->getTemplate('plan');
 $left->setVar('site', 'left');
 $view_left = new view('left', $limit);
+$view_left->type = (isset($_GET['teacher']) ? 1 : 0);
 $left->setVar('view', $view_left);
 
 $data['left'] = $left->GetHtml();
@@ -46,6 +47,7 @@ $data['left'] = $left->GetHtml();
 $right = getVar("tpl")->getTemplate('plan');
 $right->setVar('site', 'right');
 $view_right = new view('right', $limit);
+$view_right->type = (isset($_GET['teacher']) ? 1 : 0);
 $right->setVar('view', $view_right);
 
 $data['right'] = $right->GetHtml();
