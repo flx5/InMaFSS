@@ -1,3 +1,0 @@
-<?php
-$version = '$Id$';
-?>
