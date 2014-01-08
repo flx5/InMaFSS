@@ -21,8 +21,7 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-if (!isset($_GET['limit']) || !is_numeric($_GET['limit']))
-{
+if (!isset($_GET['limit']) || !is_numeric($_GET['limit'])) {
     header("HTTP/1.1 403");
     exit;
 }
@@ -54,8 +53,11 @@ $data['right'] = $right->GetHtml();
 
 getVar("tpl")->Write('<div id="footer">');
 $footer = getVar("tpl")->getTemplate('footer');
-$footer->setVar('view_left', $view_left);
-$footer->setVar('view_right', $view_right);
+
+if(!isset($_GET['teacher'])) {
+    $footer->setVar('view_left', $view_left);
+    $footer->setVar('view_right', $view_right);
+}
 
 $data['footer'] = $footer->GetHtml();
 

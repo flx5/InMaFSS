@@ -64,6 +64,11 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     getVar("tpl")->addTemplateClass($right);
     getVar("tpl")->Write('</div>');
 
+    getVar("tpl")->Write('<div id="footer">');
+    $footer = getVar("tpl")->getTemplate('footer');
+    getVar("tpl")->addTemplateClass($footer);
+    getVar("tpl")->Write('</div>');
+    
     getVar("tpl")->Write('
 <script language="JavaScript">
 Init(' . config("teacher_time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ', true);

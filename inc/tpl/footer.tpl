@@ -20,66 +20,76 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-lang()->add('ticker');
-$tickers = $view_left->GetTickers();
-$tickers = array_merge($tickers, $view_right->GetTickers());
+$ticker = false;
 
-ksort($tickers);
+if (isset($view_left) && isset($view_right)) {
 
-$output = Array();
+    $ticker = true;
 
-if (count($tickers) == 0) {
-    if(config("useMarquee")) 
-        $output[] = lang()->loc('no.ticker', false);
-    else
-        $output[] = "'" . lang()->loc('no.ticker', false) . "'";
-}
+    lang()->add('ticker');
+    $tickers = $view_left->GetTickers();
+    $tickers = array_merge($tickers, $view_right->GetTickers());
 
-foreach ($tickers as $ticker) {
-    
-    $out = "";
-    
-    if ($ticker['automatic']) {
-        $out .= lang()->loc(strtolower(substr(date("D", $ticker['day']), 0, 2)), false) . ":&nbsp";
+    ksort($tickers);
+
+    $output = Array();
+
+    if (count($tickers) == 0) {
+        if (config("useMarquee"))
+            $output[] = lang()->loc('no.ticker', false);
+        else
+            $output[] = "'" . lang()->loc('no.ticker', false) . "'";
     }
 
-    $out .= $ticker['content'];
-  
-    if(!config("useMarquee"))
-        $out = "'".preg_replace("/'/","\\'", $out)."'";
+    foreach ($tickers as $ticker) {
 
-    if (!in_array($out, $output)) {
-        $output[] = $out;
+        $out = "";
+
+        if ($ticker['automatic']) {
+            $out .= lang()->loc(strtolower(substr(date("D", $ticker['day']), 0, 2)), false) . ":&nbsp";
+        }
+
+        $out .= $ticker['content'];
+
+        if (!config("useMarquee"))
+            $out = "'" . preg_replace("/'/", "\\'", $out) . "'";
+
+        if (!in_array($out, $output)) {
+            $output[] = $out;
+        }
     }
 }
-
-
 ?>
-<div class="bar" style="position:absolute; bottom:0px;">
-    <span class="copyright">http://flx5.com/inmafss</span>
-    <div id="ticker_marquee">           
-        <?php 
-        // Marquee is NOT official HTML, thus we can decide wether we are going to use it
-        if(config("useMarquee")) { 
-        ?>
-        <marquee>+++&nbsp;<?php echo implode("&nbsp;+++&nbsp;", $output); ?>&nbsp;+++</marquee>
-        <?php } else { ?>
-        <script language="JavaScript">
-            var tickers = new Array(<?php echo implode(",", $output) ?>); 
-            var tickerId = 0;    
-            var tickerIntv = setInterval(rotateTicker, 3*1000);
-            
-            rotateTicker();
-            
-            function rotateTicker() {
-                tickerId++;
-                if(tickerId >= tickers.length)
-                    tickerId = 0;
-        
-                var tickerDiv = document.getElementById("ticker_marquee");
-                tickerDiv.innerHTML = '+++&nbsp;'+tickers[tickerId]+'&nbsp;+++'; 
-            }    
-        </script>
-        <?php } ?>
+
+<div class="copyright" style="<?php echo ($ticker ? '' : 'bottom:0px;'); ?>; z-index:99;"><a href="http://flx5.com/inmafss" target="_blank"><span style="visibility: hidden;">http://flx5.com/inmafss</span></a></div>
+<div class="copyright" style="<?php echo ($ticker ? '' : 'bottom:0px;'); ?>; z-index:-1; ">http://flx5.com/inmafss</div>
+
+<?php if ($ticker) { ?>
+    <div class="bar" style="position:absolute; bottom:0px;">
+        <div id="ticker_marquee">           
+            <?php
+            // Marquee is NOT official HTML, thus we can decide wether we are going to use it
+            if (config("useMarquee")) {
+                ?>
+                <marquee>+++&nbsp;<?php echo implode("&nbsp;+++&nbsp;", $output); ?>&nbsp;+++</marquee>
+            <?php } else { ?>
+                <script language="JavaScript">
+                    var tickers = new Array(<?php echo implode(",", $output) ?>); 
+                    var tickerId = 0;    
+                    var tickerIntv = setInterval(rotateTicker, 3*1000);
+                                
+                    rotateTicker();
+                                
+                    function rotateTicker() {
+                        tickerId++;
+                        if(tickerId >= tickers.length)
+                            tickerId = 0;
+                            
+                        var tickerDiv = document.getElementById("ticker_marquee");
+                        tickerDiv.innerHTML = '+++&nbsp;'+tickers[tickerId]+'&nbsp;+++'; 
+                    }    
+                </script>
+            <?php } ?>
+        </div>
     </div>
-</div>
+<?php } ?>

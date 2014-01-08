@@ -84,6 +84,8 @@ class tpl {
          foreach($this->headers as $head) {
               $header .= $head."\n";
          }
+         
+         $output .= "<!-- InMaFSS Version: ".core::GetVersion()." -->\n";
 
          $output .= "<html>\n<head>\n".$header."\n</head>\n<body>\n".$this->content."\n</body>\n</html>";
 

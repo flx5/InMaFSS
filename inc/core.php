@@ -22,6 +22,17 @@
 
 
 class core {
+        public static function GetVersion() {
+            if(file_exists(CWD."version.php")) {
+                include(CWD."version.php");
+                if(isset($version)) {
+                    return $version;
+                }
+            }
+            
+            return null;
+        }
+    
        public static function SystemError($title, $text)
         {
    

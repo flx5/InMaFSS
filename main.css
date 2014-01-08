@@ -35,14 +35,15 @@ html, body {
    text-align:center;
 }
 
-.bar .copyright {
+.copyright {
     position: absolute;
-    top:-30px;
-    left:0px;
+    bottom:35px;
     color:#888;
     font-size: 15px;
     width:100%;
     text-align: center;
+    z-index:-1;
+    height:17px;
 }
 
 .admin_bar {
