@@ -59,6 +59,8 @@ require_once("inc/update.php");
 require_once("inc/plugin.php");
 require_once("inc/parse.php");
 
+core::MagicQuotesCompability();
+
 $config = new config();
 $vars = new variables(new core(), null, null, new tpl(), new Update(), new pluginManager(), false);
 $vars->set("sql", SQL::GenerateInstance($config->Get("dbtype"), $config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname")));
