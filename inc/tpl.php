@@ -31,7 +31,7 @@ class tpl {
          $this->headers = Array(
                                 '<title>InMaFSS // '.$title.'</title>',
                                 '<link rel="stylesheet" type="text/css" href="'.WWW.'/main.css">',
-                                '<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">'
+                                '<meta http-equiv="content-type" content="text/html; charset=UTF-8">'
                           );
 
          $this->params = Array('username'=>USERNAME);

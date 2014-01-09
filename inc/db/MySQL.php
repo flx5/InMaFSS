@@ -62,7 +62,8 @@ class _MySQL extends SQL {
             $this->Error('Connect Error (' . mysql_errno($this->link) . ') ' . mysql_error($this->link));
             return;
         }
-
+        
+        mysql_set_charset("utf-8", $this->link);
         $this->connected = true;
     }
 
@@ -75,7 +76,7 @@ class _MySQL extends SQL {
 
     public function DoQuery($query) {
         $this->requests[] = $query;
-        $resultset = mysql_query($query, $this->link) or $this->error($this->link->error);
+        $resultset = mysql_query($query, $this->link) or $this->error(mysql_error());
 
         if ($resultset === true)
             return true;

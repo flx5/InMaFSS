@@ -66,7 +66,7 @@ class core {
         return getVar("sql")->real_escape_string($input);
     }
 
-    public function MagicQuotesCompability() {
+    public static function MagicQuotesCompability() {
         if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
             $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
             while (list($key, $val) = each($process)) {

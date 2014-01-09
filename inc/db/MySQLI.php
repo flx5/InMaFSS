@@ -62,9 +62,11 @@ class _MySQLI extends SQL {
             return;
         }
 
+        $this->link->set_charset("utf-8");
+                
         $this->connected = true;
     }
-
+    
     public function Disconnect() {
         if ($this->connected) {
             $this->link->close() or $this->error("could not close conn");
