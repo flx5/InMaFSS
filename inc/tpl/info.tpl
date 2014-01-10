@@ -21,7 +21,7 @@
 \*=================================================================================*/
 
  lang()->add('info'); ?>
-<div style="width:60%; border:2px solid black; margin:5px auto;">
+<div class="round" style="width:60%; border:2px solid black; margin:5px auto;">
 <h2>Information</h2>
 <?php
   require_once("../inc/view.php");

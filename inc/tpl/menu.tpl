@@ -23,7 +23,7 @@
 
 <div class="menu">
 <h1>InMaFSS</h1>
-<font color="#C0C0C0" size="+1" style="padding:4px;" >Information Management for School Systems</font><br><br>
+<font size="+1" style="color: #DDF;padding: 60px;" >Information Management for School Systems</font><br><br>
 <?php
 lang()->add('menu');
 

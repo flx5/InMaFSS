@@ -137,6 +137,15 @@ a {
    height:100%;
    overflow: hidden;
    text-align: center;
+   
+   background: #6f6f6f;
+   background: -moz-linear-gradient(left, #808080 0%, #5f5f5f 50%);
+   background: -webkit-gradient(linear, left top, right top, color-stop(0%,#808080), color-stop(50%,#5f5f5f));
+   background: -webkit-linear-gradient(left, #808080 0%,#5f5f5f 50%);
+   background: -o-linear-gradient(left, #808080 0%,#5f5f5f 50%);
+   background: -ms-linear-gradient(left, #808080 0%,#5f5f5f 50%);
+   background: linear-gradient(to right, #808080 0%,#5f5f5f 50%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#808080', endColorstr='#5f5f5f',GradientType=1 );
 }
 
 .dropdown:hover {
@@ -148,13 +157,24 @@ a {
 
 .menu {
    float:left;
-   background-color:#0080FF;
+   background: #0080ff;
+   background: -moz-linear-gradient(top, #0080ff 0%, #0000ff 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0080ff), color-stop(100%,#0000ff));
+   background: -webkit-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -o-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -ms-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: linear-gradient(to bottom, #0080ff 0%,#0000ff 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0080ff', endColorstr='#0000ff',GradientType=0 );
    position:absolute;
    bottom:0px;
-   top:32px;
+   top:50px;
    width:200px;
    text-align:center;
    color:#fff;
+   border-right: 3px solid black;
+   border-top: 3px solid black;
+   border-top-right-radius: 20px;
+   z-index: 2;
 }
 
 .menu a {
@@ -185,6 +205,25 @@ a {
    bottom:0px;
    background-color:#fff;
    overflow: auto;
+}
+
+.content > div.round, .admincols > div.round {
+   border: 3px solid black !important;
+   border-radius: 20px;
+}
+
+.content > div.round > h2, .admincols > div.round > h2 {
+   border-top-left-radius: 17px;
+   border-top-right-radius: 17px;
+   background: #0080ff;
+   background: -moz-linear-gradient(top, #0080ff 0%, #0000ff 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0080ff), color-stop(100%,#0000ff));
+   background: -webkit-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -o-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -ms-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: linear-gradient(to bottom, #0080ff 0%,#0000ff 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0080ff', endColorstr='#0000ff',GradientType=0 );
+   color: #fff;
 }
 
 .admincols {

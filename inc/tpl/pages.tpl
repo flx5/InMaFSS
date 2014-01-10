@@ -22,7 +22,7 @@
 ?>
 
 <div class="content">
-<div style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
+<div class="round" style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
 <h2><?php lang()->loc('title'); ?></h2>
 <?php
   if(isset($_GET['del']) && (!isset($_GET['do']) || $_GET['do'] != 'del')) {

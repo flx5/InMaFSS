@@ -21,7 +21,7 @@
 \*=================================================================================*/
 ?>
 <div class="content">
-<div style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
+<div class="round" style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
 <h2><?php lang()->loc('title'); ?></h2>
 <font color="#00FF00" size="+1">%msg%</font><br>
 <form enctype="multipart/form-data" action="" method="POST">
