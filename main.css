@@ -149,7 +149,6 @@ a {
 }
 
 .dropdown:hover {
-   background-color:#6F6F6F;
    height:100px;
    border-bottom-right-radius: 15px;
    border-bottom-left-radius: 15px;
@@ -194,7 +193,7 @@ a {
 .selected {
     pointer-events: none;
     cursor: default;
-    background-color: #0050DD;
+    background-color: #0070DD;
 }
 
 .content {
@@ -210,6 +209,8 @@ a {
 .content > div.round, .admincols > div.round {
    border: 3px solid black !important;
    border-radius: 20px;
+   overflow: hidden;
+   padding-bottom: 10px;
 }
 
 .content > div.round > h2, .admincols > div.round > h2 {
