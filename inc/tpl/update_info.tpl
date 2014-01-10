@@ -21,7 +21,7 @@
 \*=================================================================================*/
 
  lang()->add('updates'); ?>
-<div style="width:60%; border:2px solid black; margin:5px auto;">
+<div class="round" style="width:60%; border:2px solid black; margin:5px auto;">
 <h2><?php lang()->loc('title'); ?></h2><br>
 <ul>
 <?php

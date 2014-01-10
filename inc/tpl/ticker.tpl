@@ -22,7 +22,7 @@
 ?>
 
 <div class="content">
-    <div style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px;">
+    <div class="round" style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px;">
         <h2><?php lang()->loc('title'); ?></h2>
         <?php
         if (isset($_POST['id']) && isset($_POST['value']) && isset($_POST['time_from']) && isset($_POST['time_end']) && is_numeric($_POST['id'])) {
