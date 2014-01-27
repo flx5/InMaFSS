@@ -66,6 +66,6 @@ var A_TCALCONF = {
 </script>
 ');
 
-getVar("tpl")->addTemplate('pages_edit');
+getVar("tpl")->addTemplate('manage/pages_edit');
 getVar("tpl")->Output();
 ?>

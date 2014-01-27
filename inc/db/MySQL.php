@@ -133,6 +133,10 @@ class _MySQL extends SQL {
         
         return $info;
     }
+    
+    public function GetLink() {
+        return $this->link;
+    }
 
 }
 

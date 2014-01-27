@@ -23,6 +23,8 @@ abstract class SQL {
     public abstract function GetCount();
 
     public abstract function GetRequests();
+    
+    public abstract function GetLink();
 
     public function Error($errorString) {
         if (class_exists("core"))

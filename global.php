@@ -26,7 +26,12 @@ define('CWD', dirname(__FILE__) . DS);
 define('INC', CWD . "inc" . DS);
 define('PLUGIN_DIR', CWD . DS . "plugins" . DS);
 
-$www = $_SERVER['REQUEST_URI'];
+$www = "http";
+
+if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
+    $www .= "s";
+
+$www .= "://".$_SERVER['SERVER_NAME'] .$_SERVER['REQUEST_URI'];
 $www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))).basename(dirname(__FILE__));
 define('WWW', $www);
 

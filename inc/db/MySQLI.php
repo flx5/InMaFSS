@@ -134,6 +134,9 @@ class _MySQLI extends SQL {
         return $info;
     }
 
+    public function GetLink() {
+        return $this->link;
+    }
 }
 
 class _MYSQLI_Result {

@@ -51,9 +51,9 @@ if(isset($_POST['usr']) && isset($_POST['pwd'])) {
 
 
 if(isset($_GET['cookies']) && $_GET['cookies'] == "no") {
-getVar("tpl")->addTemplate('no_cookies');
+getVar("tpl")->addTemplate('manage/no_cookies');
 }
 
-getVar("tpl")->addTemplate('manage');
+getVar("tpl")->addTemplate('manage/manage');
 getVar("tpl")->Output();
 ?>

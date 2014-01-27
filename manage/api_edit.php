@@ -30,6 +30,6 @@ getVar("tpl")->addStandards('admin');
 
 lang()->add('api'); // Reoverride the values overwritten by Menu!
 
-getVar("tpl")->addTemplate('api_edit');
+getVar("tpl")->addTemplate('manage/api_edit');
 getVar("tpl")->Output();
 ?>

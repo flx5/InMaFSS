@@ -31,7 +31,7 @@ getVar("tpl")->addJS("update.js");
 
 getVar("tpl")->Write('<div class="content">');
 
-getVar("tpl")->Write('Die folgenden Dateien werden verändert:<ul id="liste">');
+getVar("tpl")->Write('Die folgenden Dateien werden ver&auml;ndert:<ul id="liste">');
 
   $updates = getVar('update')->GetUpdates();
   $changes = getVar('update')->GetAllChanges($updates);

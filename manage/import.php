@@ -39,6 +39,6 @@ if(isset($_FILES['uploadedfile'])) {
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->setParam("msg",$msg);
 getVar("tpl")->addStandards('admin');
-getVar("tpl")->addTemplate('import');
+getVar("tpl")->addTemplate('manage/import');
 getVar("tpl")->Output();
 ?>

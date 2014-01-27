@@ -32,6 +32,6 @@ if(isset($_GET['del'])) {
   getVar("tpl")->setParam("id",$_GET['del']);
 }
 
-getVar("tpl")->addTemplate('api');
+getVar("tpl")->addTemplate('manage/api');
 getVar("tpl")->Output();
 ?>

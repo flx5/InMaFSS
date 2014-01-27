@@ -27,6 +27,6 @@ lang()->add('settings');
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->addStandards('admin');
 
-getVar("tpl")->addTemplate('settings');
+getVar("tpl")->addTemplate('manage/settings');
 getVar("tpl")->Output();
 ?>
