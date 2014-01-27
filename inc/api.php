@@ -246,6 +246,8 @@ class API {
             }
         }
         
+        $output['lastUpdate'] = $view->GetLastUpdate();
+        
         if ($return)
             return $output;
 
