@@ -139,6 +139,7 @@ switch ($key) {
         $loc['import'] = 'Importieren';
         $loc['api'] = 'API';
         $loc['settings'] = 'Einstellungen';
+        $loc['oauth'] = 'OAuth';
         break;
 
     case 'info':
@@ -279,6 +280,23 @@ switch ($key) {
         $loc['abort'] = 'Abbrechen';
         $loc['deleted'] = 'Der API-Key mit der ID %id% wurde gel&ouml;scht.';
         $loc['not.found'] = 'Der API-Key existiert nicht.';     
+        break;
+    
+    case 'oauth':
+        $loc['title'] = "OAuth";
+        $loc['id'] = "ID";
+        $loc['application_uri'] = "Anwendungs-URI";
+        $loc['consumer_key'] = "Anwendungsschl&uuml;ssel";
+        $loc['consumer_secret'] = "Anwendungs-Geheimcode";
+        $loc['callback_uri'] = "Callback URI";
+        $loc['application_title'] = "Anwendungsname";
+        $loc['application_desc'] = "Beschreibung";
+        $loc['options'] = "Optionen";
+        $loc['new'] = "Neu";
+        $loc['save'] = "Speichern";
+        $loc['edit'] = "Bearbeiten";
+        $loc['delete'] = "L&ouml;schen";
+        $loc['name.too.short'] = 'Der Anwendungsname muss mindestens 3 Zeichen haben.';
         break;
 }
 ?>

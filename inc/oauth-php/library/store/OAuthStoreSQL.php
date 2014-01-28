@@ -1250,7 +1250,7 @@ abstract class OAuthStoreSQL extends OAuthStoreAbstract
 	 * @return array  token and consumer details
 	 */
 	public function getConsumerRequestToken ( $token )
-	{
+	{ 
 		$rs = $this->query_row_assoc('
 				SELECT	ost_token			as token,
 						ost_token_secret	as token_secret,

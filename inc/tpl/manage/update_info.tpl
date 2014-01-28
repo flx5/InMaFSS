@@ -23,6 +23,7 @@
  lang()->add('updates'); ?>
 <div class="round" style="width:60%; border:2px solid black; margin:5px auto;">
 <h2><?php lang()->loc('title'); ?></h2><br>
+<div class="inner">
 <ul>
 <?php
   $updates = getVar("update")->GetUpdates();
@@ -41,4 +42,4 @@
   }
 
 ?>
-</div>
+</div></div>

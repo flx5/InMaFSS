@@ -63,6 +63,7 @@ require_once("inc/tpl.php");
 require_once("inc/update.php");
 require_once("inc/plugin.php");
 require_once("inc/parse.php");
+require_once("inc/OAuthHelper.php");
 
 core::MagicQuotesCompability();
 
@@ -81,12 +82,14 @@ getVar("update")->Init();
 
 session_start();
 
-if (isset($_SESSION['user']) && isset($_SESSION['timestamp'])) {
+if (isset($_SESSION['user']) && isset($_SESSION['timestamp']) && isset($_SESSION['userID'])) {
     define('LOGGED_IN', true);
     define('USERNAME', $_SESSION['user']);
+    define('USER_ID', $_SESSION['userID']);
 } else {
     define('LOGGED_IN', false);
     define('USERNAME', 'GUEST');
+    define('USER_ID', -1);
 }
 
 function lang() {

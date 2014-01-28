@@ -170,7 +170,7 @@ class OAuthServer extends OAuthRequestVerifier
 		OAuthRequestLogger::start($this);
 
 		$store = OAuthStore::instance();
-		$token = $this->getParam('oauth_token', true);
+		$token = $this->getParam('oauth_token', true); 
 		$rs    = $store->getConsumerRequestToken($token);
 		if (empty($rs))
 		{

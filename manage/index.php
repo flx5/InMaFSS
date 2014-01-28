@@ -31,6 +31,7 @@ if(LOGGED_IN) {
 lang()->add('admin');
 
 getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->addStandards('admin');
 getVar("tpl")->setParam('error','');
 
 if(isset($_POST['usr']) && isset($_POST['pwd'])) {
@@ -43,6 +44,7 @@ if(isset($_POST['usr']) && isset($_POST['pwd'])) {
          getVar("tpl")->setParam('error','<font color="#FF0000">'.lang()->loc('wrong',false).'</font><br><br>');
       } else {
           $_SESSION['user'] = $usr;
+          $_SESSION['userID'] = $sql->result();
           $_SESSION['timestamp'] = time();
           header("Location: admin.php");
       }

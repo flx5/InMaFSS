@@ -45,9 +45,12 @@ class tpl {
                 break;
             case 'admin':
                 $this->addCSS(WWW . '/css/main.css');
-                $this->addTemplate('clock');
-                $this->addTemplate('manage/admin_header');
-                $this->addTemplate('manage/menu');
+
+                if (LOGGED_IN) {
+                    $this->addTemplate('clock');
+                    $this->addTemplate('manage/admin_header');
+                    $this->addTemplate('manage/menu');
+                }
                 break;
             case 'oauth':
                 $this->addCSS(WWW . '/css/oauth.css');

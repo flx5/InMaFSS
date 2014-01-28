@@ -24,6 +24,7 @@
 <div class="content">
 <div class="round" style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
 <h2><?php lang()->loc('title'); ?></h2>
+<div class="inner">
 <?php
   if((!isset($_GET['id']) || !is_numeric($_GET['id'])) && !isset($_GET['new'])) {
           header("Location: users.php");
@@ -91,4 +92,4 @@
 <tr><td></td><td><input type="submit" value="<?php lang()->loc('save'); ?>"></td></tr>
 </table>
 </form>
-</div></div>
+</div></div></div>

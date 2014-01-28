@@ -24,6 +24,7 @@
 <div class="content">
     <div class="round" style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px;">
         <h2><?php lang()->loc('title'); ?></h2>
+        <div class="inner">
         <?php
         if (isset($_POST['id']) && isset($_POST['value']) && isset($_POST['time_from']) && isset($_POST['time_end']) && is_numeric($_POST['id'])) {
             $error = Array();
@@ -99,4 +100,4 @@
             ?>
             <tr><form method="post"><td><input type="text" value="-1" name="id" style="display:none;"></td><td><input type="text" value="-1" name="order" style="display:none;"></td><td>&nbsp;<input type="text" name="value" style="width:95%" value="">&nbsp;</td><td><input type="text" style="" class="tcal" name="time_from"></td><td><input type="text" style="" class="tcal" name="time_end" ></td><td><input type="submit" value="<?php lang()->loc('add'); ?>"></td><td></td></form></tr>
         </table>
-    </div></div>
+    </div></div></div>
