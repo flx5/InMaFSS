@@ -29,20 +29,38 @@ if(!LOGGED_IN) {
 
 getVar('tpl')->Init("TEST");
 
+if(isset($_GET['scope']))
+{
+     $unique = time();
+     $_SESSION['scope_'.$unique] = $_GET['scope'];
+}
+
 try
 {
     // Check if there is a valid request token in the current request
     // Returns an array with the consumer key, consumer secret, token, token secret and token type.
-    $rs = $server->authorizeVerify();
+    $rs = $oauth->GetServer()->authorizeVerify();
 
     if (isset($_POST['allow']))
     {
         // See if the user clicked the 'allow' submit button (or whatever you choose)
         $authorized = true;
 
+        if(isset($_POST['unique']) && isset($_SESSION['scope_'.$_POST['unique']])) {
+            $permissions = explode(",", $_SESSION['scope_'.$_POST['unique']]);
+            $sql = dbquery("SELECT permissions FROM oauth_server_permissions WHERE user_id = ".USER_ID." AND consumer_key = '".filter($rs['consumer_key'])."'");
+        
+            if($sql->count() != 0) {
+                // TODO: WRITE UPDATE
+            } else {
+                $permissions = serialize($permissions);
+                dbquery("INSERT INTO oauth_server_permissions (user_id, consumer_key, permissions) VALUES (".USER_ID.", '".filter($rs['consumer_key'])."', '".filter($permissions)."')");
+            }
+        }
+        
         // Set the request token to be authorized or not authorized
         // When there was a oauth_callback then this will redirect to the consumer
-        $server->authorizeFinish($authorized, USER_ID);
+        $oauth->GetServer()->authorizeFinish($authorized, USER_ID);
 
         // No oauth_callback, show the user the result of the authorization
         // ** your code here **

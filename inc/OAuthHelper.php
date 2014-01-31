@@ -6,9 +6,7 @@ class OAuthHelper {
     private $server;
     
     public function __construct() {
-        require_once(INC . "oauth-php/library/OAuthServer.php");
-
-        define("OAUTH_DEFAULT_ID", 0);
+        require_once(INC . "libs/oauth-php/library/OAuthServer.php");
         
         // Create a new instance of OAuthStore and OAuthServer
         $this->store = OAuthStore::instance(config("dbtype"), array('conn' => getVar("sql")->GetLink()));
@@ -23,6 +21,9 @@ class OAuthHelper {
         return $this->server;
     }
 
+    public function isAuthorized() {
+        
+    }
 }
 
 ?>

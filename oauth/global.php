@@ -25,9 +25,5 @@ require_once(dirname(__FILE__)."/../global.php");
 // Add a header indicating this is an OAuth server
 header('X-XRDS-Location: ' . WWW . '/services.xrds.php');
  
-require_once(INC."oauth-php/library/OAuthServer.php");
-
-// Create a new instance of OAuthStore and OAuthServer
-$store = OAuthStore::instance(config("dbtype"), array('conn' => getVar("sql")->GetLink()));
-$server = new OAuthServer();
+$oauth = new OAuthHelper();
 ?>

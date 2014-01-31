@@ -24,9 +24,9 @@
 require_once 'global.php';
 
 $authorized = false;
-$server = new OAuthServer();
+
 try {
-    if ($server->verifyIfSigned()) {
+    if ($oauth->GetServer()->verifyIfSigned()) {
         $authorized = true;
     }
 } catch (OAuthException2 $e) {

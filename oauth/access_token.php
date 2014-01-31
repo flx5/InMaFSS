@@ -1,4 +1,5 @@
 <?php
 require_once 'global.php';
-$server->accessToken();
+/* @var $oauth OAuthHelper */
+$oauth->GetServer()->accessToken();
 ?>

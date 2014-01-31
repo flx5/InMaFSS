@@ -24,10 +24,17 @@
     <div class="round" style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
         <h2><?php lang()->loc('title'); ?></h2>
         <div class="inner">
+            <?php
+                $oauth = new OAuthHelper();
+                
+                if(isset($_GET['del'])) {
+                    $oauth->GetStore()->deleteConsumer($_GET['del'], USER_ID);
+                }
+            ?>
             <table width="100%" border="1">
                 <tr><th width="10%"><?php lang()->loc('id'); ?></th><th><?php lang()->loc('application_title'); ?></th><th><?php lang()->loc('application_desc'); ?></th><th colspan="2" width="30%" ><?php lang()->loc('options'); ?></th></tr>
                 <?php
-                $oauth = new OAuthHelper();
+                
                 $apps = $oauth->GetStore()->listConsumers(USER_ID);
                 foreach ($apps as $app) {
                     echo '<tr><td>' . $app['id'] . '</td><td>' . $app['application_title'] . '</td><td>' . $app['application_descr'] . '</td></td>';
