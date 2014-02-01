@@ -28,15 +28,17 @@ if (!LOGGED_IN && !defined('LOGIN')) {
     exit;
 }
 
-getVar("tpl")->registerStandard('admin', function($tpl) { 
-            $tpl->addCSS(WWW . '/css/manage.css');
+function AdminRegisterStandard($tpl) {
+    $tpl->addCSS(WWW . '/css/manage.css');
 
-            if (LOGGED_IN) {
-                $tpl->addTemplate('clock');
-                $tpl->addTemplate('manage/admin_header');
-                $tpl->addTemplate('manage/menu');
-            }
-        });
+    if (LOGGED_IN) {
+        $tpl->addTemplate('clock');
+        $tpl->addTemplate('manage/admin_header');
+        $tpl->addTemplate('manage/menu');
+    }
+}
+
+getVar("tpl")->registerStandard('admin', 'AdminRegisterStandard');
 
 lang()->add('admin');
 ?>

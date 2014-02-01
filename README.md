@@ -12,6 +12,11 @@ This is why InMaFSS is aimed to process most data upon the server and only give 
 
 Currently I'm developing upon a new REST-API, so I recommend against using the current API as it won't be supported for long anymore. Please also  consider that the new API will use OAuth1.0a to authenticate single users in order to make it possible to get only user-related substitutions.
 
+Requirements
+------------
++ >= PHP 5.2.3
++ mysql/mysqli
+
 Libraries
 ---------
 

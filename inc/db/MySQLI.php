@@ -51,7 +51,7 @@ class _MySQLI extends SQL {
     public function Connect() {
         $this->link = @new mysqli($this->hostname, $this->username, $this->password, $this->database);
 
-        if (PHP_VERSION_ID < 50300) {
+        if (version_compare(PHP_VERSION, '5.0.0') < 0) {
             $err = mysqli_connect_error();
         } else {
             $err = $this->link->connect_error;

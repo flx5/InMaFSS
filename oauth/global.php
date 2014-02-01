@@ -27,7 +27,9 @@ header('X-XRDS-Location: ' . WWW . '/services.xrds.php');
  
 $oauth = new OAuthHelper();
 
-getVar("tpl")->registerStandard('oauth', function($tpl) { 
+function OauthRegisterStandard($tpl) { 
     $tpl->addCSS(WWW . '/oauth/css/oauth.css');
-})
+};
+
+getVar("tpl")->registerStandard('oauth', 'OauthRegisterStandard')
 ?>
