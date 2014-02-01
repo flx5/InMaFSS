@@ -23,7 +23,7 @@
 
 require_once(dirname(__FILE__)."/global.php");
 
-require_once(INC."api.php");
+require_once(INC."class.api.php");
 
 $key = null;
 

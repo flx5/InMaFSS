@@ -1,7 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . '/../global.php');
-require_once(INC . "view.php");
+require_once(INC . "class.view.php");
 
 class API {
 

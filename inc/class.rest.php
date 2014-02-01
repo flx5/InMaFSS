@@ -1,5 +1,5 @@
 <?php
-require_once(realpath(dirname(__FILE__))."/HTTPStatus.php");
+require_once(realpath(dirname(__FILE__))."/class.HTTPStatus.php");
 
 class Rest {
     /**

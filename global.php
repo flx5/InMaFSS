@@ -54,16 +54,16 @@ if (!file_exists(CWD . "inc/config.php") && file_exists(CWD . "install.php")) {
     exit;
 }
 
-require_once(INC."variables.php");
+require_once(INC."class.variables.php");
 require_once(INC."class.config.php");
-require_once(INC."core.php");
-require_once(INC."sql.php");
-require_once(INC."lang.php");
-require_once(INC."tpl.php");
-require_once(INC."update.php");
-require_once(INC."plugin.php");
-require_once(INC."parse.php");
-require_once(INC."OAuthHelper.php");
+require_once(INC."class.core.php");
+require_once(INC."class.sql.php");
+require_once(INC."class.lang.php");
+require_once(INC."class.tpl.php");
+require_once(INC."class.update.php");
+require_once(INC."class.plugin.php");
+require_once(INC."class.parse.php");
+require_once(INC."class.OAuthHelper.php");
 
 core::MagicQuotesCompability();
 

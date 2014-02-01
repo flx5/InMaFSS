@@ -1,7 +1,6 @@
 <?php
 class Controller_Hello extends RestController {
         public function isAuthorized() {
-            OAuthHelper::GetServer();
             return true;
         }
     

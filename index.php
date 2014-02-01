@@ -46,7 +46,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     $size = $_GET['size'];
     $limit = floor(($size-50 ) / 25) - 4;
 
-    require_once("inc/view.php");
+    require_once(INC."class.view.php");
 
     $left = getVar("tpl")->getTemplate('plan/plan');
     $left->setVar('site', 'left');
