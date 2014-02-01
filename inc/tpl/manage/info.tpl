@@ -26,7 +26,7 @@ lang()->add('info');
     <h2>Information</h2>
     <div class="inner">
         <?php
-        require_once("../inc/view.php");
+        require_once(INC."class.view.php");
         $left = new view('left', 100);
         $today['repl_count'] = count($left->GetReplacements());
 
