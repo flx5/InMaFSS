@@ -24,8 +24,8 @@
 class core {
 
     public static function GetVersion() {
-        if (file_exists(CWD . "version.php")) {
-            include(CWD . "version.php");
+        if (file_exists(INC . "version.php")) {
+            include(INC . "version.php");
             if (isset($version)) {
                 return $version;
             }

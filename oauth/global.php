@@ -26,4 +26,8 @@ require_once(dirname(__FILE__)."/../global.php");
 header('X-XRDS-Location: ' . WWW . '/services.xrds.php');
  
 $oauth = new OAuthHelper();
+
+getVar("tpl")->registerStandard('oauth', function($tpl) { 
+    $tpl->addCSS(WWW . '/oauth/css/oauth.css');
+})
 ?>

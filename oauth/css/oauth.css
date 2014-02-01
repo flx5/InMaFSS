@@ -19,13 +19,6 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-html, body {
- margin:0;
- font-family: Arial,Verdana,Helvetica,sans-serif,serif;
- padding:0;
- height:100%;
-}
-
 #header {
     width:100%;
     height:50px;

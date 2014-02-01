@@ -77,6 +77,10 @@ switch ($key) {
         $loc['cache.warning'] = 'ACHTUNG: DIES IST EINE ZWISCHENGESPEICHERTE ANSICHT';
         break;
 
+    case 'index':
+        $loc['title'] = "Willkommen";
+        break;
+    
     case 'errors':
         $loc['too.small'] = 'FEHLER: Ihr Bildschirm ist zu klein!';
         $loc['no.js'] = 'FEHLER: Ihr Browser unterst&uuml;tzt kein JavaScript.';

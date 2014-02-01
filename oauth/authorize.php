@@ -28,6 +28,9 @@ if(!LOGGED_IN) {
 }
 
 getVar('tpl')->Init("TEST");
+getVar('tpl')->AddStandards("oauth");
+
+getVar('tpl')->AddTemplate('oauth/header');
 
 if(isset($_GET['scope']))
 {
@@ -68,11 +71,12 @@ try
 }
 catch (OAuthException2 $e)
 {
-    echo $e->getMessage();
+    getVar('tpl')->Write($e->getMessage());
     // No token to be verified in the request, show a page where the user can enter the token to be verified
     // **your code here**
 }
 
 getVar('tpl')->AddTemplate('oauth/authorize');
+getVar('tpl')->AddTemplate('oauth/footer');
 getVar('tpl')->Output();
 ?>

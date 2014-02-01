@@ -31,11 +31,11 @@ lang()->add('home');
 
 $limit = $_GET['limit'];
 
-require_once("inc/view.php");
+require_once(INC."class.view.php");
 
 $data = Array();
 
-$left = getVar("tpl")->getTemplate('plan');
+$left = getVar("tpl")->getTemplate('plan/plan');
 $left->setVar('site', 'left');
 $view_left = new view('left', $limit);
 $view_left->type = (isset($_GET['teacher']) ? 1 : 0);
@@ -43,7 +43,7 @@ $left->setVar('view', $view_left);
 
 $data['left'] = $left->GetHtml();
 
-$right = getVar("tpl")->getTemplate('plan');
+$right = getVar("tpl")->getTemplate('plan/plan');
 $right->setVar('site', 'right');
 $view_right = new view('right', $limit);
 $view_right->type = (isset($_GET['teacher']) ? 1 : 0);
@@ -52,7 +52,7 @@ $right->setVar('view', $view_right);
 $data['right'] = $right->GetHtml();
 
 getVar("tpl")->Write('<div id="footer">');
-$footer = getVar("tpl")->getTemplate('footer');
+$footer = getVar("tpl")->getTemplate('plan/footer');
 
 if(!isset($_GET['teacher'])) {
     $footer->setVar('view_left', $view_left);

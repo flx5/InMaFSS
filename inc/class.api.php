@@ -129,14 +129,6 @@ class API {
     }
 
     function CheckAuth($api) {
-
-        if (isset($this->data['licence'])) {
-            if (strpos(file_get_contents("http://licence.flx5.com/inmafss.php?ver=" . getVersion() . "&licence=" . $_GET['licence']), "OK") !== false) {
-                $this->permissions = Array("all");
-                return true;
-            }
-        }
-
         $api = filter($api);
         $sql = dbquery("SELECT permissions FROM api WHERE apikey = '" . $api . "'");
 

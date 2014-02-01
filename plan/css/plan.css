@@ -1,4 +1,3 @@
-<?php
 /*=================================================================================*\
 |* This file is part of InMaFSS                                                    *|
 |* InMaFSS - INformation MAnagement for School Systems - Keep yourself up to date! *|
@@ -20,13 +19,75 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
+.bar {
+   width:100%;
+   background-color:#808080;
+   height:30px;
+   color:#fff;
+   font-size:16pt;
+   text-align:center;
+}
 
-require_once("global.php");
+.copyright {
+    position: absolute;
+    bottom:35px;
+    color:#888;
+    font-size: 15px;
+    width:100%;
+    text-align: center;
+    z-index:-1;
+    height:17px;
+}
 
-lang()->add('index');
+.main {
+   width:50%;
+   top:32px;
+   bottom:30px;
+   position:absolute;
+   text-align:center;
+}
 
-getVar("tpl")->Init(lang()->loc('title',false));
-getVar("tpl")->addCSS(WWW.'/css/index.css');
-getVar("tpl")->addTemplate('index');
-getVar("tpl")->Output();
-?>
+.main th
+{
+  color:#cccccc;
+  background-color:#004488;
+  font-family:"trebuchet ms", verdana, arial, sans-serif;
+}
+
+.main td
+{
+  background-color:#c0c0e0;
+  font-family:"trebuchet ms", verdana, arial, sans-serif;
+  padding:3px;
+}
+
+.main tr {
+  height:25px;
+  color:#004060;
+}
+
+.tomorrow tr {
+  color:#CCCCCC;
+}
+
+.tomorrow th {
+  color:#CCCCCC;
+  background-color: #43886F;
+}
+
+.tomorrow td {
+  background-color:#A5CDCD;
+  color: #2C5E4C;
+}
+
+.update td {
+  color:#ff0000;
+}
+
+a {
+   color:#fff;
+}
+
+#header_cached {
+    display: none; 
+}

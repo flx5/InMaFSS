@@ -1,28 +1,3 @@
-document.cookie = "TEST=YES";
-
-if(!document.cookie && location.search.indexOf("cookies=no") == -1) {
-    var new_location = ""+window.location;
-    if(new_location.indexOf("?") > -1) {
-        new_location = new_location+"&cookies=no";
-    } else {
-        new_location = new_location+"?cookies=no";
-    }
-    window.location = new_location;
-}
-
-if(document.cookie && location.search != "" && location.search.indexOf("cookies=no") > -1) {
-    var new_location = ""+window.location;
-
-    if(location.search == "?cookies=no") {
-        new_location = new_location.replace("?cookies=no","");
-    }
-
-    new_location = new_location.replace("&cookies=no","");
-    new_location = new_location.replace("?cookies=no&","?");
-
-    window.location = new_location;
-}
-
 function SetHeight() {
     if(location.search.indexOf("size=") == -1) {
         var new_location = ""+window.location;
@@ -58,8 +33,8 @@ var ajaxDataAvail = {
 };
 var ajaxData = null;
 
-// 1 Second is enougth as we have to wait 2 rounds until the Data is visible => Time for an update = PageCount*time*2+updateTime
-var updateTimeAjax = 1;
+// This time is also the time the page gets displayed at minimum without reloading
+var updateTimeAjax = 60;
 var updateTimeReload = 60;
 
 var mIsTeacher = false;

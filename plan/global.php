@@ -20,13 +20,10 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
+require_once(realpath(dirname(__FILE__))."/../global.php");
 
-require_once("global.php");
-
-lang()->add('index');
-
-getVar("tpl")->Init(lang()->loc('title',false));
-getVar("tpl")->addCSS(WWW.'/css/index.css');
-getVar("tpl")->addTemplate('index');
-getVar("tpl")->Output();
+getVar("tpl")->registerStandard('plan', function($tpl) { 
+    $tpl->addCSS(WWW . '/plan/css/plan.css');
+    $tpl->addJS(WWW . "/plan/plan.js");
+})
 ?>

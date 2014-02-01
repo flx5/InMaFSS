@@ -29,7 +29,7 @@ getVar("tpl")->Init(lang()->loc('title', false));
 getVar("tpl")->addStandards('plan');
 getVar("tpl")->addTemplate('clock');
 getVar("tpl")->addTemplate('plan/header');
-getVar("tpl")->addHeader('<link rel="stylesheet" type="text/css" href="' . WWW . '/teacher.css">');
+getVar("tpl")->addHeader('<link rel="stylesheet" type="text/css" href="' . WWW . '/plan/css/teacher.css">');
 
 getVar("tpl")->Write('<div class="main" id="plan_left" style="border-right:0px solid black;" >');
 if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {

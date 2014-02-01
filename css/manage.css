@@ -1,0 +1,188 @@
+.login {
+   width:400px;
+   height:300px;
+   top:50%;
+   left:50%;
+   margin-top:-150px;
+   margin-left:-200px;
+   text-align:center;
+   position:absolute;
+   border:1px solid black;
+   background-color:#DADADA;
+}
+
+a {
+    color: #fff;
+}
+
+.admin_bar {
+    border-bottom:2px solid black;
+}
+
+.dropdown {
+   position:relative;
+   z-index:10;
+   float:right;
+   padding-right:5px;
+   padding-left:5px;
+   background-color:#6F6F6F;
+   height:100%;
+   overflow: hidden;
+   text-align: center;
+   
+   background: #6f6f6f;
+   background: -moz-linear-gradient(left, #808080 0%, #5f5f5f 50%);
+   background: -webkit-gradient(linear, left top, right top, color-stop(0%,#808080), color-stop(50%,#5f5f5f));
+   background: -webkit-linear-gradient(left, #808080 0%,#5f5f5f 50%);
+   background: -o-linear-gradient(left, #808080 0%,#5f5f5f 50%);
+   background: -ms-linear-gradient(left, #808080 0%,#5f5f5f 50%);
+   background: linear-gradient(to right, #808080 0%,#5f5f5f 50%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#808080', endColorstr='#5f5f5f',GradientType=1 );
+}
+
+.dropdown:hover {
+   height:100px;
+   border-bottom-right-radius: 15px;
+   border-bottom-left-radius: 15px;
+}
+
+.menu {
+   float:left;
+   background: #0080ff;
+   background: -moz-linear-gradient(top, #0080ff 0%, #0000ff 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0080ff), color-stop(100%,#0000ff));
+   background: -webkit-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -o-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -ms-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: linear-gradient(to bottom, #0080ff 0%,#0000ff 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0080ff', endColorstr='#0000ff',GradientType=0 );
+   position:absolute;
+   bottom:0px;
+   top:50px;
+   width:200px;
+   text-align:center;
+   color:#fff;
+   border-right: 3px solid black;
+   border-top: 3px solid black;
+   border-top-right-radius: 20px;
+   z-index: 2;
+}
+
+.menu a {
+   display:block;
+   padding:2px;
+   font-size:20px;
+}
+
+.menu a:hover {
+   background-color:#0030DD;
+}
+
+.menu a:active {
+   background-color:#fff;
+}
+
+.selected {
+    pointer-events: none;
+    cursor: default;
+    background-color: #0070DD;
+}
+
+.content {
+   position:absolute;
+   left:200px;
+   top:32px;
+   right:0px;
+   bottom:0px;
+   background-color:#fff;
+   overflow: auto;
+}
+
+.content a {
+    color: #000;
+}
+
+.content .inner {
+    padding: 5px;
+}
+
+.content > div.round, .admincols > div.round {
+   border: 3px solid black !important;
+   border-radius: 20px;
+   overflow: hidden;
+   padding-bottom: 10px;
+   text-align:center;
+}
+
+.content > div.round > h2, .admincols > div.round > h2 {
+   border-top-left-radius: 17px;
+   border-top-right-radius: 17px;
+   background: #0080ff;
+   background: -moz-linear-gradient(top, #0080ff 0%, #0000ff 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0080ff), color-stop(100%,#0000ff));
+   background: -webkit-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -o-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: -ms-linear-gradient(top, #0080ff 0%,#0000ff 100%);
+   background: linear-gradient(to bottom, #0080ff 0%,#0000ff 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0080ff', endColorstr='#0000ff',GradientType=0 );
+   color: #fff;
+}
+
+.admincols {
+   position:absolute;
+   width:50%;
+   background-color:#fff;
+   bottom:0px;
+   top:70px;
+   text-align:center;
+}
+
+.admincols a {
+   color:#000;
+}
+
+.admincols li {
+   list-style-type:none;
+}
+
+h2 {
+   color:#000;
+   background-color: #0080FF;
+   margin-top:0px;
+   text-align:center;
+   padding:5px;
+}
+
+#progress {
+   width:0%;
+   left:0px;
+   background-color:#00ff00;
+   text-align:center;
+   height:40px;
+}
+
+#progress_bg {
+   width:90%;
+   background-color:#C0C0C0;
+   height:40px;
+   margin:50px auto;
+}
+
+#progress_content {
+   width:100%;
+   background:transparent;
+   text-align:center;
+   font-size:30px;
+   height:40px;
+   position:relative;
+   top:-40px;
+}
+
+.status_ok {
+    background-color: #00ff00;
+    padding:5px;
+    margin:10px;
+    border-radius:15px;
+    text-align: center;
+    font-weight: bold;
+}

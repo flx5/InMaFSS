@@ -26,6 +26,7 @@ class tpl {
     var $content;
     var $headers;
     var $params;
+    private $standards = Array();
 
     public function Init($title) {
         $this->content = '';
@@ -33,29 +34,20 @@ class tpl {
             '<title>InMaFSS // ' . $title . '</title>',
             '<meta http-equiv="content-type" content="text/html; charset=UTF-8">'
         );
+        
+        $this->addCSS(WWW . '/css/main.css');
 
-        $this->params = Array('username' => USERNAME);
+        $this->params = Array('username' => USERNAME, "www"=>WWW);
+    }
+    
+    public function registerStandard($page, $callback) {
+        $this->standards[$page] = $callback;
     }
 
     public function addStandards($page) {
-        switch ($page) {
-            case 'plan':
-                $this->addCSS(WWW . '/css/main.css');
-                $this->addJS(WWW . "/main.js");
-                break;
-            case 'admin':
-                $this->addCSS(WWW . '/css/main.css');
-
-                if (LOGGED_IN) {
-                    $this->addTemplate('clock');
-                    $this->addTemplate('manage/admin_header');
-                    $this->addTemplate('manage/menu');
-                }
-                break;
-            case 'oauth':
-                $this->addCSS(WWW . '/css/oauth.css');
-                break;
-        }
+        
+        if(isset($this->standards[$page])) 
+            $this->standards[$page]($this);
     }
 
     public function addTemplate($name) {
@@ -99,7 +91,7 @@ class tpl {
             $header .= $head . "\n";
         }
 
-        $output .= "<!-- InMaFSS Version: " . core::GetVersion() . " -->\n";
+        $output .= "<!-- InMaFSS Version: " . core::getVersion() . " -->\n";
 
         $output .= "<html>\n<head>\n" . $header . "\n</head>\n<body>\n" . $this->content . "\n</body>\n</html>";
 
@@ -129,7 +121,7 @@ class Template {
         $this->vars[$name] = $value;
     }
 
-    public function GetHtml() {
+    public function GetHtml() { 
         $file = CWD . 'inc/tpl/' . $this->tplName . '.tpl';
 
         if (!file_exists($file)) {

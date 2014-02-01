@@ -31,8 +31,13 @@ $www = "http";
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
     $www .= "s";
 
-$www .= "://".$_SERVER['SERVER_NAME'] .$_SERVER['REQUEST_URI'];
-$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))).basename(dirname(__FILE__));
+$req = $_SERVER['REQUEST_URI'];
+if(strpos($req, "?") !== false) {
+    $req = substr($req, 0, strpos($req, "?"));
+}
+
+$www .= "://".$_SERVER['SERVER_NAME'] .$req; 
+$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))).basename(dirname(__FILE__)); 
 define('WWW', $www);
 
 #register_shutdown_function('Shutdown');
@@ -146,13 +151,7 @@ function setVar($var, $val) {
 }
 
 function setPlugin($val, $actor) {
-    global $vars;
     vars::get()->setPlugin($val, $actor);
-}
-
-function getVersion() {
-    include("inc/version.php");
-    return $version;
 }
 
 function error_handler($errno, $errstr, $errfile, $errline) {
