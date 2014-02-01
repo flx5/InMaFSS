@@ -28,14 +28,13 @@ lang()->add('date');
 getVar("tpl")->Init(lang()->loc('page',false));
 getVar("tpl")->addStandards('admin');
 
-getVar("tpl")->addHeader('<script type="text/javascript" src="./tiny_mce/tiny_mce.js" ></script>');
+getVar("tpl")->addJS('./tinymce/tinymce.min.js');
 getVar("tpl")->addHeader('<script type="text/javascript" >
 tinyMCE.init({
         mode : "textareas",
-        theme : "advanced",
+        theme : "modern",
         language  : "'.lang()->info('lang.short',false).'",
-        plugins : "emotions,spellchecker,advhr,insertdatetime,preview",
-
+        plugins : "emoticons,hr,insertdatetime,preview",
         // Theme options - button# indicated the row# only
         theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect",
         theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,|,code,preview,|,forecolor,backcolor",
