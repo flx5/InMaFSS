@@ -22,10 +22,9 @@
 
 require_once(realpath(dirname(__FILE__))."/../global.php");
 
-function PlanRegisterStandard($tpl) { 
-    $tpl->addCSS(WWW . '/plan/css/plan.css');
-    $tpl->addJS(WWW . "/plan/plan.js");
+function UserRegisterStandard($tpl) {
+   
 }
 
-getVar("tpl")->registerStandard('plan', 'PlanRegisterStandard');
+getVar("tpl")->registerStandard('user', 'UserRegisterStandard');
 ?>
