@@ -23,7 +23,10 @@
 
 
 require_once(dirname(__FILE__) . "/../global.php");
-if (!LOGGED_IN && !defined('LOGIN')) {
+
+$auth = Authorization::GenerateInstance('DB');
+
+if ((!LOGGED_IN || !$auth->HasFuse('manage')) && !defined('LOGIN')) {
     header("Location: " . WWW . "/manage");
     exit;
 }
@@ -31,7 +34,9 @@ if (!LOGGED_IN && !defined('LOGIN')) {
 function AdminRegisterStandard($tpl) {
     $tpl->addCSS(WWW . '/css/manage.css');
 
-    if (LOGGED_IN) {
+    global $auth;
+    
+    if (LOGGED_IN && $auth->HasFuse('manage')) {
         $tpl->addTemplate('clock');
         $tpl->addTemplate('manage/admin_header');
         $tpl->addTemplate('manage/menu');

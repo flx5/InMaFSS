@@ -1,5 +1,6 @@
 <?php
 require_once(realpath(dirname(__FILE__))."/class.HTTPStatus.php");
+require_once(realpath(dirname(__FILE__))."/class.scope.php");
 
 class Rest {
     /**
@@ -210,6 +211,10 @@ abstract class RestController {
     
     public function isAuthorized() {
         return true;
+    }
+    
+    public function RequiredScope() {
+        return Scope::BASIC;
     }
 
     public function GET() {

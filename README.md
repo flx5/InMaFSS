@@ -17,6 +17,25 @@ Requirements
 + >= PHP 5.2.3
 + mysql/mysqli
 
+Installation of OAuth
+------------
+- First we have to install some requirements. This can be done on Ubuntu with a command like this:
+
+`apt-get install libpcre3-dev`
+
+- Then we can install the oauth extension itself:
+
+`pecl install oauth`
+
+On Windows you can obtain a copy of a working DLL from [here](http://pecl.php.net/package/oauth).
+
+
+Now on LINUX AND WINDOWS check your php.ini file.
+
+Search for a line containing `extension=oauth`.
+If it starts with a `;` remove that to uncomment the line.
+If you can't find the line add it in the section where all the other extensions are placed.
+
 Libraries
 ---------
 

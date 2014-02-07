@@ -24,7 +24,10 @@
 define('LOGIN', true);
 require_once("global.php");
 
-if (LOGGED_IN) {
+$auth = Authorization::GenerateInstance('DB');
+/* @var $auth DB_Auth */
+
+if ($auth->IsLoggedIn() && $auth->HasFuse('manage')) {
     header("Location: admin.php");
     exit;
 }
@@ -37,24 +40,23 @@ getVar("tpl")->Init(lang()->loc('title', false));
 getVar("tpl")->addStandards('admin');
 getVar("tpl")->setParam('error', '');
 
-if (isset($_POST['usr']) && isset($_POST['pwd'])) { 
+if (isset($_POST['usr']) && isset($_POST['pwd'])) {
     if (!isset($_COOKIE['test'])) {
         getVar("tpl")->addTemplate('manage/no_cookies');
     } else {
 
-        $usr = filter($_POST['usr']);
-        $pwd = filter($_POST['pwd']);
-        $pwd = getVar("core")->generatePW($usr, $pwd);
+        $usr = $_POST['usr'];
+        $pwd = $_POST['pwd'];
 
-        $sql = dbquery("SELECT id FROM users WHERE username = '" . $usr . "' AND password = '" . $pwd . "' LIMIT 1");
-        if ($sql->count() == 0) {
-            getVar("tpl")->setParam('error', '<font color="#FF0000">' . lang()->loc('wrong', false) . '</font><br><br>');
+        if ($auth->Login($usr, $pwd)) {
+            if ($auth->HasFuse('manage')) {
+                header("Location: admin.php");
+                exit;
+            } else {
+                getVar("tpl")->setParam('error', '<font color="#FF0000">' . lang()->loc('no.fuse', false) . '</font><br><br>');
+            }
         } else {
-            $_SESSION['user'] = $usr;
-            $_SESSION['userID'] = $sql->result();
-            $_SESSION['timestamp'] = time();
-            header("Location: admin.php");
-            exit;
+            getVar("tpl")->setParam('error', '<font color="#FF0000">' . lang()->loc('wrong', false) . '</font><br><br>');
         }
     }
 }

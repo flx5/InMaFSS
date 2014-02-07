@@ -28,16 +28,16 @@ define('PLUGIN_DIR', CWD . DS . "plugins" . DS);
 
 $www = "http";
 
-if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
     $www .= "s";
 
 $req = $_SERVER['REQUEST_URI'];
-if(strpos($req, "?") !== false) {
+if (strpos($req, "?") !== false) {
     $req = substr($req, 0, strpos($req, "?"));
 }
 
-$www .= "://".$_SERVER['SERVER_NAME'] .$req; 
-$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))).basename(dirname(__FILE__)); 
+$www .= "://" . $_SERVER['SERVER_NAME'] . $req;
+$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))) . basename(dirname(__FILE__));
 define('WWW', $www);
 
 #register_shutdown_function('Shutdown');
@@ -47,7 +47,7 @@ date_default_timezone_set('Europe/Berlin');
 header('Content-Type: text/html');
 
 if (file_exists(CWD . "install.php") && file_exists(CWD . "inc/config.php")) {
-   # die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
+    # die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
 }
 
 if (!file_exists(CWD . "inc/config.php") && !file_exists(CWD . "install.php")) {
@@ -59,16 +59,17 @@ if (!file_exists(CWD . "inc/config.php") && file_exists(CWD . "install.php")) {
     exit;
 }
 
-require_once(INC."class.variables.php");
-require_once(INC."class.config.php");
-require_once(INC."class.core.php");
-require_once(INC."class.sql.php");
-require_once(INC."class.lang.php");
-require_once(INC."class.tpl.php");
-require_once(INC."class.update.php");
-require_once(INC."class.plugin.php");
-require_once(INC."class.parse.php");
-require_once(INC."class.OAuthHelper.php");
+require_once(INC . "class.variables.php");
+require_once(INC . "class.config.php");
+require_once(INC . "class.core.php");
+require_once(INC . "class.sql.php");
+require_once(INC . "class.lang.php");
+require_once(INC . "class.tpl.php");
+require_once(INC . "class.update.php");
+require_once(INC . "class.plugin.php");
+require_once(INC . "class.parse.php");
+require_once(INC . "class.OAuthHelper.php");
+require_once(INC . "class.authorize.php");
 
 core::MagicQuotesCompability();
 
@@ -84,13 +85,14 @@ $vars->Set("lang", new lang($config->Get("lang")));
 getVar("pluginManager")->Init();
 getVar("update")->Init();
 
-
 session_start();
 
-if (isset($_SESSION['user']) && isset($_SESSION['timestamp']) && isset($_SESSION['userID'])) {
+
+$user = Authorization::IsLoggedIn();
+if ($user != NULL) {
     define('LOGGED_IN', true);
-    define('USERNAME', $_SESSION['user']);
-    define('USER_ID', $_SESSION['userID']);
+    define('USERNAME', $user['name']);
+    define('USER_ID', $user['id']);
 } else {
     define('LOGGED_IN', false);
     define('USERNAME', 'GUEST');
@@ -123,12 +125,13 @@ function config($var) {
 }
 
 class vars {
+
     private static $vars;
 
     public static function Init($vars) {
         self::$vars = $vars;
     }
-    
+
     public static function getVar($var) {
         return self::$vars->Get($var);
     }
@@ -136,10 +139,11 @@ class vars {
     public static function setVar($var, $val) {
         self::$vars->Set($var, $val);
     }
-    
+
     public static function get() {
         return self::$vars;
     }
+
 }
 
 function getVar($var) {
@@ -167,6 +171,18 @@ function Shutdown() {
         ob_end_clean();
         core::SystemError($error['message'], ' in ' . $error['file'] . ' on line ' . $error['line']);
     }
+}
+
+function findFirstLetter($str) {
+    $i = 0;
+    while ($i < strlen($str)) {
+        if (ctype_alpha($str[$i]))
+            return $i;
+
+        $i++;
+    }
+
+    return false;
 }
 
 ?>

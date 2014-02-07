@@ -80,7 +80,7 @@ switch ($key) {
     case 'index':
         $loc['title'] = "Willkommen";
         break;
-    
+
     case 'errors':
         $loc['too.small'] = 'FEHLER: Ihr Bildschirm ist zu klein!';
         $loc['no.js'] = 'FEHLER: Ihr Browser unterst&uuml;tzt kein JavaScript.';
@@ -95,6 +95,7 @@ switch ($key) {
         $loc['username'] = 'Nutzername';
         $loc['password'] = 'Passwort';
         $loc['wrong'] = 'Der Nutzername/das Passwort stimmt nicht.';
+        $loc['no.fuse'] = 'Du hast keine Berechtigung f&uuml;r diesen Bereich.';
         $loc['welcome'] = 'Willkommen, %username%';
         $loc['back.to.home'] = 'Zur&uuml;ck zur Hauptseite';
         $loc['logout'] = 'Abmelden';
@@ -208,7 +209,7 @@ switch ($key) {
         $loc['save'] = 'Speichern';
         $loc['saved'] = 'Speichern erfolgreich';
         $loc['no.settings.found'] = 'Etwas lief schief: Es konnten keine Einstellungen gefunden werden! Bitte installieren sie das System neu!';
-       
+
         $loc['schoolname'] = 'Name der Schule';
         $loc['system'] = 'Vertretungsplansystem';
         $loc['lang'] = 'Sprache';
@@ -222,7 +223,7 @@ switch ($key) {
         $loc['ftp_path'] = 'Pfad zu InMaFSS auf dem FTP Server';
         $loc['useMarquee'] = 'Nutze den Marquee Befehl und nicht das Bl&auml;ttern beim Ticker <br>(HTML Standard unterstützt Marquee offiziell NICHT!)';
         break;
-    
+
     case 'date':
         $loc['january'] = 'Januar';
         $loc['february'] = 'Februar';
@@ -270,7 +271,7 @@ switch ($key) {
         $loc['save'] = 'Speichern';
         $loc['name.too.short'] = 'Der Name ist zu kurz!';
         $loc['api.too.short'] = 'Der API Key ist zu kurz!';
-        
+
         $loc['permissions'] = 'Rechte';
         $loc['replacements_all'] = 'Alle Vertretungen anzeigen (Sch&uuml;ler)';
         $loc['replacements'] = 'Eigene Vertretungen anzeigen (Sch&uuml;ler)';
@@ -283,9 +284,9 @@ switch ($key) {
         $loc['del.rly'] = 'Den API-Key mit der ID %id% wirklich l&ouml;schen?';
         $loc['abort'] = 'Abbrechen';
         $loc['deleted'] = 'Der API-Key mit der ID %id% wurde gel&ouml;scht.';
-        $loc['not.found'] = 'Der API-Key existiert nicht.';     
+        $loc['not.found'] = 'Der API-Key existiert nicht.';
         break;
-    
+
     case 'oauth':
         $loc['title'] = "OAuth";
         $loc['id'] = "ID";
@@ -301,6 +302,17 @@ switch ($key) {
         $loc['edit'] = "Bearbeiten";
         $loc['delete'] = "L&ouml;schen";
         $loc['name.too.short'] = 'Der Anwendungsname muss mindestens 3 Zeichen haben.';
+        break;
+
+    case 'user':
+        $loc['title'] = 'Nutzerbereich';
+        $loc['login'] = 'Login';
+        $loc['username'] = 'Nutzername';
+        $loc['password'] = 'Passwort';
+        $loc['wrong'] = 'Der Nutzername/das Passwort stimmt nicht.';
+        $loc['welcome'] = 'Willkommen, %username%';
+        $loc['back.to.home'] = 'Zur&uuml;ck zur Hauptseite';
+        $loc['logout'] = 'Abmelden';
         break;
 }
 ?>

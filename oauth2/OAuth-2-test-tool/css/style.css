@@ -1,0 +1,43 @@
+body {
+	padding-top: 70px;
+	padding-bottom: 40px;
+}
+
+.page-header {
+	border: 0;
+	margin-top: 0;
+	margin-bottom: 10px;
+	padding :0;
+}
+
+.page-header h1 {
+    border: 0;
+}
+
+form {
+	margin: 0;
+}
+
+.form-actions {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.uneditable-input {
+	cursor: inherit;
+}
+
+.input-xlarge {
+	width: 80%;
+}
+
+pre {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.anchor {
+	position: relative;
+	top: -75px;
+}

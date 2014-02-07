@@ -46,6 +46,9 @@ class View {
 
     public function CreateTables() {
 
+        lang()->add('home');
+        lang()->add('date');
+        
         $spalten_t = config("spalten_t");
 
         foreach ($this->replacements as $ti => $table) {
