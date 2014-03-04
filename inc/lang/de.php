@@ -161,6 +161,8 @@ switch ($key) {
         $loc['file.upload'] = 'W&auml;hlen sie die Datei zum Import';
         $loc['success'] = 'Import erfolgreich abgeschlossen!';
         $loc['upload'] = 'Hochladen';
+        $loc['mensa'] = 'Mensa';
+        $loc['plan'] = 'Vertretungsplan';
         break;
 
     case 'pages':

@@ -30,14 +30,6 @@ class DB_Auth extends Authorization {
                 return true;
         }
     }
-
-    public function GetClasses() {
-        return Array();
-    }
-
-    public function GetDisplayName() {
-        return $this->username;
-    }
 }
 
 ?>

@@ -22,13 +22,8 @@
 
    lang()->add('date');
 
-
-    $view->AddRepacements();
-    $view->CreateTables();
-    $view->GetPages();
-
-    $menu = $view->CreateMenu();
-    $content = $view->GenerateContent();
+    $menu = $view->GetMenu();
+    $content = $view->GetContent();
 
 if($content == "") {
     echo '<div style="height:80px; width:90%; background-color:#C0C0C0; padding:5px; margin:auto; margin-top:40%;"><h1>'.lang()->loc('empty', false).'</h1></div>';

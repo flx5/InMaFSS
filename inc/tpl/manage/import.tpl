@@ -27,6 +27,10 @@
 <form enctype="multipart/form-data" action="" method="POST">
 <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
 <?php lang()->loc('file.upload'); ?>: <input name="uploadedfile" type="file" /><br />  <br />
+<select name="type">
+    <option value="plan" selected="selected"><?php lang()->loc('plan'); ?></option>
+    <option value="mensa"><?php lang()->loc('mensa'); ?></option>
+</select>
 <input type="submit" value="<?php lang()->loc('upload'); ?>" />
 </form>
 </div>

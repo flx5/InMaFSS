@@ -26,22 +26,15 @@ lang()->add('info');
     <h2>Information</h2>
     <div class="inner">
         <?php
-        require_once(INC."class.view.php");
-        $left = new view('left', 100);
+        require_once(INC."class.replacements.php");
+        $left = new Replacements(ReplacementsTypes::PUPIL, 'today');
         $today['repl_count'] = count($left->GetReplacements());
 
-        $right = new view('right', 100);
+        $right = new Replacements(ReplacementsTypes::PUPIL, 'tomorrow');
         $nextday['repl_count'] = count($right->GetReplacements());
 
-        $right->GetPages();
-        $left->GetPages();
-
-
-        $left1 = dbquery("SELECT null FROM  replacements WHERE timestamp >= " . gmmktime(0, 0, 0) . " AND timestamp <= " . gmmktime(23, 59, 59, date("n"), date("j")))->count();
-        $right1 = dbquery("SELECT null FROM  replacements WHERE timestamp >= " . gmmktime(0, 0, 0, date("n"), date("j") + 1) . " AND timestamp <= " . gmmktime(23, 59, 59, date("n"), date("j") + 1))->count();
-
-        $left2 = dbquery("SELECT null FROM pages WHERE timestamp_end >= " . gmmktime(0, 0, 0, date("n"), date("j")) . " AND timestamp_from <= " . gmmktime(0, 0, 0, date("n"), date("j") + 1))->count();
-        $right2 = dbquery("SELECT null FROM  pages WHERE timestamp_end >= " . gmmktime(0, 0, 0, date("n"), date("j") + 1) . " AND timestamp_from <= " . gmmktime(0, 0, 0, date("n"), date("j") + 2))->count();
+        $nextday['pageCount'] = count($right->GetPages());
+        $today['pageCount'] = count($left->GetPages());
 
         echo '<b>' . lang()->loc('today', false) . '</b><br>';
 
@@ -54,11 +47,11 @@ lang()->add('info');
             echo '<br>';
         }
 
-        if (count($left->pages) == 0) {
+        if ($today['pageCount'] == 0) {
             lang()->loc('no.page');
             echo "<br>";
         } else {
-            echo count($left->pages) . ' ';
+            echo $today['pageCount'] . ' ';
             lang()->loc('pages');
             echo '<br>';
         }
@@ -74,11 +67,11 @@ lang()->add('info');
             echo '<br>';
         }
 
-        if (count($right->pages) == 0) {
+        if ($today['pageCount'] == 0) {
             lang()->loc('no.page');
             echo "<br>";
         } else {
-            echo count($right->pages) . ' ';
+            echo $today['pageCount'] . ' ';
             lang()->loc('pages');
             echo '<br>';
         }

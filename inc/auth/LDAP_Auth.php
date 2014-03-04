@@ -1,5 +1,4 @@
 <?php
-
 class LDAP_Auth extends Authorization {
 
     var $ldaphost = "ldaps://10.16.1.1/";  // your ldap servers
@@ -25,14 +24,6 @@ class LDAP_Auth extends Authorization {
         return false;
     }
 
-    public function GetClasses() {
-        return Array();
-    }
-
-    public function GetDisplayName() {
-        return $this->displayName;
-    }
-
     public function Login($username, $password) {
         $password = $this->filter($password);
 
@@ -43,7 +34,23 @@ class LDAP_Auth extends Authorization {
                 $this->displayName = $user['display_name'];
                 $this->groups = $user['groups'];
                 
-                $this->SetSession($username, $user['id'], "LDAP");
+                $user['isTeacher'] = false;
+                
+                foreach($user['groups'] as $k=>$grade) {
+                    if($grade == "teachers") {
+                        unset($user['groups'][$k]);
+                        $user['isTeacher'] = true;
+                        continue;
+                    }
+                        
+                    
+                    if($grade == "12q" || $grade == "11q") {
+                        $gN = substr($grade, 0, 2);
+                        $user['groups'][$k] = 'Q'.$gN;
+                    }
+                }
+                
+                $this->SetSession($username, $user['id'], "LDAP", $user['groups'], ($user['isTeacher'] ? ReplacementsTypes::TEACHER : ReplacementsTypes::PUPIL), $user['display_name']);
                 
                 return true;
             }
@@ -51,7 +58,7 @@ class LDAP_Auth extends Authorization {
         return false;
     }
 
-    public function getUserData($username) {
+    private function getUserData($username) {
         $username = $this->filter($username);
         // limit attributes we want to look for
         $attributes_ad = array("givenName", "sn", "uid", "uidNumber", "displayName", "gidnumber");

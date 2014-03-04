@@ -1,39 +1,40 @@
 <?php
-
+require_once INC.'class.replacements.php';
 class View {
 
-    var $replacements = Array();
-    var $site;
-    var $limit;
-    var $menu = Array();
-    var $pages = Array();
-    var $type = 0;  // 0 Pupils ; 1 teachers
-    var $tfrom = null;
+    private $replacements = Array();
+    private $site;
+    private $limit;
+    private $pages = Array();
+    private $type = 0;  // 0 Pupils ; 1 teachers
+    
+    private $ReplacementHelper;
 
-    public function View($site, $limit) {
+    public function View($site, $limit, $type = ReplacementsTypes::PUPIL) {
         $this->site = $site;
         $this->limit = $limit;
+        $this->type = $type;
+        
+        $day = ($site == "left" ? 'today' : 'tomorrow');
+        
+        $this->ReplacementHelper = new Replacements($type, $day);
+        $this->AddRepacements();
+        $this->CreateTables();
+        $this->GetPages();
     }
 
-    public function GetLastUpdate() {
-        $last_update = 0;
-        foreach ($this->replacements as $table) {
-            foreach ($table as $grade) {
-                foreach ($grade as $val) {
-                    if ($last_update < $val['timestamp_update']) {
-                        $last_update = $val['timestamp_update'];
-                    }
-                }
-            }
-        }
-        return $last_update;
-    }
-
-    public function AddRepacements() {
+    private function AddRepacements() {
         $p = 0;
         $i = -1;
 
-        foreach ($this->GetReplacements() as $k => $grade) {
+        $replacements = $this->ReplacementHelper->GetReplacements();
+        if($this->type == ReplacementsTypes::TEACHER)
+        { 
+            // Adding two arrays is working thanks to overloaded operators (http://www.techfounder.net/2008/07/08/operator-overloading-in-php/)
+            $replacements = $this->ReplacementHelper->GetOthers() + $replacements;
+        }
+      
+        foreach ($replacements as $k => $grade) {
             if (($i + count($grade)) > $this->limit || $i == -1) {
                 $p++;
                 $i = 0;
@@ -44,11 +45,11 @@ class View {
         }
     }
 
-    public function CreateTables() {
+    private function CreateTables() {
 
         lang()->add('home');
         lang()->add('date');
-        
+
         $spalten_t = config("spalten_t");
 
         foreach ($this->replacements as $ti => $table) {
@@ -178,7 +179,7 @@ class View {
         $spalten = config("spalten");
 
         $output = '<tr><th colspan="6" >';
-        $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->GetTFrom()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->GetTFrom()) . '</span>';
+        $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->ReplacementHelper->GetDate()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
         $output .= '</th></tr>';
         $output .= '<tr><th width="' . $spalten[0] . '">' . lang()->loc('grade', false) . '</th><th width="' . $spalten[1] . '">' . lang()->loc('teacher.short', false) . '</th><th width="' . $spalten[2] . '">' . lang()->loc('lesson.short', false) . '</th><th width="' . $spalten[3] . '">' . lang()->loc('replaced.by', false) . '</th><th width="' . $spalten[4] . '">' . lang()->loc('room', false) . '</th><th width="' . $spalten[5] . '">' . lang()->loc('comment', false) . '</th></tr>';
@@ -187,13 +188,23 @@ class View {
 
     private function CreateTeacherTableHeader() {
         $output = '<tr><th colspan="6" >';
-        $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->GetTFrom()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->GetTFrom()) . '</span>';
+        $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->ReplacementHelper->GetDate()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
         $output .= '</th></tr>';
         return $output;
     }
 
-    public function CreateMenu() {
+    private function GetLastUpdate() {
+        $last = -1;
+        foreach($this->replacements as $replacements) {
+            $tmp = $this->ReplacementHelper->GetLastUpdate($replacements);
+            if($last < $tmp)
+                $last = $tmp;
+        }
+        return $last;
+    }
+    
+    public function GetMenu() {
         $menu = "";
         foreach ($this->pages as $i => $page) {
             $menu .= '<span id="info_' . $this->site . '_' . $i . '" style="color:#';
@@ -210,89 +221,7 @@ class View {
         return $menu;
     }
 
-    private function my_sort($a, $b) {
-
-        if ($a['lesson'] == $b['lesson']) {
-            return 0;
-        }
-
-        if ($a['lesson'] == 'M' && $b['lesson'] > 6) {
-            return -1;
-        }
-
-        if ($b['lesson'] == 'M' && $a['lesson'] > 6) {
-            return 1;
-        }
-
-        if ($a['lesson'] == 'M' && $b['lesson'] <= 6) {
-            return 1;
-        }
-
-        if ($b['lesson'] == 'M' && $a['lesson'] <= 6) {
-            return -1;
-        }
-        return ($a['lesson'] < $b['lesson']) ? -1 : 1;
-    }
-
-    public function GetReplacements() {
-        $where = "timestamp >= " . $this->GetTFrom() . " AND timestamp <= " . gmmktime(23, 59, 59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()), date("Y", $this->GetTFrom()));
-
-        $content = Array();
-
-        if ($this->type == 1) {
-
-            $sql = dbquery("SElECT * FROM others WHERE " . $where . " ORDER BY type, id");
-
-            while ($data = $sql->fetchAssoc()) {
-                $content[$data['type']][] = $data;
-            }
-
-            $sql = dbquery("SElECT * FROM teacher_substitude WHERE " . $where . " ORDER BY id");
-
-            while ($data = $sql->fetchAssoc()) {
-                $content[$data['short']][] = $data;
-            }
-
-            return $content;
-        }
-
-        $sql = dbquery("SElECT * FROM replacements WHERE " . $where . " AND grade != 0 ORDER BY CAST(grade AS SIGNED) , grade_pre, grade_last, lesson");
-        $sql2 = dbquery("SElECT * FROM replacements WHERE " . $where . " AND grade = 0 ORDER BY grade_pre, grade_last, lesson");
-
-        while ($data = $sql->fetchAssoc()) {
-            $content[$data['grade_pre'] . $data['grade'] . $data['grade_last']][] = $data;
-        }
-        while ($data = $sql2->fetchAssoc()) {
-            $content[$data['grade_pre'] . $data['grade_last']][] = $data;
-        }
-
-        foreach ($content as $k => $lessons) {
-            usort($lessons, Array($this, 'my_sort'));
-            $content[$k] = $lessons;
-        }
-
-        return $content;
-    }
-
-    public function GetPages() {
-        $where = "timestamp_from <= " . $this->GetTFrom() . " AND timestamp_end >= " . gmmktime(23, 59, 59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()), date("Y", $this->GetTFrom()));
-
-        if ($this->type == 1) {
-            $where .= " AND teachers = 1";
-        }
-
-        if ($this->type == 0) {
-            $where .= " AND pupils = 1";
-        }
-
-        $sql = dbquery("SELECT * FROM pages WHERE " . $where . " ORDER BY order_num,id ASC");
-
-        while ($page = $sql->fetchArray()) {
-            $this->AddPage($page['title'], $page['content']);
-        }
-    }
-
-    public function GenerateContent() {
+    public function GetContent() {
         $output = "";
         foreach ($this->pages as $i => $page) {
             $output .= '<div id="plan_' . $this->site . '_' . $i . '" style="' . (($i != 0) ? 'display:none;' : '') . '">';
@@ -301,57 +230,19 @@ class View {
         }
         return $output;
     }
+    
+    private function GetPages() {
+        $pages = $this->ReplacementHelper->GetPages();
+        foreach($pages as $page)
+            $this->AddPage($page['title'], $page['content']);
+    }
 
     public function AddPage($title, $content) {
         $this->pages[] = Array('title' => $title, 'content' => $content);
     }
-
-    private function GetTFrom() {
-        if ($this->tfrom != null) {
-            return $this->tfrom;
-        }
-
-        if ($this->site == 'left') {
-            $tfrom = gmmktime(0, 0, 0);
-        } else {
-            $tfrom = self::GetNextDay();
-        }
-
-        $this->tfrom = $tfrom;
-        return $tfrom;
-    }
-
-    public static function GetNextDay() {
-        $tfrom = gmmktime(0, 0, 0, date("n"), date("j") + 1);
-
-        do {
-            $remWeekend = self::RemoveWeekend($tfrom);
-            $tfrom = $remWeekend;
-            getVar("pluginManager")->ExecuteEvent("generate_tfrom_right", $tfrom);
-        } while ($tfrom != $remWeekend);
-        
-        return $tfrom;
-    }
-
-    private static function RemoveWeekend($tfrom) {
-        if (date("w", $tfrom) == 6) {
-            $tfrom = $tfrom + 2 * 24 * 60 * 60;
-        } elseif (date("w", $tfrom) == 0) {
-            $tfrom = $tfrom + 1 * 24 * 60 * 60;
-        }
-
-        return $tfrom;
-    }
-
+    
     public function GetTickers() {
-        $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '" . gmmktime(23, 59, 59, date("n", $this->GetTFrom()), date("j", $this->GetTFrom()), date("Y", $this->GetTFrom())) . "' AND to_stamp > '" . $this->GetTFrom() . "' ORDER BY to_stamp, `order`");
-        $tickers = Array();
-        while ($ticker = $sql->fetchObject()) {
-            $tickers[] = Array('day' => $ticker->from_stamp, 'content' => $ticker->value, 'automatic' => $ticker->automatic);
-        }
-        return $tickers;
+        return $this->ReplacementHelper->GetTickers();
     }
-
 }
-
 ?>

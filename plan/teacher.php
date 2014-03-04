@@ -50,8 +50,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 
     $left = getVar("tpl")->getTemplate('plan/plan');
     $left->setVar('site', 'left');
-    $view_left = new view('left', $limit);
-    $view_left->type = 1;
+    $view_left = new view('left', $limit, ReplacementsTypes::TEACHER);
     $left->setVar('view', $view_left);
     getVar("tpl")->addTemplateClass($left);
     getVar("tpl")->Write('</div>');
@@ -59,8 +58,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     getVar("tpl")->Write('<div class="main tomorrow" id="plan_right" style="right:0px; border-left:0px solid black;" >');
     $right = getVar("tpl")->getTemplate('plan/plan');
     $right->setVar('site', 'right');
-    $view_right = new view('right', $limit);
-    $view_right->type = 1;
+    $view_right = new view('right', $limit, ReplacementsTypes::TEACHER);
     $right->setVar('view', $view_right);
     getVar("tpl")->addTemplateClass($right);
     getVar("tpl")->Write('</div>');

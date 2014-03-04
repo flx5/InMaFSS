@@ -84,6 +84,25 @@ class core {
         }
     }
 
+    public static function String2Grade($gradeString) {
+        $grade = Array('prefix' => '', 'num' => '', 'suffix' => '');
+
+        for ($i = 0; $i < strlen($gradeString); $i++) { 
+            if ($grade['suffix'] == '' && is_numeric($gradeString[$i])) {
+                $grade['num'] .= $gradeString[$i];
+            } else {
+                if ($grade['num'] == "") {
+                    $grade['prefix'] .= $gradeString[$i];
+                } else {
+                    $grade['suffix'] .= $gradeString[$i];
+                }
+            }
+        }
+        
+        $grade['num'] = (int)$grade['num'];
+        return $grade;
+    }
+
     function FormatJson($json) {
 
         $result = '';

@@ -70,29 +70,15 @@ class parse {
 
                foreach($replacements as $k=>$grade) {
                     foreach($grade as $data) {
-                           $pre = "";
-                           $k1 = "";
-                           $last = "";
-
-                           for($i = 0; $i<strlen($k);$i++) {
-                                 if(is_numeric($k[$i]) && $last == "") {
-                                    $k1 .= $k[$i];
-                                 } else {
-                                    if($k1 == "") {
-                                      $pre .= $k[$i];
-                                    } else {
-                                      $last .= $k[$i];
-                                    }
-                                 }
-                           }
-
+                           $gradeData = Core::String2Grade($k);
+                           
                             if(!in_array($data['stamp_for'], $stamps)) {
                               dbquery("DELETE FROM replacements WHERE timestamp = '".$data['stamp_for']."'");
                             }
 
                             $stamps[] = $data['stamp_for'];
 
-                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, comment, timestamp, timestamp_update, addition) VALUES ('".$pre."', '".$k1."','".$last."','".$data['lesson']."','".filter($data['teacher'])."','".filter($data['replacement'])."', '".filter($data['room'])."', '".filter($data['hint'])."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
+                           dbquery("INSERT INTO replacements (grade_pre, grade, grade_last, lesson, teacher, replacement, room, comment, timestamp, timestamp_update, addition) VALUES ('".$gradeData['prefix']."', '".$gradeData['num']."','".$gradeData['suffix']."','".$data['lesson']."','".filter($data['teacher'])."','".filter($data['replacement'])."', '".filter($data['room'])."', '".filter($data['hint'])."', '".$data['stamp_for']."','".$data['stamp_update']."', '".$data['addition']."')");
                     }
                }
             }

@@ -90,6 +90,7 @@
                                 default:
                                     echo "UNKOWN: " . $field['type'];
                                     break;
+                                case 'mediumtext':
                                 case 'varchar':
                                 case 'text':
                                 case 'int':
