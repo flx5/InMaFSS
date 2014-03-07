@@ -34,6 +34,14 @@ class core {
         return null;
     }
 
+    public static function GetDay($timestamp) {
+        $engDay = gmdate("D", $timestamp);
+        $engDay = strtolower(substr($engDay, 0, 2));
+        lang()->add('date');
+        $localDay = lang()->loc($engDay, false);
+        return $localDay;
+    }
+    
     public static function SystemError($title, $text) {
 
         if (!in_array("Content-Type: text/html", headers_list())) {

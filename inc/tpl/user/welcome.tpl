@@ -21,7 +21,7 @@ $tickers = Array();
     <div style="width:33%;" class="space_wrapper">
         <div class="row_entry_wrapper">
             <div id="information" class="row_entry">
-                <h2>Informationen</h2>
+                <h2><?php lang()->loc('information'); ?></h2>
                 <table width="100%">
                     <?php
                     $odd_even = true;
@@ -42,7 +42,7 @@ $tickers = Array();
     <div style="width:50%;" class="space_wrapper">
         <div class="row_entry_wrapper">
             <div id="mensa" class="row_entry" > 
-                <h2>Mensa</h2>
+                <h2><?php lang()->loc('mensa'); ?></h2>
                 <?php
 // Defining gmmktime with date command to ensure the usage of the correct date (Could be a problem between 0 and 1 o'clock at UTC+1 i.e.
                 $sql = dbquery("SELECT * FROM mensa WHERE day >= " . gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) . " AND day <= " . (gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) + 7 * 24 * 3600));
@@ -54,9 +54,9 @@ $tickers = Array();
                         $day['menu1'] = '&nbsp;';
 
                     echo '<div class="mensa_entry">';
-                    echo '<div class="day_header">' . gmdate("D, d.M.Y", $day['day']) . '</div>';
-                    echo '<div class="menu_entry_left"><h3>MENU 1</h3>' . $day['menu1'] . '</div>';
-                    echo '<div class="menu_entry_right"><h3>MENU 2</h3>' . $day['menu2'] . '</div>';
+                    echo '<div class="day_header">' . core::GetDay($day['day']). ', '. gmdate("d.M.Y", $day['day']) . '</div>';
+                    echo '<div class="menu_entry_left"><h3>' . lang()->loc('menu', false) . ' 1</h3>' . $day['menu1'] . '</div>';
+                    echo '<div class="menu_entry_right"><h3>' . lang()->loc('menu', false) . ' 2</h3>' . $day['menu2'] . '</div>';
                     echo '</div><br>';
                 }
                 ?>
@@ -71,7 +71,7 @@ $tickers = Array();
                 $sql = dbquery("SELECT * FROM events WHERE startdate >= " . gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) . " AND startdate <= " . (gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) + 7 * 24 * 3600));
                 while ($day = $sql->fetchAssoc()) {
                     echo '<div class="appointments_entry">';
-                    echo '<div class="day_header">' . gmdate("D, d.M.Y", $day['startdate']) . '</div>';
+                    echo '<div class="day_header">' . core::GetDay($day['startdate']). ', '. gmdate("d.M.Y", $day['startdate']) . '</div>';
                     echo '<div class="appointments_data">' . $day['content'] . '</div>';
                     echo '</div><br>';
                 }
@@ -86,7 +86,7 @@ function GenerateTable($tickers, $day) {
     $replacements = new Replacements(Authorization::GetUserType('LDAP'), $day);
     $tickers = $replacements->MergeTickers($tickers, $replacements->GetTickers());
 
-    echo '<h2>' . gmdate("D, d. M Y", $replacements->GetDate()) . '</h2>';
+    echo '<h2>' .  core::GetDay($replacements->GetDate()). ', '. gmdate("d.M.Y", $replacements->GetDate()). '</h2>';
 
     if (Authorization::GetUserType('LDAP') == ReplacementsTypes::TEACHER) {
         $data = $replacements->GetReplacements(

@@ -315,6 +315,11 @@ switch ($key) {
         $loc['wrong'] = 'Der Nutzername/das Passwort stimmt nicht.';
         $loc['welcome'] = 'Willkommen, %displayname%';
         $loc['logout'] = 'Abmelden';
+        $loc['home'] = 'Home';
+        $loc['settings'] = 'Einstellungen';
+        $loc['information'] = "Informationen";
+        $loc['mensa'] = "Informationen";
+        $loc['menu'] = "Men&uuml;";
         break;
 }
 ?>

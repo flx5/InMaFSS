@@ -48,7 +48,6 @@ class View {
     private function CreateTables() {
 
         lang()->add('home');
-        lang()->add('date');
 
         $spalten_t = config("spalten_t");
 
@@ -179,7 +178,7 @@ class View {
         $spalten = config("spalten");
 
         $output = '<tr><th colspan="6" >';
-        $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->ReplacementHelper->GetDate()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
+        $output .= '<span style="float:left;" >' . core::GetDay($this->ReplacementHelper->GetDate()). ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
         $output .= '</th></tr>';
         $output .= '<tr><th width="' . $spalten[0] . '">' . lang()->loc('grade', false) . '</th><th width="' . $spalten[1] . '">' . lang()->loc('teacher.short', false) . '</th><th width="' . $spalten[2] . '">' . lang()->loc('lesson.short', false) . '</th><th width="' . $spalten[3] . '">' . lang()->loc('replaced.by', false) . '</th><th width="' . $spalten[4] . '">' . lang()->loc('room', false) . '</th><th width="' . $spalten[5] . '">' . lang()->loc('comment', false) . '</th></tr>';
