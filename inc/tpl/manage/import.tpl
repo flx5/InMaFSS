@@ -23,7 +23,7 @@
 <div class="content">
 <div class="round" style="width:90%; border:2px solid black; margin:5px auto; margin-top:20px; text-align:center;">
 <h2><?php lang()->loc('title'); ?></h2>
-<font color="#00FF00" size="+1">%msg%</font><br>
+<font color="#%msg_color%" size="+1">%msg%</font><br>
 <form enctype="multipart/form-data" action="" method="POST">
 <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
 <?php lang()->loc('file.upload'); ?>: <input name="uploadedfile" type="file" /><br />  <br />

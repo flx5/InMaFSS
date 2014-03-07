@@ -1,6 +1,6 @@
 <?php
 require_once(INC . 'class.replacements.php');
-
+lang()->loc('welcome');
 $tickers = Array();
 ?>
 <div class="row" id="row1">

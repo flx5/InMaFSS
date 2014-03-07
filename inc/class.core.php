@@ -84,10 +84,44 @@ class core {
         }
     }
 
+    public static function UploadCodeToMessage($code) {
+        switch ($code) {
+            case UPLOAD_ERR_OK:
+                return null;
+                break;
+            case UPLOAD_ERR_INI_SIZE:
+                $message = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+                break;
+            case UPLOAD_ERR_FORM_SIZE:
+                $message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                $message = "The uploaded file was only partially uploaded";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                $message = "No file was uploaded";
+                break;
+            case UPLOAD_ERR_NO_TMP_DIR:
+                $message = "Missing a temporary folder";
+                break;
+            case UPLOAD_ERR_CANT_WRITE:
+                $message = "Failed to write file to disk";
+                break;
+            case UPLOAD_ERR_EXTENSION:
+                $message = "File upload stopped by extension";
+                break;
+
+            default:
+                $message = "Unknown upload error";
+                break;
+        }
+        return $message;
+    }
+
     public static function String2Grade($gradeString) {
         $grade = Array('prefix' => '', 'num' => '', 'suffix' => '');
 
-        for ($i = 0; $i < strlen($gradeString); $i++) { 
+        for ($i = 0; $i < strlen($gradeString); $i++) {
             if ($grade['suffix'] == '' && is_numeric($gradeString[$i])) {
                 $grade['num'] .= $gradeString[$i];
             } else {
@@ -98,8 +132,8 @@ class core {
                 }
             }
         }
-        
-        $grade['num'] = (int)$grade['num'];
+
+        $grade['num'] = (int) $grade['num'];
         return $grade;
     }
 

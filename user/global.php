@@ -28,10 +28,13 @@ function UserRegisterStandard($tpl) {
 
     $user = Authorization::IsLoggedIn('LDAP');
 
-    if ($user == null)
+    if ($user == null) {
         $tpl->setParam('username', 'GUEST');
-    else
+        $tpl->setParam('displayname', 'GUEST');
+    } else {
         $tpl->setParam('username', $user['name']);
+        $tpl->setParam('displayname', $user['displayName']);
+    }
 }
 
 getVar("tpl")->registerStandard('user', 'UserRegisterStandard');

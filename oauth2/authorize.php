@@ -52,6 +52,6 @@ if (!isset($_POST['authorized'])) {
 
 // print the authorization code if the user has authorized your client
 $is_authorized = ($_POST['authorized'] === 'yes');
-$server->handleAuthorizeRequest($request, $response, $is_authorized);
+$server->handleAuthorizeRequest($request, $response, $is_authorized, USER_ID);
 $response->send();
 ?>

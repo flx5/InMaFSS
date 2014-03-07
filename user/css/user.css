@@ -162,3 +162,24 @@
    border:1px solid black;
    background-color:#DADADA;
 }
+
+.settings {
+    text-align: center;
+}
+
+.settings .settings_region {
+    border: 1px solid black;
+    width:100%;
+    border-radius: 30px;
+}
+
+.settings .settings_region h2 {
+    background-color: #3359ab;
+    color:#fff;
+    display:block;
+    width:100%;
+    height:25px;
+    padding:10px 0;
+    margin:0 0 10px;
+    border-radius: 29px;
+}

@@ -48,7 +48,7 @@ abstract class Authorization {
 
     public static function IsLoggedIn($type = "DB") {
         if (isset($_SESSION[$type . '_user']) && isset($_SESSION[$type . '_timestamp']) && isset($_SESSION[$type . '_userID'])) {
-            return Array('id' => $_SESSION[$type . '_userID'], 'name' => $_SESSION[$type . '_user']);
+            return Array('id' => $_SESSION[$type . '_userID'], 'name' => $_SESSION[$type . '_user'], 'displayName' => $_SESSION[$type . '_displayName']);
         }
         return null;
     }

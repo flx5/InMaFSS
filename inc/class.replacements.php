@@ -56,7 +56,7 @@ class Replacements {
     }
 
     private function GetNextDay() {
-        $tfrom = gmmktime(0, 0, 0, date("n"), date("j") + 1);
+        $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"))+24*3600;
 
         do {
             $remWeekend = $this->RemoveWeekend($tfrom);
@@ -73,7 +73,7 @@ class Replacements {
         }
 
         if ($this->day == 'today') {
-            $tfrom = gmmktime(0, 0, 0);
+            $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"));
         } else {
             $tfrom = $this->GetNextDay();
         }

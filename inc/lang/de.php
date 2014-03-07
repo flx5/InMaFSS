@@ -160,6 +160,7 @@ switch ($key) {
         $loc['title'] = 'Importieren';
         $loc['file.upload'] = 'W&auml;hlen sie die Datei zum Import';
         $loc['success'] = 'Import erfolgreich abgeschlossen!';
+        $loc['parse.fail'] = 'Die Datei hatte das falsche Format.';
         $loc['upload'] = 'Hochladen';
         $loc['mensa'] = 'Mensa';
         $loc['plan'] = 'Vertretungsplan';
@@ -312,8 +313,7 @@ switch ($key) {
         $loc['username'] = 'Nutzername';
         $loc['password'] = 'Passwort';
         $loc['wrong'] = 'Der Nutzername/das Passwort stimmt nicht.';
-        $loc['welcome'] = 'Willkommen, %username%';
-        $loc['back.to.home'] = 'Zur&uuml;ck zur Hauptseite';
+        $loc['welcome'] = 'Willkommen, %displayname%';
         $loc['logout'] = 'Abmelden';
         break;
 }
