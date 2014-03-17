@@ -1,4 +1,5 @@
 <?php
+
 class LDAP_Auth extends Authorization {
 
     var $ldaphost = "ldaps://10.16.1.1/";  // your ldap servers
@@ -28,46 +29,40 @@ class LDAP_Auth extends Authorization {
     public function Login($username, $password) {
         $password = $this->filter($password);
 
-        $user = $this->getUserData($username);
+        $user = $this->getUserDataByName($username);
 
-        if($user != null) {
+        if ($user != null) {
             if (@ldap_bind($this->link, $user['dn'], $password) || $this->force_debug_login) {
                 $this->displayName = $user['display_name'];
                 $this->groups = $user['groups'];
-                
-                $user['isTeacher'] = false;
-                
-                foreach($user['groups'] as $k=>$grade) {
-                    if($grade == "teachers") {
-                        unset($user['groups'][$k]);
-                        $user['isTeacher'] = true;
-                        continue;
-                    }
-                        
-                    
-                    if($grade == "12q" || $grade == "11q") {
-                        $gN = substr($grade, 0, 2);
-                        $user['groups'][$k] = 'Q'.$gN;
-                    }
-                }
-                
-                $this->SetSession($username, $user['id'], "LDAP", $user['groups'], ($user['isTeacher'] ? ReplacementsTypes::TEACHER : ReplacementsTypes::PUPIL), $user['display_name']);
-                
+
+                $this->SetSession($username, $user['id'], "LDAP", $user['groups'], $user['type'], $user['display_name']);
+
                 return true;
             }
         }
         return false;
     }
 
-    private function getUserData($username) {
+    public function getUserDataByID($id) {
+        $id = $this->filter($id);
+        return $this->getUserData('uidNumber=' . $id);
+    }
+
+    public function getUserDataByName($username) {
         $username = $this->filter($username);
+        return $this->getUserData('uid=' . $username);
+    }
+
+    private function getUserData($filter) {
+
         // limit attributes we want to look for
         $attributes_ad = array("givenName", "sn", "uid", "uidNumber", "displayName", "gidnumber");
-        
-        $r = @ldap_search($this->link, $this->base_dn, 'uid=' . $username, $attributes_ad);
+
+        $r = @ldap_search($this->link, $this->base_dn, $filter, $attributes_ad);
 
         if ($r) {
-            $result = @ldap_get_entries($this->link, $r); 
+            $result = @ldap_get_entries($this->link, $r);
             if ($result['count'] == 1) {
                 $result = $result[0];
                 $user = Array();
@@ -78,10 +73,10 @@ class LDAP_Auth extends Authorization {
                 $user['dn'] = $result['dn'];
 
                 $user['groups'] = Array();
-                
+
                 $groups = $result['gidnumber'];
                 unset($groups['count']);
-                
+
                 foreach ($groups as $groupID) {
                     $group = $this->getGroupData($groupID);
                     $names = $group['displayname'];
@@ -89,7 +84,19 @@ class LDAP_Auth extends Authorization {
                     $user['groups'] = array_merge($user['groups'], $names);
                 }
 
-                
+                $user['type'] = ReplacementsTypes::PUPIL;
+
+                foreach ($user['groups'] as $k => $grade) {
+                    if ($grade == "teachers") {
+                        $user['type'] = ReplacementsTypes::TEACHER;
+                    }
+
+                    if ($grade == "12q" || $grade == "11q") {
+                        $gN = substr($grade, 0, 2);
+                        $user['groups'][$k] = 'Q' . $gN;
+                    }
+                }
+
                 return $user;
             }
         }

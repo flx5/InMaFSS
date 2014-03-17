@@ -3,8 +3,6 @@ if (!isset($_GET['key']) && !isset($_GET['new'])) {
     header("Location: oauth.php");
     exit;
 }
-
-$oauth = new OAuthHelper();
 ?>
 <div class="content">
     <div class="round" style="width:90%; margin:5px auto; margin-top:20px;">
@@ -16,8 +14,8 @@ $oauth = new OAuthHelper();
             $key = filter($_GET['key']);
         }
 
-        if (isset($_POST['application_title']) && isset($_POST['application_descr']) && isset($_POST['application_uri']) && isset($_POST['application_uri'])) {
-            $name = trim($_POST['application_title']);
+        if (isset($_POST['title']) && isset($_POST['callback_uri'])) {
+            $name = trim($_POST['title']);
 
             $error = Array();
 
@@ -25,20 +23,25 @@ $oauth = new OAuthHelper();
                 $error[] = lang()->loc('name.too.short', false);
             }
 
-            $_POST['requester_name'] = USERNAME;
-            $_POST['requester_email'] = "test@example.com";
-
             if (count($error) == 0) {
-                $store = $oauth->GetStore();
-                
-                $data = $oauth->GetStore()->getConsumer($key, USER_ID);
-                
-                foreach($data as $k=>$v) {
-                    if(isset($_POST[$k]))
-                        $data[$k] = $_POST[$k];
+
+                if (isset($_GET['new'])) {
+                    do {
+                        $entropy = openssl_random_pseudo_bytes(32);
+                        $entropy .= uniqid(mt_rand(), true);
+                        $hash = hash('sha512', $entropy);                      
+                        $key = substr($hash, 0, 64);
+                        $secret = substr($hash, 64, 128);
+
+                        $sql = dbquery("SELECT * FROM oauth_clients WHERE client_id = '" . filter($key) . "'");
+                    } while ($sql->count() != 0);
+
+                    dbquery("INSERT INTO oauth_clients (title, client_id, client_secret, redirect_uri, grant_types, scope, user_id) VALUES ('" . filter($_POST['title']) . "', '" . filter($key) . "', '" . filter($secret) . "', '" . filter($_POST['callback_uri']) . "', '','', " . USER_ID . ")");
+                    $lastID = getVar('sql')->insertID();
+
+                    header("Location: oauth_edit.php?key=" . $lastID);
+                    exit;
                 }
-                
-                $key = $store->updateConsumer($data, USER_ID);
             } else {
                 foreach ($error as $err) {
                     echo $err . '<br>';
@@ -47,37 +50,22 @@ $oauth = new OAuthHelper();
         }
 
         if (isset($_GET['new'])) {
-            $data = Array('id' => -1, 'application_title' => '', 'application_descr' => '', 'callback_uri' => '', 'application_uri' => '');
-            if (isset($_POST['application_title']))
+            $data = Array('client_id' => -1, 'title' => '', 'redirect_uri' => '');
+            if (isset($_POST['title']))
                 $data = array_merge($data, $_POST);
         } else {
-            $data = $oauth->GetStore()->getConsumer($key, USER_ID);
+            $sql = dbquery("SELECT * FROM oauth_clients WHERE client_id = '" . $key . "'");
+            $data = $sql->fetchAssoc();
         }
         ?>
         <form method="post" action="">
             <table style="margin:auto;">
                 <tr>
                     <td>
-                        <label for="application_title"><?php lang()->loc('application_title'); ?></label>
+                        <label for="title"><?php lang()->loc('application_title'); ?></label>
                     </td>
                     <td>
-                        <input size="100" type="text" id="application_title" name="application_title" value="<?php echo $data['application_title']; ?>">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="application_descr"><?php lang()->loc('application_desc'); ?></label>
-                    </td>
-                    <td>
-                        <textarea style="width:100%" id="application_desc" name="application_descr"><?php echo $data['application_descr']; ?></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="application_uri"><?php lang()->loc('application_uri'); ?></label>
-                    </td>
-                    <td>
-                        <input size="100" type="text" id="application_uri" name="application_uri" value="<?php echo $data['application_uri']; ?>">
+                        <input size="100" type="text" id="title" name="title" value="<?php echo $data['title']; ?>">
                     </td>
                 </tr>
                 <tr>
@@ -85,7 +73,7 @@ $oauth = new OAuthHelper();
                         <label for="callback_uri"><?php lang()->loc('callback_uri'); ?></label>
                     </td>
                     <td>
-                        <input size="100" type="text" id="callback_uri" name="callback_uri" value="<?php echo $data['callback_uri']; ?>">
+                        <input size="100" type="text" id="callback_uri" name="callback_uri" value="<?php echo $data['redirect_uri']; ?>">
                     </td>
                 </tr>
                 <tr>
@@ -110,16 +98,16 @@ $oauth = new OAuthHelper();
                         <td>
                             <label>Consumer Key</label>
                         </td>
-                        <td><?php echo $data['consumer_key']; ?></td>
+                        <td><?php echo $data['client_id']; ?></td>
                     </tr>
                     <tr>
                         <td>
                             <label>Consumer Secret</label>
                         </td>
-                        <td><?php echo $data['consumer_secret']; ?></td>
+                        <td><?php echo $data['client_secret']; ?></td>
                     </tr>            
                 </table>
             </div>
         </div>    
-    <?php } ?>
+<?php } ?>
 </div>

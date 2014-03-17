@@ -68,7 +68,6 @@ require_once(INC . "class.tpl.php");
 require_once(INC . "class.update.php");
 require_once(INC . "class.plugin.php");
 require_once(INC . "class.parse.php");
-require_once(INC . "class.OAuthHelper.php");
 require_once(INC . "class.authorize.php");
 
 core::MagicQuotesCompability();

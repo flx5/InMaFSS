@@ -7,6 +7,8 @@ class ReplacementsTypes {
 
 }
 
+require_once(INC.'class.time_helper.php');
+
 class Replacements {
 
     private $type;
@@ -26,7 +28,7 @@ class Replacements {
         $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '" . $this->tend . "' AND to_stamp > '" . $this->tfrom . "' ORDER BY to_stamp, `order`");
         $tickers = Array();
         while ($ticker = $sql->fetchObject()) {
-            $tickers[] = Array('day' => $ticker->from_stamp, 'content' => $ticker->value, 'automatic' => $ticker->automatic);
+            $tickers[] = Array('day' => (int)$ticker->from_stamp, 'content' => $ticker->value, 'automatic' => (bool)$ticker->automatic);
         }
         return $tickers;
     }
@@ -45,44 +47,8 @@ class Replacements {
         return (($a['day'] < $b['day']) ? -1 : 1);
     }
 
-    private function RemoveWeekend($tfrom) {
-        if (date("w", $tfrom) == 6) {
-            $tfrom = $tfrom + 2 * 24 * 60 * 60;
-        } elseif (date("w", $tfrom) == 0) {
-            $tfrom = $tfrom + 1 * 24 * 60 * 60;
-        }
-
-        return $tfrom;
-    }
-
-    private function GetNextDay() {
-        $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"))+24*3600;
-
-        do {
-            $remWeekend = $this->RemoveWeekend($tfrom);
-            $tfrom = $remWeekend;
-            getVar("pluginManager")->ExecuteEvent("generate_tfrom_next", $tfrom);
-        } while ($tfrom != $remWeekend);
-
-        return $tfrom;
-    }
-
     private function GetTFrom() {
-        if ($this->tfrom != null) {
-            return $this->tfrom;
-        }
-
-        if ($this->day == 'today') {
-            $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"));
-        } elseif($this->day == 'tomorrow') {
-            $tfrom = $this->GetNextDay();
-        } elseif(is_numeric($this->day))
-            $tfrom = $this->day;
-        else
-            throw new Exception("UNKNOWN DAY PARAMETER");
-
-        $this->tfrom = $tfrom;
-        return $tfrom;
+        return TimeHelper::GetTFrom($this->day);
     }
 
     public function GetOthers() {
@@ -92,7 +58,7 @@ class Replacements {
         
         $sql = dbquery("SElECT * FROM others WHERE " . $where . " ORDER BY type, id");
 
-        while ($data = $sql->fetchAssoc()) {
+        while ($data = $sql->fetchAssoc()) { 
             $content[$data['type']][] = $data;
         }
         return $content;

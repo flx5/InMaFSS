@@ -276,10 +276,12 @@ switch ($key) {
         $loc['api.too.short'] = 'Der API Key ist zu kurz!';
 
         $loc['permissions'] = 'Rechte';
-        $loc['replacements_all'] = 'Alle Vertretungen anzeigen (Sch&uuml;ler)';
-        $loc['replacements'] = 'Eigene Vertretungen anzeigen (Sch&uuml;ler)';
-        $loc['plan_update'] = 'Plan aktualisieren';
-        $loc['teacher_sub'] = 'Lehrervertretungsplan anzeigen';
+        
+        $loc['all_substitutions'] = 'Alle Vertretungen anzeigen (Sch&uuml;ler)';
+        $loc['substitutions'] = 'Eigene Vertretungen anzeigen';
+        $loc['update_substitutions'] = 'Plan aktualisieren';
+        $loc['teacher_plan_full'] = 'Alle Vertretungen anzeigen (Lehrer)';
+        $loc['basic'] = 'Basic';
         $loc['ticker'] = 'Ticker anzeigen';
         $loc['other'] = 'Andere Daten (Pausenaufsicht, Abwesenheit, etc.) anzeigen';
 
@@ -298,13 +300,13 @@ switch ($key) {
         $loc['consumer_secret'] = "Anwendungs-Geheimcode";
         $loc['callback_uri'] = "Callback URI";
         $loc['application_title'] = "Anwendungsname";
-        $loc['application_desc'] = "Beschreibung";
         $loc['options'] = "Optionen";
         $loc['new'] = "Neu";
         $loc['save'] = "Speichern";
         $loc['edit'] = "Bearbeiten";
         $loc['delete'] = "L&ouml;schen";
         $loc['name.too.short'] = 'Der Anwendungsname muss mindestens 3 Zeichen haben.';
+        $loc['consumer.exists'] = "Eine Anwendung mit diesem Namen ist bereits registeriert";
         break;
 
     case 'user':

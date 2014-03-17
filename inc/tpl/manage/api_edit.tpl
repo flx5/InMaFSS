@@ -20,14 +20,8 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-$permissionsAvail = Array(
-    'replacements_all',
-    'plan_update',
-    'replacements',
-    'other',
-    'teacher_sub',
-    'ticker'
-    );
+require_once(INC."class.scope_data.php");
+$permissionsAvail = ScopeData::GetScopes();
 ?>
 
 <div class="content">

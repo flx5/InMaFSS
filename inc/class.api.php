@@ -11,6 +11,8 @@ class APIErrorCodes {
     const PARAM_DAY_INVALID = 6;
     const UNKNOWN_USER_TYPE = 7;
     const INVALID_GROUP = 8;
+    const MISSING_FILE = 9;
+    const UPLOAD_FAILED = 10;
 
     private static $messages = Array(
         self::OK => '',
@@ -22,6 +24,8 @@ class APIErrorCodes {
         self::PARAM_DAY_INVALID => 'Invalid value for day parameter. Possible values are today|tomorrow|numeric',
         self::UNKNOWN_USER_TYPE => 'Unknown user type',
         self::INVALID_GROUP => 'Unknown group',
+        self::MISSING_FILE => 'Missing file',
+        self::UPLOAD_FAILED => 'Upload of file failed'
     );
     private static $httpStatus = Array(
         self::OK => HTTPStatus::_OK,
@@ -33,6 +37,8 @@ class APIErrorCodes {
         self::PARAM_DAY_INVALID => HTTPStatus::_BAD_REQUEST,
         self::UNKNOWN_USER_TYPE => HTTPStatus::_BAD_REQUEST,
         self::INVALID_GROUP => HTTPStatus::_BAD_REQUEST,
+        self::MISSING_FILE => HTTPStatus::_BAD_REQUEST,
+        self::UPLOAD_FAILED => HTTPStatus::_BAD_REQUEST
     );
 
     public static function GetError($ID) {

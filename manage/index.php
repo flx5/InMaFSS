@@ -26,7 +26,6 @@ require_once("global.php");
 
 $auth = Authorization::GenerateInstance('DB');
 /* @var $auth DB_Auth */
-
 if ($auth->IsLoggedIn() && $auth->HasFuse('manage')) {
     header("Location: admin.php");
     exit;

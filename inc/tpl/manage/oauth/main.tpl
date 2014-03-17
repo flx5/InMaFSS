@@ -25,23 +25,21 @@
         <h2><?php lang()->loc('title'); ?></h2>
         <div class="inner">
             <?php
-                $oauth = new OAuthHelper();
-                
                 if(isset($_GET['del'])) {
                     $oauth->GetStore()->deleteConsumer($_GET['del'], USER_ID);
                 }
             ?>
             <table width="100%" border="1">
-                <tr><th width="10%"><?php lang()->loc('id'); ?></th><th><?php lang()->loc('application_title'); ?></th><th><?php lang()->loc('application_desc'); ?></th><th colspan="2" width="30%" ><?php lang()->loc('options'); ?></th></tr>
+                <tr><th><?php lang()->loc('application_title'); ?></th><th colspan="2" width="30%" ><?php lang()->loc('options'); ?></th></tr>
                 <?php
                 
-                $apps = $oauth->GetStore()->listConsumers(USER_ID);
-                foreach ($apps as $app) {
-                    echo '<tr><td>' . $app['id'] . '</td><td>' . $app['application_title'] . '</td><td>' . $app['application_descr'] . '</td></td>';
-                    echo '<td><a href="oauth_edit.php?key=' . $app['consumer_key'] . '">' . lang()->loc('edit', false) . '</a></td><td><a href="?del=' . $app['consumer_key'] . '">' . lang()->loc('delete', false) . '</a></td></tr>';
+                $sql = dbquery("SELECT * FROM oauth_clients");
+                while($app = $sql->fetchAssoc()) {
+                    echo '<tr><td>' . $app['title'] . '</td></td>';
+                    echo '<td><a href="oauth_edit.php?key=' . $app['client_id'] . '">' . lang()->loc('edit', false) . '</a></td><td><a href="?del=' . $app['client_id'] . '">' . lang()->loc('delete', false) . '</a></td></tr>';
                 }
                 ?>
-                <tr><td></td><td></td><td></td><td colspan="2"><a href="oauth_edit.php?new"><?php lang()->loc('new'); ?></a></td></tr>
+                <tr><td></td><td colspan="2"><a href="oauth_edit.php?new"><?php lang()->loc('new'); ?></a></td></tr>
             </table>
         </div>
     </div>

@@ -9,6 +9,9 @@ abstract class Authorization {
     public abstract function Logout();
 
     public abstract function HasFuse($fuse);
+    
+    public abstract function getUserDataByID($id);
+    public abstract function getUserDataByName($username);
 
     public static function GetDisplayName($type = 'DB') {
         if (isset($_SESSION[$type . '_displayName']))

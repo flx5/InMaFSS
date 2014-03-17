@@ -5,6 +5,7 @@ require_once(realpath(__DIR__) . "/../oauth2/server.php");
 require_once(INC . "libs/Array2XML.php");
 require_once(INC . "class.api.php");
 require_once(INC . "libs/OAuthResponse.php");
+require_once(INC. "class.rest_util.php");
 
 class Rest {
 
@@ -170,7 +171,7 @@ class Rest {
 
         $reflection = new ReflectionClass('Controller_' . $this->endpoint);
 
-        $controller = $reflection->newInstance($this->args, $this->GetUserID());
+        $controller = $reflection->newInstance($this->args, $this->GetUserID(), $this->file);
         /* @var $controller RestController */
 
         if ($controller->RequiresVerb()) {
@@ -179,7 +180,7 @@ class Rest {
             }
         }
 
-        if (!$this->isAuthorized($controller->RequiredScope())) {
+        if (!$this->isAuthorized($controller->RequiredScope($this->method))) {
             $this->Error(APIErrorCodes::OAUTH_UNAUTHORIZED);
         }
 
@@ -188,7 +189,7 @@ class Rest {
         $this->Response($controller->GetResponse(), $controller->GetStatus());
     }
 
-    private function GetUserID() {
+    private function GetUserID() { 
         global $server; 
         $token = $server->getAccessTokenData(OAuth2_Request::createFromGlobals(), new OAuth2_Response()); 
         if($token == null)
@@ -198,6 +199,28 @@ class Rest {
     }
     
     private function isAuthorized($scope = null) {
+        if(isset($_GET['apikey']))
+            return $this->AuthorizeKey ($scope);
+       
+        return $this->AuthorizeOAUTH2 ($scope);
+    }
+    
+    private function AuthorizeKey($scope) {
+        if(!isset($_GET['apikey']))
+            return false;
+        
+        $key = $_GET['apikey'];
+        $sql = dbquery("SELECT permissions FROM api WHERE apikey = '".filter($key)."' LIMIT 1");
+        
+        if($sql->count() != 1)
+            return false;
+        
+        $permissions = explode("|", $sql->result());
+        
+        return in_array($scope, $permissions, true);
+    }
+    
+    private function AuthorizeOAUTH2($scope = null) {
         if($scope == null)
             $scope = Scope::BASIC;
         
@@ -251,12 +274,16 @@ abstract class RestController {
     protected $response;
     protected $responseStatus;
     protected $errors;
+    protected $file;
+    protected $user;
 
-    public function __construct($args) {
+    public function __construct($args, $user, $file) {
         $this->args = $args;
         $this->response = Array();
         $this->responseStatus = HTTPStatus::_OK;
         $this->errors = Array();
+        $this->file = $file; 
+        $this->user = $user;
     }
 
     public final function GetResponse() {
@@ -281,8 +308,8 @@ abstract class RestController {
         $this->AddError(APIErrorCodes::HTTP_METHOD_NOT_ALLOWED);
     }
 
-    public function RequiredScope() {
-        return Scope::BASIC;
+    public function RequiredScope($method) {
+        return ScopeData::BASIC;
     }
 
     public function GET() {

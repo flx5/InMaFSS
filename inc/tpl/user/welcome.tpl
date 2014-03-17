@@ -44,7 +44,7 @@ $tickers = Array();
             <div id="mensa" class="row_entry" > 
                 <h2><?php lang()->loc('mensa'); ?></h2>
                 <?php
-// Defining gmmktime with date command to ensure the usage of the correct date (Could be a problem between 0 and 1 o'clock at UTC+1 i.e.
+                // Defining gmmktime with date command to ensure the usage of the correct date (Could be a problem between 0 and 1 o'clock at UTC+1 i.e.
                 $sql = dbquery("SELECT * FROM mensa WHERE day >= " . gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) . " AND day <= " . (gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) + 7 * 24 * 3600));
                 while ($day = $sql->fetchAssoc()) {
                     if ($day['menu2'] == "")
