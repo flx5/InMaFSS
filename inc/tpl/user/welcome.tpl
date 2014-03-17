@@ -82,7 +82,7 @@ $tickers = Array();
 </div>
 <?php
 
-function GenerateTable($tickers, $day) {
+function GenerateTable(&$tickers, $day) {
     $replacements = new Replacements(Authorization::GetUserType('LDAP'), $day);
     $tickers = $replacements->MergeTickers($tickers, $replacements->GetTickers());
 

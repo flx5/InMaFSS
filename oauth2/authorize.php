@@ -41,7 +41,7 @@ if (!$server->validateAuthorizeRequest($request, $response)) {
     die;
 }
 // display an authorization form
-if (!isset($_POST['authorized'])) {
+if (!isset($_POST['authorized'])) { 
     exit('
 <form method="post">
   <label>Do You Authorize TestClient?</label><br />
@@ -52,6 +52,6 @@ if (!isset($_POST['authorized'])) {
 
 // print the authorization code if the user has authorized your client
 $is_authorized = ($_POST['authorized'] === 'yes');
-$server->handleAuthorizeRequest($request, $response, $is_authorized, USER_ID);
+$server->handleAuthorizeRequest($request, $response, $is_authorized, Authorization::GetUserID('LDAP'));
 $response->send();
 ?>

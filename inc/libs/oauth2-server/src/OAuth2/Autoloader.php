@@ -21,7 +21,7 @@ class OAuth2_Autoloader
      * Registers OAuth2_Autoloader as an SPL autoloader.
      */
     public static function register($dir = null)
-    { 
+    {  
         ini_set('unserialize_callback_func', 'spl_autoload_call'); 
         spl_autoload_register(array(new self($dir), 'autoload'));
     }
@@ -34,7 +34,7 @@ class OAuth2_Autoloader
      * @return boolean Returns true if the class has been loaded
      */
     public function autoload($class)
-    {
+    { 
         if (0 !== strpos($class, 'OAuth2')) {
             return;
         }

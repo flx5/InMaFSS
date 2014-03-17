@@ -14,7 +14,7 @@ class Replacements {
     private $tfrom;
     private $tend;
 
-    public function Replacements($type, $day) {
+    public function __construct($type, $day) {
         $this->type = $type;
         $this->day = $day;
 
@@ -74,9 +74,12 @@ class Replacements {
 
         if ($this->day == 'today') {
             $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"));
-        } else {
+        } elseif($this->day == 'tomorrow') {
             $tfrom = $this->GetNextDay();
-        }
+        } elseif(is_numeric($this->day))
+            $tfrom = $this->day;
+        else
+            throw new Exception("UNKNOWN DAY PARAMETER");
 
         $this->tfrom = $tfrom;
         return $tfrom;

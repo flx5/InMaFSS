@@ -30,6 +30,13 @@ abstract class Authorization {
 
         return ReplacementsTypes::PUPIL;
     }
+    
+    public static function GetUserID($type = 'DB') {
+        if (isset($_SESSION[$type . '_userID']))
+            return $_SESSION[$type . '_userID'];
+
+        return -1;
+    }
 
     protected final function SetSession($username, $userid, $type = "DB", $classes = Array(), $userType = ReplacementsTypes::PUPIL, $displayName = '') {
         $_SESSION[$type . '_user'] = $username;

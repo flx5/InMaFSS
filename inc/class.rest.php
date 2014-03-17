@@ -1,13 +1,21 @@
 <?php
-require_once(realpath(dirname(__FILE__))."/class.HTTPStatus.php");
-require_once(realpath(dirname(__FILE__))."/class.scope.php");
+
+require_once(realpath(__DIR__) . "/class.HTTPStatus.php");
+require_once(realpath(__DIR__) . "/../oauth2/server.php");
+require_once(INC . "libs/Array2XML.php");
+require_once(INC . "class.api.php");
+require_once(INC . "libs/OAuthResponse.php");
 
 class Rest {
+
+    const FORMAT_JSON = "json";
+    const FORMAT_XML = "xml";
+
     /**
      * The default return type
      */
-    const DEFAULT_RESPONSE_FORMAT = "json";
-    
+    const DEFAULT_RESPONSE_FORMAT = self::FORMAT_JSON;
+
     /**
      * The HTTP method this request was made in, either GET, POST, PUT or DELETE
      * 
@@ -23,7 +31,7 @@ class Rest {
      * @var string
      */
     protected $endpoint = '';
-    
+
     /**
      * An optional additional descriptor about the endpoint, used for things that can
      * not be handled by the basic methods. eg: /files/process
@@ -50,13 +58,14 @@ class Rest {
      * @var array
      */
     protected $file = Null;
-    
+
     /**
      * Stores the path to the directory containing the controllers
      * 
      * @var string 
      */
     protected $controller_dir = '';
+    private $format = self::DEFAULT_RESPONSE_FORMAT;
 
     /**
      * Allow for CORS, assemble and pre-process the data
@@ -66,32 +75,35 @@ class Rest {
      */
     public function __construct($request, $controller_dir) {
         $this->controller_dir = rtrim($controller_dir, "/\\");
-        
+
         $this->method = strtoupper($_SERVER['REQUEST_METHOD']);
-        
+
         if ($this->method == 'POST') {
             $x_http_method = null;
-            
+
             /*
              * HTTP METHOD OVERRIDE AS SPECIFIED BY MICROSOFT 
              * http://msdn.microsoft.com/en-us/library/dd541471.aspx
              */
-            if(array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER))
-                    $x_http_method = $_SERVER['HTTP_X_HTTP_METHOD'];
-            
+            if (array_key_exists('HTTP_X_HTTP_METHOD', $_SERVER))
+                $x_http_method = $_SERVER['HTTP_X_HTTP_METHOD'];
+
             /*
              * HTTP METHOD OVERRIDE AS SPECIFIED BY GOOGLE 
              * https://developers.google.com/gdata/docs/2.0/basics?hl=de&csw=1#UpdatingEntry
              */
-            if(array_key_exists('HTTP_X_HTTP_METHOD_OVERRIDE', $_SERVER))
-                    $x_http_method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
-            
-            if ($x_http_method == 'DELETE') {
-                $this->method = 'DELETE';
-            } else if ($x_http_method == 'PUT') {
-                $this->method = 'PUT';
-            } else {
-                $this->Response('Invalid Method', HTTPStatus::_METHOD_NOT_ALLOWED);
+            if (array_key_exists('HTTP_X_HTTP_METHOD_OVERRIDE', $_SERVER))
+                $x_http_method = $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'];
+
+            if ($x_http_method != null) {
+                switch ($x_http_method) {
+                    case 'DELETE':
+                    case 'PUT':
+                        $this->method = $x_http_method;
+                        break;
+                    default:
+                        $this->Error(APIErrorCodes::HTTP_X_METHOD_INVALID);
+                }
             }
         }
 
@@ -105,64 +117,123 @@ class Rest {
                 break;
             case 'PUT':
                 $this->request = $_GET;
-                $this->file = file_get_contents("php://input"); 
+                $this->file = file_get_contents("php://input");
                 break;
             default:
-                $this->Response('Invalid Method', HTTPStatus::_METHOD_NOT_ALLOWED);
+                $this->Error(APIErrorCodes::HTTP_METHOD_NOT_ALLOWED);
                 break;
         }
-      
-        $this->args = explode('/', rtrim($request, '/'));
-        $this->endpoint = strtolower(array_shift($this->args)); 
 
-        if (array_key_exists(0, $this->args) && !is_numeric($this->args[0])) {
-            $this->verb = array_shift($this->args);
+        $this->args = explode('/', rtrim($request, '/'));
+        $this->endpoint = strtolower(array_shift($this->args));
+
+        $pointPos = strrpos($this->endpoint, ".");
+        if ($pointPos !== false) {
+            $extension = substr($this->endpoint, $pointPos + 1);
+
+            $known_ext = false;
+
+            switch ($extension) {
+                case self::FORMAT_JSON:
+                case self::FORMAT_XML:
+                    $this->format = $extension;
+                    $this->endpoint = substr($this->endpoint, 0, $pointPos);
+                    break;
+            }
         }
-     
+
         $this->LoadEndpoint();
     }
 
-    private function LoadEndpoint() { 
+    private function Error($errorCode) {
+        $this->Response(Array('errors' => APIErrorCodes::GetError($errorCode)), APIErrorCodes::GetStatus($errorCode));
+    }
+
+    private function LoadEndpoint() {
         // Ensure that the endpoint doesn't contain any special chars that could harm the filesystem
         $this->endpoint = str_replace(".", "_", $this->endpoint);
-        $preg = preg_replace("/([a-z]|_)/", "", $this->endpoint); 
-        if($preg !== "") 
-            $this->Response ('Invalid Endpoint', HTTPStatus::_NOT_FOUND);
-        
-        if($this->endpoint == "") 
-            $this->Response ('Invalid Endpoint', HTTPStatus::_NOT_FOUND);
-        
-        $this->endpoint[0] = strtoupper($this->endpoint[0]);
-        
-        $file = $this->controller_dir."/".$this->endpoint.".php";
-        
-        if(!file_exists($file)) 
-            $this->Response ('Invalid Endpoint', HTTPStatus::_NOT_FOUND);
-        
+        $preg = preg_replace("/([a-z]|_)/", "", $this->endpoint);
+        if ($preg !== "")
+            $this->Error(APIErrorCodes::INVALID_ENDPOINT);
+
+        if ($this->endpoint == "")
+            $this->Error(APIErrorCodes::INVALID_ENDPOINT);
+
+        $file = $this->controller_dir . "/" . $this->endpoint . ".php";
+
+        if (!file_exists($file))
+            $this->Error(APIErrorCodes::INVALID_ENDPOINT);
+
         require_once($file);
-        
-        $reflection = new ReflectionClass('Controller_'.$this->endpoint); 
-        
-        
-        $controller = $reflection->newInstance($this->args);
+
+        $this->endpoint[0] = strtoupper($this->endpoint[0]);
+
+        $reflection = new ReflectionClass('Controller_' . $this->endpoint);
+
+        $controller = $reflection->newInstance($this->args, $this->GetUserID());
         /* @var $controller RestController */
-         
-        if(!$controller->isAuthorized()) {
-            $this->Response('Unauthorized', HTTPStatus::_UNAUTHORIZED);
+
+        if ($controller->RequiresVerb()) {
+            if (array_key_exists(0, $this->args) && !is_numeric($this->args[0])) {
+                $this->verb = array_shift($this->args);
+            }
         }
-        
+
+        if (!$this->isAuthorized($controller->RequiredScope())) {
+            $this->Error(APIErrorCodes::OAUTH_UNAUTHORIZED);
+        }
+
         $reflection->getMethod($this->method)->invoke($controller);
+
+        $this->Response($controller->GetResponse(), $controller->GetStatus());
+    }
+
+    private function GetUserID() {
+        global $server; 
+        $token = $server->getAccessTokenData(OAuth2_Request::createFromGlobals(), new OAuth2_Response()); 
+        if($token == null)
+            return null;
         
-        $this->Response(json_encode($controller->GetResponse()), $controller->GetStatus());
+        return $token['user_id'];
     }
     
-    protected function Response($data, $status) { 
-        $this->CORS(); 
+    private function isAuthorized($scope = null) {
+        if($scope == null)
+            $scope = Scope::BASIC;
+        
+        global $server;
+
+        if (!$server->verifyResourceRequest(OAuth2_Request::createFromGlobals(), new InMaFSS_OAuthResponse(), $scope)) {
+
+            if ($this->format != 'json' && $this->format != 'xml')
+                $this->format = 'json';
+
+            $server->getResponse()->send($this->format);
+            die();
+        }
+
+        return true;
+    }
+    
+    protected function Response($data, $status) {
+        $this->CORS();
         header(HTTPStatus::GetHeader($status));
+
+        switch ($this->format) {
+            case self::FORMAT_JSON:
+                header("Content-Type: application/json");
+                $data = json_encode($data);
+                break;
+            case self::FORMAT_XML:
+                header("Content-Type: text/xml");
+                $xml = Array2XML::createXML('result', $data);
+                $data = $xml->saveXML();
+                break;
+        }
         echo $data;
         exit;
     }
-    
+
     /**
      * Send Cross-Origin Resource Sharing Headers
      */
@@ -170,49 +241,46 @@ class Rest {
         header("Access-Control-Allow-Orgin: *");
         header("Access-Control-Allow-Methods: HEAD, GET, POST, PUT, DELETE");
         header("Allow: HEAD, GET, POST, PUT, DELETE");
-        
-        header("Content-Type: application/json");
-        
     }
+
 }
 
 abstract class RestController {
+
     protected $args;
     protected $response;
     protected $responseStatus;
     protected $errors;
-    
+
     public function __construct($args) {
         $this->args = $args;
         $this->response = Array();
         $this->responseStatus = HTTPStatus::_OK;
         $this->errors = Array();
     }
-    
+
     public final function GetResponse() {
-        if(count($this->errors) != 0)
-            $this->response['errors'] = $this->errors;
-        
-        return $this->response;
+        return Array('response' => (object) $this->response, 'errors' => $this->errors);
     }
-    
+
     public final function GetStatus() {
         return $this->responseStatus;
     }
-    
-    protected function AddError($error) {
-        $this->errors[] = $error;
+
+    public function RequiresVerb() {
+        return false;
     }
-    
+
+    protected final function AddError($errorCode) {
+        $this->errors[] = APIErrorCodes::GetError($errorCode);
+        $this->responseStatus = APIErrorCodes::GetStatus($errorCode);
+    }
+
     protected function UnsupportedHTTPMethod() {
         $this->responseStatus = HTTPStatus::_METHOD_NOT_ALLOWED;
-        $this->response['errors'] = RestErrors::GetError(RestErrors::HTTP_METHOD_NOT_ALLOWED);
+        $this->AddError(APIErrorCodes::HTTP_METHOD_NOT_ALLOWED);
     }
-    
-    public function isAuthorized() {
-        return true;
-    }
-    
+
     public function RequiredScope() {
         return Scope::BASIC;
     }
@@ -220,26 +288,19 @@ abstract class RestController {
     public function GET() {
         $this->UnsupportedHTTPMethod();
     }
+
     public function POST() {
         $this->UnsupportedHTTPMethod();
     }
+
     public function PUT() {
         $this->UnsupportedHTTPMethod();
     }
+
     public function DELETE() {
         $this->UnsupportedHTTPMethod();
     }
+
 }
 
-class RestErrors {
-    const HTTP_METHOD_NOT_ALLOWED = 1;
-    
-    private static $messages = Array(
-        self::HTTP_METHOD_NOT_ALLOWED => 'HTTP Method not allowed'
-    );
-    
-    public static function GetError($ID) {
-        return Array('code'=>$ID, 'message'=>self::$messages[$ID]);
-    }
-}
 ?>
