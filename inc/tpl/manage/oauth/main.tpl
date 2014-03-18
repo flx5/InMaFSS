@@ -27,10 +27,15 @@
             <?php
             if (isset($_GET['del'])) {
                 dbquery("DELETE FROM oauth_clients WHERE client_id = '" . filter($_GET['del']) . "'");
+
                 if (getVar('sql')->affected_rows() == 0)
                     lang()->loc('deletion.failure');
-                else
+                else {
+                    // Clean the database and remove tokens that are part of this app
+                    dbquery("DELETE FROM oauth_access_tokens WHERE client_id = '" . filter($_GET['del']) . "'");
+                    dbquery("DELETE FROM oauth_refresh_tokens WHERE client_id = '" . filter($_GET['del']) . "'");
                     lang()->loc('deleted');
+                }
             }
             ?>
             <table width="100%" border="1">
