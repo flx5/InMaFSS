@@ -1,10 +1,18 @@
+<?php
+$current = substr($_SERVER["REQUEST_URI"], strrpos($_SERVER["REQUEST_URI"], "user/") + strlen("user/"));
+if (strpos($current, '?') !== false) {
+    $current = substr($current, 0, strpos($current, '?'));
+}
+?>
 <div id="header">
     <div id="menu">
-        <span class="selected"><a href="index.php"><?php lang()->loc('home'); ?></a></span>
-        <?php if (Authorization::IsLoggedIn('LDAP')) { ?>
-            <span><a href="settings.php"><?php lang()->loc('settings'); ?></a></span>
-            <span><a href="logout.php"><?php lang()->loc('logout'); ?></a></span>
-        <?php } ?>
+        <?php
+        if (Authorization::IsLoggedIn('LDAP')) {
+            echo '<span ' . (($current == 'index.php') ? 'class="selected"' : '') . '><a href="index.php" >' . lang()->loc('home', false) . '</a></span>';
+            echo '<span ' . (($current == 'settings.php') ? 'class="selected"' : '') . '><a href="settings.php" >' . lang()->loc('settings', false) . '</a></span>';
+            echo '<span ' . (($current == 'logout.php') ? 'class="selected"' : '') . '><a href="logout.php" >' . lang()->loc('logout', false) . '</a></span>';
+        }
+        ?>
     </div>
 </div>
 <div id="content">

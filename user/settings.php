@@ -1,6 +1,6 @@
 <?php
 require_once("global.php");
-require_once(CWD."oauth2".DS."server.php");
+require_once(INC.'class.oauth.php');
 
 if(Authorization::IsLoggedIn('LDAP') === null)
 {
@@ -9,13 +9,19 @@ if(Authorization::IsLoggedIn('LDAP') === null)
 }
 
 lang()->add('user');
+lang()->add('scopes');
+
+
+if(isset($_POST['delOauthID'])) {
+    OAuthHelper::RemoveConsumerAccess($_POST['delOauthID'], Authorization::GetUserID('LDAP'));
+    header("Location: settings.php");
+    exit;
+}
 
 getVar('tpl')->Init(lang()->loc('title', false));
 getVar('tpl')->AddStandards("user");
 getVar('tpl')->addTemplate('user/header');
-$tmpl = getVar('tpl')->getTemplate('user/settings');
-$tmpl->SetVar('storage', $storage);
-getVar('tpl')->AddTemplateClass($tmpl);
+getVar('tpl')->addTemplate('user/settings');
 getVar('tpl')->addTemplate('user/footer');
 getVar('tpl')->Output();
 ?>

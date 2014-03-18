@@ -183,3 +183,28 @@
     margin:0 0 10px;
     border-radius: 29px;
 }
+
+.settings .settings_region h3 {
+    background-color: #eee;
+    color:#000;
+    display:block;
+    width:100%;
+    height:25px;
+    padding:10px 0;
+    margin:0 0 10px;
+    font-size: 23px;
+}
+
+.consumer {
+    width:95%;
+    border:1px solid #777;
+    margin:20px auto;
+    padding: 0px 5px 10px;
+}
+
+.consumer  .scope {
+    width:99%;
+    border: 1px solid #ccc;
+    padding:5px;
+    margin:10px auto;
+}

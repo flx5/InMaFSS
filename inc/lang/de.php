@@ -340,6 +340,7 @@ switch ($key) {
         $loc['information'] = "Informationen";
         $loc['mensa'] = "Informationen";
         $loc['menu'] = "Men&uuml;";
+        $loc['delete'] = "L&ouml;schen";
         break;
     
     case 'scopes':
