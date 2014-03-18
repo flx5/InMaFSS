@@ -41,6 +41,7 @@ echo '<a '. (($current == 'import.php') ? 'class="selected"' : '').' href="impor
 echo '<a '. (($current == 'api.php') ? 'class="selected"' : '').' href="api.php" >'.lang()->loc('api',false).'</a>';
 echo '<a '. (($current == 'settings.php') ? 'class="selected"' : '').' href="settings.php" >'.lang()->loc('settings',false).'</a>';
 echo '<a '. (($current == 'oauth.php') ? 'class="selected"' : '').' href="oauth.php" >'.lang()->loc('oauth',false).'</a>';
+echo '<a '. (($current == 'ip_protection.php') ? 'class="selected"' : '').' href="ip_protection.php" >'.lang()->loc('ip_protection',false).'</a>';
 ?>
 
 </div>

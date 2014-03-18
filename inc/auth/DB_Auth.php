@@ -9,7 +9,7 @@ class DB_Auth extends Authorization {
 
         $user = $this->GetUserData("username = '" . $username . "' AND password = '" . $password . "'");
         
-        if($user === false)
+        if($user === null)
             return false;
 
         $this->SetSession($username, $user['id'], 'DB', $user['groups'], ReplacementsTypes::PUPIL, $user['display_name']);

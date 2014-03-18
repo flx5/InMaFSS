@@ -1,4 +1,3 @@
-<?php
 /*=================================================================================*\
 |* This file is part of InMaFSS                                                    *|
 |* InMaFSS - INformation MAnagement for School Systems - Keep yourself up to date! *|
@@ -20,12 +19,28 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-require_once("global.php");
+#header {
+    width:100%;
+    height:50px;
+    background-color: #6a7af8;
+    font-size: 40px;
+}
 
-lang()->add('oauth');
+#content {
+    text-align:center;
+    width:500px;
+    position: relative;
+    top:50px;
+    left:50%;
+    margin-left: -250px;
+}
 
-getVar("tpl")->Init(lang()->loc('title',false));
-getVar("tpl")->addStandards('admin');
-getVar("tpl")->addTemplate('manage/oauth/main');
-getVar("tpl")->Output();
-?>
+#scopes {
+    margin:20px;
+}
+
+.scope {
+    width:99%;
+    border: 1px solid #ccc;
+    padding:5px;
+}

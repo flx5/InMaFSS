@@ -25,16 +25,19 @@
         <h2><?php lang()->loc('title'); ?></h2>
         <div class="inner">
             <?php
-                if(isset($_GET['del'])) {
-                    $oauth->GetStore()->deleteConsumer($_GET['del'], USER_ID);
-                }
+            if (isset($_GET['del'])) {
+                dbquery("DELETE FROM oauth_clients WHERE client_id = '" . filter($_GET['del']) . "'");
+                if (getVar('sql')->affected_rows() == 0)
+                    lang()->loc('deletion.failure');
+                else
+                    lang()->loc('deleted');
+            }
             ?>
             <table width="100%" border="1">
                 <tr><th><?php lang()->loc('application_title'); ?></th><th colspan="2" width="30%" ><?php lang()->loc('options'); ?></th></tr>
                 <?php
-                
                 $sql = dbquery("SELECT * FROM oauth_clients");
-                while($app = $sql->fetchAssoc()) {
+                while ($app = $sql->fetchAssoc()) {
                     echo '<tr><td>' . $app['title'] . '</td></td>';
                     echo '<td><a href="oauth_edit.php?key=' . $app['client_id'] . '">' . lang()->loc('edit', false) . '</a></td><td><a href="?del=' . $app['client_id'] . '">' . lang()->loc('delete', false) . '</a></td></tr>';
                 }

@@ -13,6 +13,7 @@ class APIErrorCodes {
     const INVALID_GROUP = 8;
     const MISSING_FILE = 9;
     const UPLOAD_FAILED = 10;
+    const OAUTH_MISSING_USER = 11;
 
     private static $messages = Array(
         self::OK => '',
@@ -25,7 +26,8 @@ class APIErrorCodes {
         self::UNKNOWN_USER_TYPE => 'Unknown user type',
         self::INVALID_GROUP => 'Unknown group',
         self::MISSING_FILE => 'Missing file',
-        self::UPLOAD_FAILED => 'Upload of file failed'
+        self::UPLOAD_FAILED => 'Upload of file failed',
+        self::OAUTH_MISSING_USER => 'No user could be found. Probably you are using a wrong grant type?!'
     );
     private static $httpStatus = Array(
         self::OK => HTTPStatus::_OK,
@@ -38,7 +40,8 @@ class APIErrorCodes {
         self::UNKNOWN_USER_TYPE => HTTPStatus::_BAD_REQUEST,
         self::INVALID_GROUP => HTTPStatus::_BAD_REQUEST,
         self::MISSING_FILE => HTTPStatus::_BAD_REQUEST,
-        self::UPLOAD_FAILED => HTTPStatus::_BAD_REQUEST
+        self::UPLOAD_FAILED => HTTPStatus::_BAD_REQUEST,
+        self::OAUTH_MISSING_USER => HTTPStatus::_UNAUTHORIZED
     );
 
     public static function GetError($ID) {

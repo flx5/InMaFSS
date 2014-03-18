@@ -10,6 +10,12 @@ if (isset($_POST['usr']) && isset($_POST['pwd'])) {
     $auth = Authorization::GenerateInstance('LDAP');
     /* @var $auth LDAP_Auth */
     if($auth->Login($_POST['usr'], $_POST['pwd'])) {
+        if(isset($_GET['goto'])) {
+            if(strpos($_GET['goto'], "//") === false) {
+                header("Location: ". WWW. "/". $_GET['goto']);
+                exit;
+            }
+        }
         header("Location: index.php");
         exit;
     } else {

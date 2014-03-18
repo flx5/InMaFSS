@@ -29,18 +29,20 @@ if (!isset($_GET['key']) && !isset($_GET['new'])) {
                     do {
                         $entropy = openssl_random_pseudo_bytes(32);
                         $entropy .= uniqid(mt_rand(), true);
-                        $hash = hash('sha512', $entropy);                      
+                        $hash = hash('sha512', $entropy);
+                                   
                         $key = substr($hash, 0, 64);
                         $secret = substr($hash, 64, 128);
 
                         $sql = dbquery("SELECT * FROM oauth_clients WHERE client_id = '" . filter($key) . "'");
                     } while ($sql->count() != 0);
 
-                    dbquery("INSERT INTO oauth_clients (title, client_id, client_secret, redirect_uri, grant_types, scope, user_id) VALUES ('" . filter($_POST['title']) . "', '" . filter($key) . "', '" . filter($secret) . "', '" . filter($_POST['callback_uri']) . "', '','', " . USER_ID . ")");
-                    $lastID = getVar('sql')->insertID();
+                    dbquery("INSERT INTO oauth_clients (title, client_id, client_secret, redirect_uri, grant_types, scope, user_id) VALUES ('" . filter($_POST['title']) . "', '" . filter($key) . "', '" . filter($secret) . "', '" . filter($_POST['callback_uri']) . "', 'authorization_code, refresh_token, client_credentials','', " . USER_ID . ")");
 
-                    header("Location: oauth_edit.php?key=" . $lastID);
+                    header("Location: oauth_edit.php?key=" . $key);
                     exit;
+                } else {
+                    dbquery("UPDATE oauth_clients SET title = '".filter($name)."', redirect_uri = '".filter($_POST['callback_uri'])."'");
                 }
             } else {
                 foreach ($error as $err) {

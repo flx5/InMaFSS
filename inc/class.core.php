@@ -33,6 +33,36 @@ class core {
 
         return null;
     }
+    
+    public static function GetIP() {
+        if(isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
+            return $_SERVER['HTTP_CLIENT_IP'];
+        
+        if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            
+            if (strpos($ip, ',') !== false) {
+                $ip = substr($ip, 0, strpos($ip, ","));
+                $ip = trim($ip);
+            }
+            
+            return $ip;
+        }
+        
+        if(isset($_SERVER['HTTP_X_FORWARDED']) && !empty($_SERVER['HTTP_X_FORWARDED']))
+            return $_SERVER['HTTP_X_FORWARDED'];
+        
+        if(isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && !empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']))
+            return $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
+        
+        if(isset($_SERVER['HTTP_FORWARDED_FOR']) && !empty($_SERVER['HTTP_FORWARDED_FOR']))
+            return $_SERVER['HTTP_FORWARDED_FOR'];
+        
+        if(isset($_SERVER['HTTP_FORWARDED']) && !empty($_SERVER['HTTP_FORWARDED']))
+            return $_SERVER['HTTP_FORWARDED'];
+        
+        return $_SERVER['REMOTE_ADDR'];
+    }
 
     public static function GetDay($timestamp) {
         $engDay = gmdate("D", $timestamp);

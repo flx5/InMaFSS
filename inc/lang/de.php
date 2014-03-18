@@ -145,6 +145,7 @@ switch ($key) {
         $loc['api'] = 'API';
         $loc['settings'] = 'Einstellungen';
         $loc['oauth'] = 'OAuth';
+        $loc['ip_protection'] = 'Zugangsrechte';
         break;
 
     case 'info':
@@ -226,6 +227,21 @@ switch ($key) {
         $loc['ftp_path'] = 'Pfad zu InMaFSS auf dem FTP Server';
         $loc['useMarquee'] = 'Nutze den Marquee Befehl und nicht das Bl&auml;ttern beim Ticker <br>(HTML Standard unterstützt Marquee offiziell NICHT!)';
         break;
+    
+    case 'ip_protection':
+        $loc['title'] = 'Zugangsrechte';
+        $loc['range'] = 'Bereich';
+        $loc['edit'] = 'Bearbeiten';
+        $loc['delete'] = 'L&ouml;schen';
+        $loc['id'] = 'ID';
+        $loc['save'] = 'Speichern';
+        $loc['del.rly'] = 'Den Bereich mit der ID %id% wirklich l&ouml;schen?';
+        $loc['abort'] = 'Abbrechen';
+        $loc['deleted'] = 'Der Bereich mit der ID %id% wurde gel&ouml;scht.';
+        $loc['add'] = 'Hinzuf&uuml;gen';
+        $loc['empty.range'] = 'Bereich darf nicht leer sein!';
+        $loc['invalid.range'] = 'Range ung&uumlltig';
+        break;
 
     case 'date':
         $loc['january'] = 'Januar';
@@ -276,7 +292,7 @@ switch ($key) {
         $loc['api.too.short'] = 'Der API Key ist zu kurz!';
 
         $loc['permissions'] = 'Rechte';
-        
+
         $loc['all_substitutions'] = 'Alle Vertretungen anzeigen (Sch&uuml;ler)';
         $loc['substitutions'] = 'Eigene Vertretungen anzeigen';
         $loc['update_substitutions'] = 'Plan aktualisieren';
@@ -305,6 +321,8 @@ switch ($key) {
         $loc['save'] = "Speichern";
         $loc['edit'] = "Bearbeiten";
         $loc['delete'] = "L&ouml;schen";
+        $loc['deleted'] = "L&ouml;schen erfolgreich";
+        $loc['deletion.failure'] = "L&ouml;schen fehlgeschlagen";
         $loc['name.too.short'] = 'Der Anwendungsname muss mindestens 3 Zeichen haben.';
         $loc['consumer.exists'] = "Eine Anwendung mit diesem Namen ist bereits registeriert";
         break;
@@ -322,6 +340,17 @@ switch ($key) {
         $loc['information'] = "Informationen";
         $loc['mensa'] = "Informationen";
         $loc['menu'] = "Men&uuml;";
+        break;
+    
+    case 'scopes':
+        $loc['authorize_title'] = "OAuth";
+        $loc['scope_basic'] = "Zugriff auf Basisdaten";
+        $loc['scope_substitutions'] = "Zugriff auf deinen pers&ouml;nlichen Vertretungsplan";
+        $loc['scope_all_substitutions'] = "Zugriff auf den gesammten Vertretungsplan (Sch&uuml;ler)";
+        $loc['scope_teacher_plan_full'] = "Zugriff auf den gesammten Vertretungsplan (Lehrer)";
+        $loc['scope_update_substitutions'] = "Vertretungsplan aktualisieren";
+        $loc['scope_ticker'] = "Zugriff auf Ticker";
+        $loc['scope_other'] = "Zugriff auf abwesende Lehrkr&auml;fte, Aufsichten, belegte R&auml;ume, abwesende Klassen";
         break;
 }
 ?>

@@ -13,8 +13,7 @@ class ScopeData {
     public static $scopes = Array(
         self::BASIC,
         self::SUBSTITUTION_PLAN,
-        self::TICKER,
-        self::UPDATE_MENSA
+        self::TICKER
     );
     
     public static $scopesTeacher = Array(

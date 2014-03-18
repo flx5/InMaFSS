@@ -171,9 +171,16 @@ class Rest {
 
         $reflection = new ReflectionClass('Controller_' . $this->endpoint);
 
+        $user = $this->GetUserID(); 
+        
         $controller = $reflection->newInstance($this->args, $this->GetUserID(), $this->file);
         /* @var $controller RestController */
 
+        if($controller->RequireUser($this->method) && (empty($user) || $user == null))
+        {
+            $this->Error(APIErrorCodes::OAUTH_MISSING_USER);
+        }
+        
         if ($controller->RequiresVerb()) {
             if (array_key_exists(0, $this->args) && !is_numeric($this->args[0])) {
                 $this->verb = array_shift($this->args);
@@ -310,6 +317,10 @@ abstract class RestController {
 
     public function RequiredScope($method) {
         return ScopeData::BASIC;
+    }
+    
+    public function RequireUser($method) {
+        return true;
     }
 
     public function GET() {

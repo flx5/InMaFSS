@@ -20,12 +20,18 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-require_once("global.php");
 
-lang()->add('oauth');
+require_once("global.php");
+lang()->add('ip_protection');
 
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->addStandards('admin');
-getVar("tpl")->addTemplate('manage/oauth/main');
+getVar("tpl")->setParam("id",'');
+
+if(isset($_GET['del'])) {
+  getVar("tpl")->setParam("id", $_GET['del']);
+}
+
+getVar("tpl")->addTemplate('manage/ip_protection');
 getVar("tpl")->Output();
 ?>

@@ -35,12 +35,20 @@ class OAuth2_Storage_InMaFSS implements OAuth2_Storage_AuthorizationCodeInterfac
 
     public function getClientDetails($client_id) {
         $stmt = $this->db->DoQuery(sprintf('SELECT * from %s where client_id = "'.$this->filter($client_id).'"', $this->config['client_table']));
-        return $stmt->fetchAssoc();
+        $data = $stmt->fetchAssoc();
+        $data['grant_types'] = explode(' ', $data['grant_types']);
+        return $data;
     }
-
+ 
     public function checkRestrictedGrantType($client_id, $grant_type) {
+        /*
+         * Available grant types: 
+         * authorization_code, client_credentials, refresh_token, password, urn:ietf:params:oauth:grant-type:jwt-bearer
+         * 
+         * Setup and tested in InMaFSS: authorization_code, refresh_token, password, client_credentials
+         */
         $details = $this->getClientDetails($client_id);
-        if (isset($details['grant_types'])) {
+        if (isset($details['grant_types'])) { 
             return in_array($grant_type, (array) $details['grant_types']);
         }
 
@@ -151,7 +159,7 @@ class OAuth2_Storage_InMaFSS implements OAuth2_Storage_AuthorizationCodeInterfac
     }
 
     public function getUser($username) {
-         $user = Authorization::GenerateInstance("LDAP")->getUserData($username);
+         $user = Authorization::GenerateInstance("LDAP")->getUserDataByName($username);
          $user['user_id'] = $user['id'];
          return $user;
     }
