@@ -206,25 +206,7 @@ class Rest {
     }
     
     private function isAuthorized($scope = null) {
-        if(isset($_GET['apikey']))
-            return $this->AuthorizeKey ($scope);
-       
         return $this->AuthorizeOAUTH2 ($scope);
-    }
-    
-    private function AuthorizeKey($scope) {
-        if(!isset($_GET['apikey']))
-            return false;
-        
-        $key = $_GET['apikey'];
-        $sql = dbquery("SELECT permissions FROM api WHERE apikey = '".filter($key)."' LIMIT 1");
-        
-        if($sql->count() != 1)
-            return false;
-        
-        $permissions = explode("|", $sql->result());
-        
-        return in_array($scope, $permissions, true);
     }
     
     private function AuthorizeOAUTH2($scope = null) {
