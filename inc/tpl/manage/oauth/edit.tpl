@@ -4,6 +4,8 @@ if (!isset($_GET['key']) && !isset($_GET['new'])) {
     exit;
 }
 
+require_once(INC.'class.scope_data.php');
+
 $authTypes = Array(
     'authorization_code',
     'refresh_token',
@@ -37,9 +39,15 @@ $authTypes = Array(
                     if (isset($_POST[$grant]))
                         $grants .= " " . $grant;
                 }
-
                 $grants = trim($grants);
-            
+                
+                $scopes = "";
+                foreach (ScopeData::GetScopes() as $scope) {
+                    if (isset($_POST[$scope]))
+                        $scopes .= " " . $scope;
+                }
+                $scopes = trim($scopes);
+
                 if (count($error) == 0) {
 
                     if (isset($_GET['new'])) {
@@ -54,12 +62,12 @@ $authTypes = Array(
                             $sql = dbquery("SELECT * FROM oauth_clients WHERE client_id = '" . filter($key) . "'");
                         } while ($sql->count() != 0);
 
-                        dbquery("INSERT INTO oauth_clients (title, client_id, client_secret, redirect_uri, grant_types, scope, user_id) VALUES ('" . filter($_POST['title']) . "', '" . filter($key) . "', '" . filter($secret) . "', '" . filter($_POST['callback_uri']) . "', '" . filter($grants) . "','', " . USER_ID . ")");
+                        dbquery("INSERT INTO oauth_clients (title, client_id, client_secret, redirect_uri, grant_types, scope, user_id) VALUES ('" . filter($_POST['title']) . "', '" . filter($key) . "', '" . filter($secret) . "', '" . filter($_POST['callback_uri']) . "', '" . filter($grants) . "','" . filter($scopes) . "', " . USER_ID . ")");
 
                         header("Location: oauth_edit.php?key=" . $key);
                         exit;
                     } else {
-                        dbquery("UPDATE oauth_clients SET title = '" . filter($name) . "', redirect_uri = '" . filter($_POST['callback_uri']) . "', grant_types = '" . filter($grants) . "'");
+                        dbquery("UPDATE oauth_clients SET title = '" . filter($name) . "', redirect_uri = '" . filter($_POST['callback_uri']) . "', grant_types = '" . filter($grants) . "', scope = '" . filter($scopes) . "' WHERE client_id = '".$key."'");
                     }
                 } else {
                     foreach ($error as $err) {
@@ -69,7 +77,13 @@ $authTypes = Array(
             }
 
             if (isset($_GET['new'])) {
-                $data = Array('client_id' => -1, 'title' => '', 'redirect_uri' => '', 'grant_types' => 'authorization_code refresh_token client_credentials');
+                $defaultScopes = Array(
+                ScopeData::BASIC,
+                ScopeData::OTHER,
+                ScopeData::SUBSTITUTION_PLAN,
+                ScopeData::TICKER
+                );
+                $data = Array('client_id' => -1, 'title' => '', 'redirect_uri' => '', 'grant_types' => 'authorization_code refresh_token client_credentials', 'scope'=>implode(" ", $defaultScopes));
                 if (isset($_POST['title']))
                     $data = array_merge($data, $_POST);
             } else {
@@ -77,6 +91,7 @@ $authTypes = Array(
                 $data = $sql->fetchAssoc();
             }
             $grants = explode(" ", $data['grant_types']);
+            $scopes = explode(" ", $data['scope']);
             ?>
 
             <table style="margin:auto;">
@@ -147,6 +162,23 @@ $authTypes = Array(
                 <input type="submit" value="<?php lang()->loc('save'); ?>"><br><br>
                 <a target="_blank" href="http://bshaffer.github.io/oauth2-server-php-docs/overview/grant-types/"><?php lang()->loc('further.information'); ?></a>
             </div>
-        </div>   
+        </div>
+        <div class="round" style="width:90%; margin:5px auto; margin-top:20px;">
+            <h2><?php lang()->loc('scopes'); ?></h2>
+            <div class="inner">
+                <table style="margin:auto;">
+                    <?php
+                    foreach (ScopeData::GetScopes() as $scope) {
+                        echo '<tr><td>';
+                        echo '<input type="checkbox" name="' . $scope . '" ' . ((in_array($scope, $scopes)) ? 'checked' : '') . '>';
+                        echo '</td><td>';
+                        lang()->loc('scope_' . $scope, true, true);
+                        echo '</td></tr>';
+                    }
+                    ?>    
+                </table>
+                <input type="submit" value="<?php lang()->loc('save'); ?>"><br><br>
+            </div>
+        </div>
     </form>
 </div>

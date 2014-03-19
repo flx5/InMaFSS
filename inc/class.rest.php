@@ -180,7 +180,7 @@ class Rest {
         {
             $this->Error(APIErrorCodes::OAUTH_MISSING_USER);
         }
-        
+    
         if ($controller->RequiresVerb()) {
             if (array_key_exists(0, $this->args) && !is_numeric($this->args[0])) {
                 $this->verb = array_shift($this->args);

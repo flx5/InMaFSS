@@ -31,7 +31,7 @@ abstract class Authorization {
         if (isset($_SESSION[$type . '_usertype']))
             return $_SESSION[$type . '_usertype'];
 
-        return ReplacementsTypes::PUPIL;
+        return false;
     }
     
     public static function GetUserID($type = 'DB') {

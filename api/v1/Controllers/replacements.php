@@ -2,7 +2,7 @@
 
 class Controller_Replacements extends RestController {
 
-    public function RequiredScope($method) {
+    public function RequiredScope($method) { 
         switch($method)
         {
             case 'POST':
@@ -11,6 +11,12 @@ class Controller_Replacements extends RestController {
             default:
                 return ScopeData::SUBSTITUTION_PLAN;
         }
+    }
+    
+    public function RequireUser($method) {
+        if($method == "POST")
+            return false;
+        return true;
     }
     
     public function GET() {
@@ -54,7 +60,7 @@ class Controller_Replacements extends RestController {
         }
 
         foreach ($_FILES as $file) {
-            if($file['error'] != UPLOAD_ERR_OK) {
+            if($file['error'] != UPLOAD_ERR_OK) { echo $file['error'];
                 $this->AddError(APIErrorCodes::UPLOAD_FAILED);
                 return;
             }

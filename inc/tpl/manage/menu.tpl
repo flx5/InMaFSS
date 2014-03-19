@@ -38,7 +38,6 @@ echo '<a '. (($current == 'ticker.php') ? 'class="selected"' : '').' href="ticke
 echo '<a '. (($current == 'pages.php') ? 'class="selected"' : '').' href="pages.php" >'.lang()->loc('pages',false).'</a>';
 echo '<a '. (($current == 'users.php') ? 'class="selected"' : '').' href="users.php" >'.lang()->loc('users',false).'</a>';
 echo '<a '. (($current == 'import.php') ? 'class="selected"' : '').' href="import.php" >'.lang()->loc('import',false).'</a>';
-echo '<a '. (($current == 'api.php') ? 'class="selected"' : '').' href="api.php" >'.lang()->loc('api',false).'</a>';
 echo '<a '. (($current == 'settings.php') ? 'class="selected"' : '').' href="settings.php" >'.lang()->loc('settings',false).'</a>';
 echo '<a '. (($current == 'oauth.php') ? 'class="selected"' : '').' href="oauth.php" >'.lang()->loc('oauth',false).'</a>';
 echo '<a '. (($current == 'ip_protection.php') ? 'class="selected"' : '').' href="ip_protection.php" >'.lang()->loc('ip_protection',false).'</a>';

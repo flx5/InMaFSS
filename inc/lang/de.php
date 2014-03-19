@@ -142,7 +142,6 @@ switch ($key) {
         $loc['pages'] = 'Seiten';
         $loc['users'] = 'Nutzer';
         $loc['import'] = 'Importieren';
-        $loc['api'] = 'API';
         $loc['settings'] = 'Einstellungen';
         $loc['oauth'] = 'OAuth';
         $loc['ip_protection'] = 'Zugangsrechte';
@@ -284,35 +283,7 @@ switch ($key) {
         $loc['prev.year'] = 'Vorheriges Jahr';
         $loc['next.year'] = 'N&auml;chstes Jahr';
         break;
-
-    case 'api':
-        $loc['title'] = 'API Management';
-        $loc['id'] = 'ID';
-        $loc['name'] = 'Name';
-        $loc['key'] = 'API Schl&uuml;ssel';
-        $loc['edit'] = 'Bearbeiten';
-        $loc['delete'] = 'L&ouml;schen';
-        $loc['save'] = 'Speichern';
-        $loc['name.too.short'] = 'Der Name ist zu kurz!';
-        $loc['api.too.short'] = 'Der API Key ist zu kurz!';
-
-        $loc['permissions'] = 'Rechte';
-
-        $loc['all_substitutions'] = 'Alle Vertretungen anzeigen (Sch&uuml;ler)';
-        $loc['substitutions'] = 'Eigene Vertretungen anzeigen';
-        $loc['update_substitutions'] = 'Plan aktualisieren';
-        $loc['teacher_plan_full'] = 'Alle Vertretungen anzeigen (Lehrer)';
-        $loc['basic'] = 'Basic';
-        $loc['ticker'] = 'Ticker anzeigen';
-        $loc['other'] = 'Andere Daten (Pausenaufsicht, Abwesenheit, etc.) anzeigen';
-
-        $loc['saved'] = 'Erfolgreich gespeichert.';
-        $loc['del.rly'] = 'Den API-Key mit der ID %id% wirklich l&ouml;schen?';
-        $loc['abort'] = 'Abbrechen';
-        $loc['deleted'] = 'Der API-Key mit der ID %id% wurde gel&ouml;scht.';
-        $loc['not.found'] = 'Der API-Key existiert nicht.';
-        break;
-
+    
     case 'oauth':
         $loc['title'] = "OAuth";
         $loc['id'] = "ID";
@@ -323,7 +294,7 @@ switch ($key) {
         $loc['application_title'] = "Anwendungsname";
         $loc['options'] = "Optionen";
         $loc['new'] = "Neu";
-        $loc['login.rights'] = "Rechte";
+        $loc['login.rights'] = "Loginmethoden";
         $loc['save'] = "Speichern";
         $loc['edit'] = "Bearbeiten";
         $loc['delete'] = "L&ouml;schen";
@@ -339,6 +310,8 @@ switch ($key) {
         $loc['grant_implicit'] = "Nutzer gibt Zugriff &uuml;ber InMaFSS Homepage (f&uuml;r Mobile Applikationen oder Javascript Anwendungen)";
        
         $loc['further.information'] = "Weitere Informationen";
+        
+        $loc['scopes'] = "Zugriffsrechte";
         
         break;
 
@@ -362,11 +335,12 @@ switch ($key) {
         $loc['authorize_title'] = "OAuth";
         $loc['scope_basic'] = "Zugriff auf Basisdaten";
         $loc['scope_substitutions'] = "Zugriff auf deinen pers&ouml;nlichen Vertretungsplan";
-        $loc['scope_all_substitutions'] = "Zugriff auf den gesammten Vertretungsplan (Sch&uuml;ler)";
-        $loc['scope_teacher_plan_full'] = "Zugriff auf den gesammten Vertretungsplan (Lehrer)";
+        $loc['scope_all_substitutions'] = "Zugriff auf den gesamten Vertretungsplan (Sch&uuml;ler)";
+        $loc['scope_teacher_plan_full'] = "Zugriff auf den gesamten Vertretungsplan (Lehrer)";
         $loc['scope_update_substitutions'] = "Vertretungsplan aktualisieren";
         $loc['scope_ticker'] = "Zugriff auf Ticker";
         $loc['scope_other'] = "Zugriff auf abwesende Lehrkr&auml;fte, Aufsichten, belegte R&auml;ume, abwesende Klassen";
+        $loc['scope_update_mensa'] = "Mensa aktualisieren";
         break;
 }
 ?>

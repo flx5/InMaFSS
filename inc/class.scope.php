@@ -33,12 +33,32 @@ class Scope implements OAuth2_ScopeInterface {
     public function scopeExists($scopes, $client_id = null) {
         $scopes = explode(" ", $scopes);
 
-        $scopesAvail = ScopeData::$scopes;
+        $sql = dbquery("SELECT scope FROM oauth_clients WHERE client_id = '".filter($client_id)."'");
+        
+        if($sql->count() != 1)
+            return false;
+        
+        $scopesAvail = explode(" ", $sql->result());
         
         $type = Authorization::GetUserType('LDAP');
+    
+        if($type != null) {
+            foreach(ScopeData::$scopesSpecial as $scope) {
+                $key = array_search($scope, $scopesAvail);
+                if($key !== false) 
+                    unset($scopesAvail[$key]);
+                    
+            }
+        }
+        
         if($type == ReplacementsTypes::TEACHER) {
-            $scopesAvail = array_merge($scopesAvail, ScopeData::$scopesTeacher);
-        } 
+            foreach(ScopeData::$scopesTeacher as $scope) {
+                $key = array_search($scope, $scopesAvail);
+                if($key !== false) 
+                    unset($scopesAvail[$key]);
+                    
+            }
+        }
 
         return (count(array_diff($scopes, $scopesAvail)) == 0);
     }
