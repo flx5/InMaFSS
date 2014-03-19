@@ -106,7 +106,7 @@ a {
     padding: 5px;
 }
 
-.content > div.round, .admincols > div.round {
+.content div.round, .admincols div.round {
    border: 3px solid black !important;
    border-radius: 20px;
    overflow: hidden;
@@ -114,7 +114,7 @@ a {
    text-align:center;
 }
 
-.content > div.round > h2, .admincols > div.round > h2 {
+.content div.round h2, .admincols div.round h2 {
    border-top-left-radius: 17px;
    border-top-right-radius: 17px;
    background: #0080ff;

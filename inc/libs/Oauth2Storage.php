@@ -46,7 +46,7 @@ class OAuth2_Storage_InMaFSS implements OAuth2_Storage_AuthorizationCodeInterfac
          * authorization_code, client_credentials, refresh_token, password, urn:ietf:params:oauth:grant-type:jwt-bearer
          * 
          * Setup and tested in InMaFSS: authorization_code, refresh_token, password, client_credentials
-         */
+         */ 
         $details = $this->getClientDetails($client_id);
         if (isset($details['grant_types'])) { 
             return in_array($grant_type, (array) $details['grant_types']);

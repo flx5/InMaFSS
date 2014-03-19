@@ -25,6 +25,15 @@
     <div class="round" style="width:90%; margin:5px auto; margin-top:20px;">
         <h2><?php lang()->loc('title'); ?></h2>
         <div class="inner">
+            <?php lang()->loc('desc'); ?>
+            <br><br>
+            <?php
+            echo lang()->loc('formats', false) . '<br>';
+            echo lang()->loc('wildcard', false) . ': 10.16.1.*<br>';
+            echo lang()->loc('cidr', false) . ': 10.16.1.0/24<br>';
+            echo lang()->loc('start.end.format', false) . ': 10.16.1.0-10.16.1.255<br>';
+            ?>
+            <br><br>
             <?php
             if (isset($_GET['del']) && is_numeric($_GET['del']) && (!isset($_GET['do']) || $_GET['do'] != 'del')) {
                 $sql = dbquery("SELECT ip_range FROM ip_protection WHERE id = " . filter($_GET['del']));
@@ -55,10 +64,10 @@
                 }
 
                 if (count($error) == 0) {
-                    if($_POST['id'] == -1) 
-                        dbquery("INSERT INTO ip_protection (ip_range) VALUES ('".filter($_POST['range'])."')");
+                    if ($_POST['id'] == -1)
+                        dbquery("INSERT INTO ip_protection (ip_range) VALUES ('" . filter($_POST['range']) . "')");
                     else
-                        dbquery("UPDATE ip_protection SET ip_range = '".filter($_POST['range'])."' WHERE id = ".filter($_POST['id']));
+                        dbquery("UPDATE ip_protection SET ip_range = '" . filter($_POST['range']) . "' WHERE id = " . filter($_POST['id']));
                 } else {
                     foreach ($error as $err) {
                         echo $err . "<br>";

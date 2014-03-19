@@ -241,6 +241,11 @@ switch ($key) {
         $loc['add'] = 'Hinzuf&uuml;gen';
         $loc['empty.range'] = 'Bereich darf nicht leer sein!';
         $loc['invalid.range'] = 'Range ung&uumlltig';
+        $loc['desc'] = 'Nur Clients mit einer IP, die innerhalb eines der unteren Bereiche liegt, wird automatisch den Plan einsehen k&ouml;nnen.<br> Alle anderen Clients m&uuml;ssen sich zuerst mit einem Managementaccount einloggen.';
+        $loc['formats'] = 'Netzwerkbereiche k&ouml;nnen wie folgt definiert werden:';
+        $loc['wildcard'] = 'Wildcard format';
+        $loc['cidr'] = 'CIDR format';
+        $loc['start.end.format'] = 'Start-End IP format';
         break;
 
     case 'date':
@@ -318,6 +323,7 @@ switch ($key) {
         $loc['application_title'] = "Anwendungsname";
         $loc['options'] = "Optionen";
         $loc['new'] = "Neu";
+        $loc['login.rights'] = "Rechte";
         $loc['save'] = "Speichern";
         $loc['edit'] = "Bearbeiten";
         $loc['delete'] = "L&ouml;schen";
@@ -325,6 +331,15 @@ switch ($key) {
         $loc['deletion.failure'] = "L&ouml;schen fehlgeschlagen";
         $loc['name.too.short'] = 'Der Anwendungsname muss mindestens 3 Zeichen haben.';
         $loc['consumer.exists'] = "Eine Anwendung mit diesem Namen ist bereits registeriert";
+        
+        $loc['grant_authorization_code'] = "Nutzer gibt Zugriff &uuml;ber InMaFSS Homepage (empfohlen)";
+        $loc['grant_password'] = "Passwort basiert (nur bei eigenen Anwendungen!)";
+        $loc['grant_client_credentials'] = "Anwendung darf ohne Nutzer auf die API zugreifen";
+        $loc['grant_refresh_token'] = "Anwendung darf Zugriffsschl&uuml;ssel erneuern (empfohlen)";
+        $loc['grant_implicit'] = "Nutzer gibt Zugriff &uuml;ber InMaFSS Homepage (f&uuml;r Mobile Applikationen oder Javascript Anwendungen)";
+       
+        $loc['further.information'] = "Weitere Informationen";
+        
         break;
 
     case 'user':
