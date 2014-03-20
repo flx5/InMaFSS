@@ -17,28 +17,10 @@ Requirements
 + >= PHP 5.2.3
 + mysql/mysqli
 
-Installation of OAuth
-------------
-- First we have to install some requirements. This can be done on Ubuntu with a command like this:
-
-`apt-get install libpcre3-dev`
-
-- Then we can install the oauth extension itself:
-
-`pecl install oauth`
-
-On Windows you can obtain a copy of a working DLL from [here](http://pecl.php.net/package/oauth).
-
-
-Now on LINUX AND WINDOWS check your php.ini file.
-
-Search for a line containing `extension=oauth`.
-If it starts with a `;` remove that to uncomment the line.
-If you can't find the line add it in the section where all the other extensions are placed.
-
 Libraries
 ---------
 
 + [TinyMCE](http://www.tinymce.com) (4.0.16)
 + [Tigra Calendar](http://www.softcomplex.com/products/tigra_calendar/) (v5.2)      
-+ [oauth-php](http://code.google.com/p/oauth-php/) (175)
++ [ip_in_range](http://www.pgregg.com/projects/php/ip_in_range/) (v1.2)
++ [OAuth2 Server](https://github.com/bshaffer/oauth2-server-php) (v0.9) (Using an old version to ensure compability with pre PHP 5.3.9
