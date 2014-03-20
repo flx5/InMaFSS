@@ -23,8 +23,8 @@
 
 class PARSE_PLAN_WILLI2 implements Parser {
 
-    public function parse($html) {
-
+    public function parse($file) {
+        $html = file_get_contents($file);
         if (strpos($html, 'Vertretungsplan') === false)
             return false;
 

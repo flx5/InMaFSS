@@ -37,7 +37,7 @@ if (isset($_FILES['uploadedfile']) && isset($_POST['type'])) {
         switch ($_POST['type']) {
             case 'plan':
                 $p = new parsePlan();
-                $success = $p->parse(file_get_contents($_FILES['uploadedfile']['tmp_name']));
+                $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
                 if ($success) {
                     $p->UpdateDatabase();
                     $msg = lang()->loc('success', false);
@@ -48,6 +48,17 @@ if (isset($_FILES['uploadedfile']) && isset($_POST['type'])) {
                 break;
             case 'mensa':
                 $p = new parseMensa();
+                $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
+                if ($success) {
+                    $p->UpdateDatabase();
+                    $msg = lang()->loc('success', false);
+                } else {
+                    $msg = lang()->loc('parse.fail', false);
+                    $msg_color = 'ff0000';
+                }
+                break;
+            case 'appointments':
+                $p = new parseAppointments();
                 $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
                 if ($success) {
                     $p->UpdateDatabase();

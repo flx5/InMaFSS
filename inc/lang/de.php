@@ -164,6 +164,7 @@ switch ($key) {
         $loc['upload'] = 'Hochladen';
         $loc['mensa'] = 'Mensa';
         $loc['plan'] = 'Vertretungsplan';
+        $loc['appointments'] = 'Termine';
         break;
 
     case 'pages':

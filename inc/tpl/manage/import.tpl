@@ -30,6 +30,7 @@
 <select name="type">
     <option value="plan" selected="selected"><?php lang()->loc('plan'); ?></option>
     <option value="mensa"><?php lang()->loc('mensa'); ?></option>
+    <option value="appointments"><?php lang()->loc('appointments'); ?></option>
 </select>
 <input type="submit" value="<?php lang()->loc('upload'); ?>" />
 </form>

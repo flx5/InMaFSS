@@ -2,8 +2,8 @@
 
 class PARSE_MENSA_GYMDON implements Parser {
 
-    public function parse($content) {
-        $zip = zip_open($content);
+    public function parse($file) {
+        $zip = zip_open($file);
 
         if(!is_resource($zip))
             return false;

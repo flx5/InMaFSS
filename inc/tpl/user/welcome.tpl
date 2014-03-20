@@ -72,7 +72,7 @@ $tickers = Array();
                 while ($day = $sql->fetchAssoc()) {
                     echo '<div class="appointments_entry">';
                     echo '<div class="day_header">' . core::GetDay($day['startdate']). ', '. gmdate("d.M.Y", $day['startdate']) . '</div>';
-                    echo '<div class="appointments_data">' . $day['content'] . '</div>';
+                    echo '<div class="appointments_data"><b>' . $day['title'].'</b><br> '. $day['content'] . '</div>';
                     echo '</div><br>';
                 }
                 ?>

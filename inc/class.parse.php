@@ -23,6 +23,7 @@
 
 require_once(INC.'class.parse_plan.php');
 require_once(INC.'class.parse_mensa.php');
+require_once(INC.'class.parse_appointments.php');
 
 class parse {
     public static function ICS2XML($data) {
@@ -38,7 +39,7 @@ class parse {
         return $data;
     }
 
-    public static function ICS2UnixStamp($data) {
+    public static function ICS2UnixStamp($data) { 
         $data = substr($data, 5);
         return gmmktime(0, 0, 0, substr($data, 4, 2), substr($data, 6, 2), substr($data, 0, 4));
     }
@@ -92,12 +93,12 @@ class parse {
 }
 
 interface ParseInterface {
-    public function parse($content);
+    public function parse($file);
     public function CleanDatabase();
     public function UpdateDatabase();
 }
 
 interface Parser {
-    public function parse($content);
+    public function parse($file);
 }
 ?>

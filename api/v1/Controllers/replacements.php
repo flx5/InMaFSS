@@ -71,7 +71,7 @@ class Controller_Replacements extends RestController {
         $count = Array('success'=>0, 'failure'=>0);
         
         foreach($_FILES as $file) {
-            $status = $p->parse(file_get_contents($file['tmp_name']));
+            $status = $p->parse($file['tmp_name']);
             if($status)
                 $count['success']++;
             else
