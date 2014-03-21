@@ -8,12 +8,17 @@ class ScopeData {
     const UPDATE_SUBSTITION_PLAN = 'update_substitutions';
     const TICKER = 'ticker';
     const OTHER = 'other';
+    const MENSA = 'mensa';
     const UPDATE_MENSA = 'update_mensa';
+    const EVENTS = 'events';
+    const UPDATE_EVENTS = 'update_events';
 
     public static $scopes = Array(
         self::BASIC,
         self::SUBSTITUTION_PLAN,
-        self::TICKER
+        self::TICKER,
+        self::EVENTS,
+        self::MENSA
     );
     
     public static $scopesTeacher = Array(
@@ -24,7 +29,8 @@ class ScopeData {
         self::SUBSTITUTION_PLAN_FULL,
         self::TEACHER_PLAN_FULL,
         self::UPDATE_SUBSTITION_PLAN,
-        self::UPDATE_MENSA
+        self::UPDATE_MENSA,
+        self::UPDATE_EVENTS,
     );
 
     public static function GetScopes() {

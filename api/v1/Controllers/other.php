@@ -23,6 +23,7 @@ class Controller_Other extends RestController {
 
         $others = $replacements->GetOthers();
 
+        $this->meta = Array('next'=>  RestUtil::GetNextTFrom($replacements->GetDate()));
         $this->response = $others;
         $this->responseStatus = 200;
     }

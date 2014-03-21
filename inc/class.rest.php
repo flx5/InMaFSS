@@ -265,6 +265,7 @@ abstract class RestController {
     protected $errors;
     protected $file;
     protected $user;
+    protected $meta;
 
     public function __construct($args, $user, $file) {
         $this->args = $args;
@@ -273,10 +274,11 @@ abstract class RestController {
         $this->errors = Array();
         $this->file = $file; 
         $this->user = $user;
+        $this->meta = Array();
     }
 
     public final function GetResponse() {
-        return Array('response' => (object) $this->response, 'errors' => $this->errors);
+        return Array('meta'=> $this->meta,'response' => $this->response, 'errors' => $this->errors);
     }
 
     public final function GetStatus() {

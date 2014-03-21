@@ -2,15 +2,15 @@
 
 require_once(INC . 'class.time_helper.php');
 
-class Controller_Mensa extends RestController {
+class Controller_Appointments extends RestController {
 
     public function RequiredScope($method) {
         switch ($method) {
             case 'POST':
-                return ScopeData::UPDATE_MENSA;
+                return ScopeData::UPDATE_EVENTS;
                 break;
             default:
-                return ScopeData::MENSA;
+                return ScopeData::EVENTS;
         }
     }
 
@@ -23,14 +23,17 @@ class Controller_Mensa extends RestController {
         $tfrom = RestUtil::GetTFrom($this->args[0]);
 
         // Defining gmmktime with date command to ensure the usage of the correct date (Could be a problem between 0 and 1 o'clock at UTC+1 i.e.
-        $sql = dbquery("SELECT * FROM mensa WHERE day >= " . $tfrom . " AND day < " . ($tfrom + 24 * 3600) . " LIMIT 1");
+        $sql = dbquery("SELECT * FROM events WHERE startdate >= " . $tfrom . " AND startdate < " . ($tfrom + 24 * 3600));
 
-        $menu = $sql->fetchAssoc();
-
-        $menu['additives'] = unserialize($menu['additives']);
+        $events = Array();
+        
+        while($event = $sql->fetchAssoc()) {
+            $event['startdate'] = (int)$event['startdate'];
+            $events[] = $event;
+        }
 
         $this->meta = Array('next'=>  RestUtil::GetNextTFrom($tfrom));
-        $this->response = $menu;
+        $this->response = $events;
         $this->responseStatus = 200;
     }
 

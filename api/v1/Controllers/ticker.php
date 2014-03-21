@@ -23,6 +23,7 @@ class Controller_Ticker extends RestController {
 
         $tickers = $replacements->GetTickers();
 
+        $this->meta = Array('next'=>  RestUtil::GetNextTFrom($replacements->GetDate()));
         $this->response = $tickers;
         $this->responseStatus = 200;
     }

@@ -12,9 +12,7 @@ class TimeHelper {
         return $tfrom;
     }
 
-    private static function GetNextDay() {
-        $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"))+24*3600;
-
+    public static function GetNextDay($tfrom) {  
         do {
             $remWeekend = self::RemoveWeekend($tfrom);
             $tfrom = $remWeekend;
@@ -32,7 +30,8 @@ class TimeHelper {
         if ($day == 'today') {
             $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"));
         } elseif($day == 'tomorrow') {
-            $tfrom = self::GetNextDay();
+            $tfrom = gmmktime(0, 0, 0, date("n"), date("j"), date("Y"))+24*3600;
+            $tfrom = self::GetNextDay($tfrom);
         } elseif(is_numeric($day))
             $tfrom = $day;
         else

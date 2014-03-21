@@ -342,6 +342,9 @@ switch ($key) {
         $loc['scope_ticker'] = "Zugriff auf Ticker";
         $loc['scope_other'] = "Zugriff auf abwesende Lehrkr&auml;fte, Aufsichten, belegte R&auml;ume, abwesende Klassen";
         $loc['scope_update_mensa'] = "Mensa aktualisieren";
+        $loc['scope_update_events'] = "Termine aktualisieren";
+        $loc['scope_events'] = "Zugriff auf Termine";
+        $loc['scope_mensa'] = "Zugriff auf Mensaspeiseplan";
         break;
 }
 ?>

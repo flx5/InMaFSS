@@ -42,5 +42,11 @@ class RestUtil {
             return null;
         }
     }
+    
+    public static function GetNextTFrom($today) {
+        // Force TFrom to be at the start of day
+        $tfrom = gmmktime(0,0,0, gmdate('n', $today), gmdate('j', $today)+1, gmdate('Y', $today));
+        return TimeHelper::GetNextDay($tfrom);
+    }
 }
 ?>

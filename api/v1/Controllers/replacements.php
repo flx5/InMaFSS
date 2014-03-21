@@ -50,6 +50,7 @@ class Controller_Replacements extends RestController {
             $this->response = $replacements->GetReplacements($user['groups']);
         }
 
+        $this->meta = Array('next'=>  RestUtil::GetNextTFrom($replacements->GetDate()));
         $this->responseStatus = 200;
     }
 
