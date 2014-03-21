@@ -102,7 +102,9 @@
                                 case 'enum':
                                     echo '<select name="' . $field['name'] . '">';
                                     foreach ($field['enum'] as $option) {
-                                        echo '<option ' . (($data[$field['name']] == $option) ? 'selected' : '' ) . '>' . lang()->loc($option, false, true) . '</option>';
+                                        echo '<option ' . (($data[$field['name']] == $option) ? 'selected' : '' ) . '>';
+                                        lang()->loc($option, true, true);
+                                        echo '</option>';
                                     }
                                     echo '</select>';
                                     break;

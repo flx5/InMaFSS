@@ -187,7 +187,7 @@ class View {
 
     private function CreateTeacherTableHeader() {
         $output = '<tr><th colspan="6" >';
-        $output .= '<span style="float:left;" >' . lang()->loc(strtolower(substr(gmdate("D", $this->ReplacementHelper->GetDate()), 0, 2)), false) . ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
+        $output .= '<span style="float:left;" >' . core::GetDay($this->ReplacementHelper->GetDate()) . ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
         $output .= '</th></tr>';
         return $output;
@@ -206,14 +206,7 @@ class View {
     public function GetMenu() {
         $menu = "";
         foreach ($this->pages as $i => $page) {
-            $menu .= '<span id="info_' . $this->site . '_' . $i . '" style="color:#';
-            if ($i == 0) {
-                $menu .= (($this->site == 'left') ? '004488' : '43886F');
-            } else {
-                $menu .= (($this->site == 'left') ? 'C0C0E0' : 'A5CDCD');
-            }
-
-            $menu .= '">' . $page['title'] . '</span> * ';
+            $menu .= '<span id="info_' . $this->site . '_' . $i . '" class="'.(($i==0) ? 'active' : '').'">' . $page['title'] . '</span> * ';
         }
 
         $menu = substr($menu, 0, -3);

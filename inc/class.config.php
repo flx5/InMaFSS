@@ -37,7 +37,6 @@ class config {
     private $use_ftp;
     private $ftp;
     private $system;
-    private $useMarquee;
     private $updateStyle;
     private $spalten_t = Array('200px', '30px', '100px', '75px', '*');
     private $spalten = Array('75px', '75px', '30px', '180px', '75px', '*');
@@ -70,7 +69,6 @@ class config {
 
         $this->ftp = $ftp;
         $this->system = (string)$val->system;
-        $this->useMarquee = (bool)$val->useMarquee;
         $this->updateStyle = (string)$val->updateStyle;
     }
 

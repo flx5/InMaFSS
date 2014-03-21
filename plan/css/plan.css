@@ -20,12 +20,12 @@
 \*=================================================================================*/
 
 .bar {
-   width:100%;
-   background-color:#808080;
-   height:30px;
-   color:#fff;
-   font-size:16pt;
-   text-align:center;
+    width:100%;
+    background-color:#808080;
+    height:30px;
+    color:#fff;
+    font-size:16pt;
+    text-align:center;
 }
 
 .copyright {
@@ -40,52 +40,72 @@
 }
 
 .main {
-   width:50%;
-   top:32px;
-   bottom:30px;
-   position:absolute;
-   text-align:center;
+    width:50%;
+    top:32px;
+    bottom:30px;
+    position:absolute;
+    text-align:center;
 }
 
 .main th
 {
-  color:#cccccc;
-  background-color:#004488;
-  font-family:"trebuchet ms", verdana, arial, sans-serif;
+    color:#cccccc;
+    background-color:#004488;
+    font-family:"trebuchet ms", verdana, arial, sans-serif;
 }
 
 .main td
 {
-  background-color:#c0c0e0;
-  font-family:"trebuchet ms", verdana, arial, sans-serif;
-  padding:3px;
+    background-color:#c0c0e0;
+    font-family:"trebuchet ms", verdana, arial, sans-serif;
+    padding:3px;
 }
 
 .main tr {
-  height:25px;
-  color:#004060;
+    height:25px;
+    color:#004060;
+}
+
+.main .menu {
+    height:30px; 
+    font-size:20px; 
+    width:95%; 
+    margin:auto;
+    color: #C0C0E0;
+}
+
+.main .menu .active {
+    color: #004488;
+}
+
+.tomorrow .menu {
+    color: #A5CDCD;
+}
+
+.tomorrow .menu .active {
+    color: #43886F;
 }
 
 .tomorrow tr {
-  color:#CCCCCC;
+    color:#CCCCCC;
 }
 
 .tomorrow th {
-  color:#CCCCCC;
-  background-color: #43886F;
+    color:#CCCCCC;
+    background-color: #43886F;
 }
 
 .tomorrow td {
-  background-color:#A5CDCD;
-  color: #2C5E4C;
+    background-color:#A5CDCD;
+    color: #2C5E4C;
 }
 
 .update td {
-  color:#ff0000;
+    color:#ff0000;
 }
 
 a {
-   color:#fff;
+    color:#fff;
 }
 
 #header_cached {

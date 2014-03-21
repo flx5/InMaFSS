@@ -25,6 +25,9 @@ class PARSE_PLAN_WILLI2 implements Parser {
 
     public function parse($file) {
         $html = file_get_contents($file);
+        $html = html_entity_decode($html);
+        $html = str_replace("\r\n", "\n", $html);
+        
         if (strpos($html, 'Vertretungsplan') === false)
             return false;
 
@@ -91,7 +94,7 @@ class PARSE_PLAN_WILLI2 implements Parser {
             }
 
             $vertretung = explode("<tr>", $grade);
-            preg_match('#<th rowspan="(.*)" class="k">\n(.*)</th>#i', $vertretung[0], $data);
+            preg_match('#<th rowspan="(.*)" class="k">\n(.*)</th>#i', $vertretung[0], $data); 
             $grade = htmlentities($data[2]);
 
             foreach ($vertretung as $v) {

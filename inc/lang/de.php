@@ -109,7 +109,7 @@ switch ($key) {
 
     case 'ticker':
         $loc['title'] = 'Ticker';
-        $loc['no.ticker'] = 'Derzeit sind keine Ticker vorhanden';
+        $loc['no.ticker'] = 'Derzeit sind keine weiteren Informationen vorhanden';
         $loc['save'] = 'Speichern';
         $loc['add'] = 'Hinzuf&uuml;gen';
         $loc['delete'] = 'L&ouml;schen';
@@ -225,7 +225,6 @@ switch ($key) {
         $loc['ftp_user'] = 'FTP Nutzer';
         $loc['ftp_password'] = 'FTP Passwort';
         $loc['ftp_path'] = 'Pfad zu InMaFSS auf dem FTP Server';
-        $loc['useMarquee'] = 'Nutze den Marquee Befehl und nicht das Bl&auml;ttern beim Ticker <br>(HTML Standard unterstützt Marquee offiziell NICHT!)';
         break;
     
     case 'ip_protection':

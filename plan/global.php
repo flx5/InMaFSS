@@ -81,7 +81,13 @@ if (!$isAuth) {
 
 function PlanRegisterStandard($tpl) {
     $tpl->addCSS(WWW . '/plan/css/plan.css');
-    $tpl->addJS(WWW . "/plan/plan.js");
+    $tpl->addJS(WWW . "/plan/js/plan.js");
+    $tpl->addJS(WWW . "/plan/js/ajax.js");
+    $tpl->addJS(WWW . "/plan/js/cache.js");
+    $tpl->addJS(WWW . "/plan/js/height.js");
+    $tpl->addJS(WWW . "/plan/js/pages.js");
+    $tpl->addJS(WWW . "/plan/js/ticker.js");
+    $tpl->addJS(WWW . "/plan/js/update.js");
 }
 
 getVar("tpl")->registerStandard('plan', 'PlanRegisterStandard');

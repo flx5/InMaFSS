@@ -7,7 +7,7 @@
   |* Copyright (C) flx5                                                              *|
   |* E-Mail: me@flx5.com                                                             *|
   |* ############################################################################### *|
- |* InMaFSS is free software; you can redistribute it and/or modify                 *|
+  |* InMaFSS is free software; you can redistribute it and/or modify                 *|
   |* it under the terms of the GNU Affero General Public License as published by     *|
   |* the Free Software Foundation; either version 3 of the License,                  *|
   |* or (at your option) any later version.                                          *|
@@ -19,7 +19,7 @@
   |* ############################################################################### *|
   |* You should have received a copy of the GNU Affero General Public License        *|
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
-  \*================================================================================= */ 
+  \*================================================================================= */
 
 
 require_once("global.php");
@@ -36,17 +36,16 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
 
     getVar("tpl")->Write('
         <script language="JavaScript">
-        SetHeight();
+        Height.SetHeight();
         </script>');
-    
 } elseif ($_GET['size'] < 533) {
     getVar("tpl")->addTemplate('plan/too_small');
 } else {
 
     $size = $_GET['size'];
-    $limit = floor(($size-50 ) / 25) - 4;
+    $limit = floor(($size - 50 ) / 25) - 4;
 
-    require_once(INC."class.view.php");
+    require_once(INC . "class.view.php");
 
     $left = getVar("tpl")->getTemplate('plan/plan');
     $left->setVar('site', 'left');

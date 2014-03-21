@@ -37,16 +37,14 @@ $data = Array();
 
 $left = getVar("tpl")->getTemplate('plan/plan');
 $left->setVar('site', 'left');
-$view_left = new view('left', $limit);
-$view_left->type = (isset($_GET['teacher']) ? 1 : 0);
+$view_left = new view('left', $limit, isset($_GET['teacher']) ? ReplacementsTypes::TEACHER : ReplacementsTypes::PUPIL);
 $left->setVar('view', $view_left);
 
 $data['left'] = $left->GetHtml();
 
 $right = getVar("tpl")->getTemplate('plan/plan');
 $right->setVar('site', 'right');
-$view_right = new view('right', $limit);
-$view_right->type = (isset($_GET['teacher']) ? 1 : 0);
+$view_right = new view('right', $limit, isset($_GET['teacher']) ? ReplacementsTypes::TEACHER : ReplacementsTypes::PUPIL);
 $right->setVar('view', $view_right);
 
 $data['right'] = $right->GetHtml();

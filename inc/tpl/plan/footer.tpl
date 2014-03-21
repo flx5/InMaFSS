@@ -35,10 +35,7 @@ if (isset($view_left) && isset($view_right)) {
     $output = Array();
 
     if (count($tickers) == 0) {
-        if (config("useMarquee"))
             $output[] = lang()->loc('no.ticker', false);
-        else
-            $output[] = "'" . lang()->loc('no.ticker', false) . "'";
     }
 
     foreach ($tickers as $ticker) {
@@ -51,9 +48,6 @@ if (isset($view_left) && isset($view_right)) {
 
         $out .= $ticker['content'];
 
-        if (!config("useMarquee"))
-            $out = "'" . preg_replace("/'/", "\\'", $out) . "'";
-
         if (!in_array($out, $output)) {
             $output[] = $out;
         }
@@ -65,31 +59,7 @@ if (isset($view_left) && isset($view_right)) {
 <div class="copyright" style="<?php echo ($ticker ? '' : 'bottom:0px;'); ?>; z-index:-1; ">http://flx5.com/inmafss</div>
 
 <?php if ($ticker) { ?>
-    <div class="bar" style="position:absolute; bottom:0px;">
-        <div id="ticker_marquee">           
-            <?php
-            // Marquee is NOT official HTML, thus we can decide wether we are going to use it
-            if (config("useMarquee")) {
-                ?>
-                <marquee>+++&nbsp;<?php echo implode("&nbsp;+++&nbsp;", $output); ?>&nbsp;+++</marquee>
-            <?php } else { ?>
-                <script language="JavaScript">
-                    var tickers = new Array(<?php echo implode(",", $output) ?>); 
-                    var tickerId = 0;    
-                    var tickerIntv = setInterval(rotateTicker, 3*1000);
-                                
-                    rotateTicker();
-                                
-                    function rotateTicker() {
-                        tickerId++;
-                        if(tickerId >= tickers.length)
-                            tickerId = 0;
-                            
-                        var tickerDiv = document.getElementById("ticker_marquee");
-                        tickerDiv.innerHTML = '+++&nbsp;'+tickers[tickerId]+'&nbsp;+++'; 
-                    }    
-                </script>
-            <?php } ?>
-        </div>
+    <div class="bar" style="position:absolute; bottom:0px; overflow:hidden;width:100%; ">         
+                <span id="ticker">+++&nbsp;<?php echo implode("&nbsp;+++&nbsp;", $output); ?>&nbsp;+++</span>
     </div>
 <?php } ?>
