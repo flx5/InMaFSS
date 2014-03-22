@@ -26,20 +26,11 @@
 <div class="inner">
 <ul>
 <?php
-  $updates = getVar("update")->GetUpdates();
-  if(count($updates) == 0) {
+  $update = getVar("update")->GetLatest();
+  if($update === false) {
      echo '<li>'.lang()->loc('no.updates',false).'</li>';
   } else {
-     end($updates);
-     $key = key($updates);
-
-     echo '<a href="update.php?v='.$key.'">'.lang()->loc('update.to.version',false).' '.$key.'</a><br>';
-     echo '<h3>'.lang()->loc('missed.updates',false).'</h3>';
+     echo '<a href="update.php">'.lang()->loc('update.to.version',false).' '.$update['name'].'</a><br>';
   }
-
-  foreach($updates as $ver=>$url) {
-        echo '<li>'.$ver.'</li>';
-  }
-
 ?>
 </div></div>

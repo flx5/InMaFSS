@@ -82,7 +82,6 @@ $config->LoadFromDB();
 
 $vars->Set("lang", new lang($config->Get("lang")));
 getVar("pluginManager")->Init();
-getVar("update")->Init();
 
 session_start();
 

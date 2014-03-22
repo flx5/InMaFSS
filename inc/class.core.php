@@ -33,34 +33,131 @@ class core {
 
         return null;
     }
-    
-    public static function GetIP() {
-        if(isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
-            return $_SERVER['HTTP_CLIENT_IP'];
+
+    public static function CompareVersion($oldVersion, $newVersion) {
+        $oldVersion = self::ParseVersionString($oldVersion);
+        $newVersion = self::ParseVersionString($newVersion);
+
+        if ($newVersion['major'] > $oldVersion['major'])
+            return 1;
+        if ($newVersion['major'] < $oldVersion['major'])
+            return -1;
+
+        if ($newVersion['minor'] > $oldVersion['minor'])
+            return 1;
+        if ($newVersion['minor'] < $oldVersion['minor'])
+            return -1;
+
+        if ($newVersion['revision'] > $oldVersion['revision'])
+            return 1;
+        if ($newVersion['revision'] < $oldVersion['revision'])
+            return -1;
+
+        switch ($newVersion['type']) {
+            case 'STABLE':
+                if ($oldVersion['type'] != 'STABLE')
+                    return 1;
+                break;
+            case 'PREALPHA':
+                break;
+            case 'ALPHA':
+                switch ($oldVersion['type']) {
+                    case 'RC':
+                    case 'BETA':
+                    case 'STABLE':
+                        return -1;
+                    case 'PREALPHA':
+                        return 1;
+                }
+                break;
+            case 'BETA':
+                switch ($oldVersion['type']) {
+                    case 'RC':
+                    case 'STABLE':
+                        return -1;
+                    case 'PREALPHA':
+                    case 'ALPHA':
+                        return 1;
+                }
+                break;
+            case 'RC':
+                switch ($oldVersion['type']) {
+                    case 'STABLE':
+                        return -1;
+                    case 'BETA':
+                    case 'PREALPHA':
+                    case 'ALPHA':
+                        return 1;
+                }
+                break;
+        }
+
+        if ($newVersion['typeNo'] == $oldVersion['typeNo'])
+            return 0;
+
+        return ($newVersion['typeNo'] > $oldVersion['typeNo']) ? 1 : -1;
+    }
+
+    public static function ParseVersionString($version) {
+        $version = explode("-", $version, 2);
+
+        $prerelease = "stable";
+
+        if (isset($version[1]))
+            $prerelease = $version[1];
+
+        $version = explode(".", $version[0]);
+
+        $majorVersion = $version[0];
+        if (strpos($majorVersion, "v") === 0)
+            $majorVersion = substr($majorVersion, 1);
+
+        $minorVersion = 0;
+        if (isset($version[1]))
+            $minorVersion = $version[1];
+
+        $revision = 0;
+        if (isset($version[2]))
+            $revision = $version[2];
+
+        $prerelease = explode(".", $prerelease, 2);
         
-        if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $preReleaseVersion = 0;
+        if (isset($prerelease[1]))
+            $preReleaseVersion = $prerelease[1];
+
+        $prerelease = $prerelease[0];
+
+        return Array('major' => $majorVersion, 'minor' => $minorVersion, 'revision' => $revision, 'type' => strtoupper($prerelease), 'typeNo' => $preReleaseVersion);
+    }
+
+    public static function GetIP() {
+        if (isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
+            return $_SERVER['HTTP_CLIENT_IP'];
+
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            
+
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ","));
                 $ip = trim($ip);
             }
-            
+
             return $ip;
         }
-        
-        if(isset($_SERVER['HTTP_X_FORWARDED']) && !empty($_SERVER['HTTP_X_FORWARDED']))
+
+        if (isset($_SERVER['HTTP_X_FORWARDED']) && !empty($_SERVER['HTTP_X_FORWARDED']))
             return $_SERVER['HTTP_X_FORWARDED'];
-        
-        if(isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && !empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']))
+
+        if (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && !empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']))
             return $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
-        
-        if(isset($_SERVER['HTTP_FORWARDED_FOR']) && !empty($_SERVER['HTTP_FORWARDED_FOR']))
+
+        if (isset($_SERVER['HTTP_FORWARDED_FOR']) && !empty($_SERVER['HTTP_FORWARDED_FOR']))
             return $_SERVER['HTTP_FORWARDED_FOR'];
-        
-        if(isset($_SERVER['HTTP_FORWARDED']) && !empty($_SERVER['HTTP_FORWARDED']))
+
+        if (isset($_SERVER['HTTP_FORWARDED']) && !empty($_SERVER['HTTP_FORWARDED']))
             return $_SERVER['HTTP_FORWARDED'];
-        
+
         return $_SERVER['REMOTE_ADDR'];
     }
 
@@ -71,7 +168,7 @@ class core {
         $localDay = lang()->loc($engDay, false);
         return $localDay;
     }
-    
+
     public static function SystemError($title, $text) {
 
         if (!in_array("Content-Type: text/html", headers_list())) {

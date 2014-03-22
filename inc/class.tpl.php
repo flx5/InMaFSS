@@ -27,6 +27,7 @@ class tpl {
     var $headers;
     var $params;
     private $standards = Array();
+    private $outputSent = false;
 
     public function Init($title) {
         $this->content = '';
@@ -34,19 +35,19 @@ class tpl {
             '<title>InMaFSS // ' . $title . '</title>',
             '<meta http-equiv="content-type" content="text/html; charset=UTF-8">'
         );
-        
+
         $this->addCSS(WWW . '/css/main.css');
 
-        $this->params = Array('username' => USERNAME, "www"=>WWW);
+        $this->params = Array('username' => USERNAME, "www" => WWW);
     }
-    
+
     public function registerStandard($page, $callback) {
         $this->standards[$page] = $callback;
     }
 
     public function addStandards($page) {
-        
-        if(isset($this->standards[$page])) 
+
+        if (isset($this->standards[$page]))
             $this->standards[$page]($this);
     }
 
@@ -83,9 +84,8 @@ class tpl {
         $this->params[$title] = $value;
     }
 
-    public function Output() {
+    private function GetHeader() {
         $output = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
-
         $header = "";
         foreach ($this->headers as $head) {
             $header .= $head . "\n";
@@ -93,12 +93,52 @@ class tpl {
 
         $output .= "<!-- InMaFSS Version: " . core::getVersion() . " -->\n";
 
-        $output .= "<html>\n<head>\n" . $header . "\n</head>\n<body>\n" . $this->content . "\n</body>\n</html>";
+        $output .= "<html>\n<head>\n" . $header . "\n</head>\n<body>\n";
+        return $output;
+    }
 
+    private function GetFooter() {
+        return "\n</body>\n</html>";
+    }
+
+    public function Flush() {
+        $header = "";
+        if (!$this->outputSent) {
+            $this->disable_gzip();
+            ob_start();
+            $header = $this->GetHeader();
+        }
+        $output = $header . $this->content;
         foreach ($this->params as $key => $value) {
             $output = preg_replace('/%' . $key . '%/', $value, $output);
         }
         echo $output;
+        echo str_pad('', 4096) . "\n";
+        ob_flush();
+        flush();
+        // Clean buffer
+        $this->content = "";
+        $this->outputSent = true;
+    }
+
+    function disable_gzip() {
+        for ($i = 0; $i < ob_get_level(); $i++) {
+            ob_end_flush();
+        }
+        ini_set('zlib.output_compression', 0);
+        ini_set('output_buffering', 0);
+        ini_set('output_handler', '');
+        apache_setenv('no-gzip', 1);
+        ob_implicit_flush(1);
+    }
+
+    function __destruct() {
+        echo $this->GetFooter();
+        // ob_end_flush();
+    }
+
+    public function Output() {
+        $this->Flush();
     }
 
 }
@@ -121,7 +161,7 @@ class Template {
         $this->vars[$name] = $value;
     }
 
-    public function GetHtml() { 
+    public function GetHtml() {
         $file = CWD . 'inc/tpl/' . $this->tplName . '.tpl';
 
         if (!file_exists($file)) {

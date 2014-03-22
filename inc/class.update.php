@@ -1,4 +1,5 @@
 <?php
+
 /* =================================================================================*\
   |* This file is part of InMaFSS                                                    *|
   |* InMaFSS - INformation MAnagement for School Systems - Keep yourself up to date! *|
@@ -24,167 +25,277 @@ class Update {
 
     var $version;
 
-    public function Init() {
+    const BASE_URL = "https://api.github.com/repos/flx5/InMaFSS";
+
+    private $tmpFile;
+    private $tmpFileName;
+
+    public function __construct() {
         include(CWD . "inc/version.php");
         $this->version = $version;
     }
 
-    public function GetUpdates($cache = true) {
+    private function IsOK($result) {
+        if (!is_object($result)) {
+            return true;
+        }
+        if (property_exists($result, 'message') && strpos($result->message, "API rate limit") !== false) {
+            return false;
+        }
+        return true;
+    }
+
+    public function GetLatest($cache = true) {
         if (isset($_SESSION['updates'][$this->version]) && $cache) {
             return $_SESSION['updates'][$this->version];
         }
-       
-        $updateData = @file_get_contents("https://api.github.com/repos/flx5/InMaFSS/tags");
-        
-        if (!$updateData) { 
-            return Array();
+
+
+        $releases = $this->GetFSock(self::BASE_URL . "/releases");
+
+        if ($releases === false) {
+            return false;
         }
 
+        $releases = json_decode($releases['content']);
 
-        $updateData = json_decode($updateData);
-        $versions = Array();
-
-        foreach ($updateData as $tag) {
-            $versions[$tag->name] = $tag->commit->url;
+        if (!$this->IsOK($releases)) {
+            $_SESSION['updates'][$this->version] = false;
+            return false;
         }
 
-        $updates = Array();
+        $latestRelease = null;
 
-        foreach ($versions as $v => $url) {
-            $ver = preg_replace("#\.#", "", $v);
-            if ($ver > $this->version) {
-                $updates[$v] = $url;
+        foreach ($releases as $release) {
+            if ($release->prerelease == false) {
+                $latestRelease = $release;
+                break;
             }
         }
-        ksort($updates, SORT_NUMERIC);
 
-        $_SESSION['updates'][$this->version] = $updates;
-
-        return $updates;
-    }
-
-    public function GetChanges($version) {
-        set_time_limit(0);
-        $updateData = file_get_contents($version);
-
-        if (!$updateData) {
-            return Array();
+        if ($latestRelease == null) {
+            $_SESSION['updates'][$this->version] = false;
+            return false;
         }
 
-        $updateData = json_decode($updateData);
+        $newVersion = $latestRelease->tag_name;
+        $oldVersion = core::GetVersion();
 
-        $files = Array();
+        $compare = core::CompareVersion($oldVersion, $newVersion);
 
-        foreach ($updateData->files as $file) {
-            $files[$file->filename] = Array('url' => $file->raw_url, 'status' => $file->status);
+        if ($compare == 1) {
+            $_SESSION['updates'][$this->version] = Array('name' => $newVersion, 'id' => $latestRelease->id);
+        } else {
+            $_SESSION['updates'][$this->version] = false;
         }
 
-        return $files;
+        return $_SESSION['updates'][$this->version];
     }
 
-    public function GetAllChanges($updates) {
-        $changes = Array();
+    private function GetURL($versionID) {
+        $release = $this->GetFSock(self::BASE_URL . "/releases/" . $versionID);
+        $release = json_decode($release['content']);
 
+        if (!$this->IsOK($release)) {
+            return false;
+        }
+
+        if (!isset($release->zipball_url))
+            return false;
+
+        return $release->zipball_url;
+    }
+
+    private function GetFSock($url, $followRedirect = true, $statusCallback = null, $readCallback = null) {
         set_time_limit(0);
+        $url = parse_url($url);
 
-        foreach ($updates as $url) {
-            foreach ($this->GetChanges($url) as $file => $change) {
-                $changes[$file] = $change;
+        $scheme = "";
+        $port = 80;
+
+        if (isset($url['scheme']) && $url['scheme'] == "https") {
+            $scheme = "ssl://";
+            $port = 443;
+        }
+
+        if (isset($url['port']))
+            $port = $url['port'];
+
+        $fp = fsockopen($scheme . $url['host'], $port);
+        if (!$fp)
+            return false;
+
+        $headers = Array(
+            "GET " . $url['path'] . " HTTP/1.0",
+            "Host: " . $url['host'],
+            "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0",
+            "Connection: Close"
+        );
+
+        fwrite($fp, implode("\r\n", $headers));
+        fwrite($fp, "\r\n\r\n");
+
+        $resultHeader = "";
+        $resultContent = "";
+
+        while (!feof($fp)) {
+            $data = fgets($fp);
+
+            if ($data == "\r\n")
+                break;
+
+            $resultHeader .= $data;
+        }
+
+        $resultHeader = explode("\r\n", $resultHeader);
+
+        $httpVersion = "";
+        $statusCode = 0;
+        $statusMessage = "";
+
+        if (isset($resultHeader[0])) {
+            list($httpVersion, $statusCode, $statusMessage) = explode(" ", $resultHeader[0]);
+            unset($resultHeader[0]);
+        }
+
+        $finalHeader = Array();
+        foreach ($resultHeader as $head) {
+            if ($head == "")
+                continue;
+            $head = explode(":", $head, 2);
+            $finalHeader[$head[0]] = trim($head[1]);
+        }
+
+        if ($followRedirect && isset($finalHeader['Location'])) {
+            $new_url = parse_url($finalHeader['Location']);
+
+            if (!isset($new_url['host'])) {
+                $new_url['host'] = $url['host'];
+                $new_url['scheme'] = $url['scheme'];
             }
+
+            return $this->GetFSock($new_url['scheme'] . "://" . $new_url['host'] . $new_url['path'], $followRedirect, $statusCallback, $readCallback);
         }
-        return $changes;
+
+        $expectedLength = 0;
+        if (isset($finalHeader['Content-Length']))
+            $expectedLength = intval($finalHeader['Content-Length']);
+
+
+        $bytesRead = 0;
+
+        while (!feof($fp)) {
+            $data = fread($fp, 128);
+            $bytesRead += mb_strlen($data, '8bit');
+
+            if ($readCallback == null)
+                $resultContent .= $data;
+            else
+                call_user_func($readCallback, $data);
+
+            if ($statusCallback != null)
+                call_user_func($statusCallback, $expectedLength, $bytesRead);
+        }
+        fclose($fp);
+
+        return Array('status' => $statusCode, 'header' => $finalHeader, 'content' => $resultContent);
     }
 
-    public function PerformUpdate($file, $action, $url) {
+    public function Download($versionID) {
+        $url = $this->GetURL($versionID);
+        if ($url === false)
+            return false;
 
-        set_time_limit(0);
+        $this->tmpFileName = CWD . DS . "tmp" . DS . $versionID . ".zip";
 
-        if ($file == 'inc/config.php' || $file == 'install.php') {
-            return;
+        if (!file_exists($this->tmpFileName)) {
+            $this->tmpFile = fopen($this->tmpFileName, "w+");
+
+            $this->GetFSock($url, true, Array($this, 'Progress'), Array($this, 'ReadCallback'));
+            fclose($this->tmpFile);
+            $this->tmpFile = null;
+        } else {
+            $this->Progress(1, 1);
         }
-        
-        $use_ftp = config("use_ftp");
-        $ftp = config("ftp");
 
-        if ($use_ftp) {
-            $conn_id = ftp_connect(gethostbyname($ftp['server']), 21, 5);
+        $fileName = $this->tmpFileName;
+        $this->tmpFileName = null;
 
-            if (!$conn_id) {
-                echo "Konnte keine Verbindung zum FTP Server aufbauen";
+        return $fileName;
+    }
+
+    public function Unpack($zipFile) {
+        set_time_limit(0);
+        $zH = zip_open($zipFile);
+        while ($file = zip_read($zH)) {
+            $fileName = zip_entry_name($file);
+            $fileDir = dirname($fileName);
+
+            //Continue if its not a file
+            if (substr($fileName, -1, 1) == '/')
+                continue;
+
+            if ($fileName == "inc/config.php" || $fileDir == "install")
+                continue;
+
+            if (!is_dir(CWD . $fileDir)) {
+                if (mkdir(CWD . $fileDir, 0777, true))
+                    $this->Write('<li>Created directory ' . $fileDir . '</li>');
+                else {
+                    $this->WriteError('<li>Could not create directory ' . $fileDir . '. Abort!</li>');
+                    zip_close($zH);
+                    return false;
+                }
+            }
+
+            if (file_exists($fileName) && !is_writable($fileName)) {
+                $this->WriteError('<li>Could not write file ' . $fileName . '. Not enougth permissions! Abort!</li>');
                 return false;
             }
 
-            echo "FTP Connection established\n";
-            flush();
-
-            if (!@ftp_login($conn_id, $ftp['usr'], $ftp['pwd'])) {
-                echo "Couldn't login";
-                ftp_close($conn_id);
+            $wrote = file_put_contents(CWD . $fileName, zip_entry_read($file, zip_entry_filesize($file)));
+            if ($wrote === false) {
+                $this->WriteError('<li>Could not write file ' . $fileName . '. Abort!</li>');
+                zip_close($zH);
                 return false;
+            } else {
+                $this->Write('<li>Wrote file ' . $fileName . '</li>');
             }
-
-            echo "FTP: Logged in\n";
-            flush();
-        }      
-
-        switch ($action) {
-            default:
-
-                core::SystemError("Unknown Update Status", $action);
-                break;
-
-            case 'added':
-            case 'modified':
-
-                $fp = fopen($url, "r");
-                if (!$fp) {
-                    core::SystemError("Network Error", "Couldn't download " . $file."\n");
-                }
-
-                $data = "";
-
-                while (($buffer = fgets($fp, 4096)) !== false) {
-                    $data .= $buffer;
-                }
-
-                if ($file == 'update.txt') {
-                    eval($data);
-                    return;
-                }
-
-                if ($use_ftp) {
-                    if (!ftp_fput($conn_id, $ftp['path'] . $file, $fp, FTP_BINARY)) {
-                        echo "FTP UPLOAD ERROR<br>";
-                        ftp_close($conn_id);
-                        return false;
-                    }
-                } else {
-                    file_put_contents(CWD . $file, $data);
-                }
-
-                echo 'UPDATE: ' . $file . "\n";
-                break;
-
-            case 'removed':
-                if ($use_ftp) {
-                    if (!ftp_delete($conn_id, $ftp['path'] . $file)) {
-                        echo "FTP: could not delete " . $ftp['path'] . $file . "\n";
-                        ftp_close($conn_id);
-                        return false;
-                    }
-                } else {
-                    unlink(DS . $file);
-                }
-                echo 'REMOVED: ' . $file . '\n';
-                break;
         }
-
-        if ($use_ftp) {
-            ftp_close($conn_id);
-            echo "FTP Connection closed<br>";
-        }
-
+        zip_close($zH);
+        require_once(INC . "class.upgrade.php");
+        Upgrade::Exec($this->version);
         return true;
+    }
+
+    private function Write($txt) {
+        getVar('tpl')->Write($txt);
+        getVar('tpl')->Flush();
+    }
+
+    private function WriteError($txt) {
+        $this->Write('<font color="#ff0000">' . $txt . '</font>');
+    }
+
+    function __destruct() {
+        if ($this->tmpFile != null) {
+            fclose($this->tmpFile);
+            if (file_exists($this->tmpFileName))
+                unlink($this->tmpFileName);
+        }
+    }
+
+    private function ReadCallback($data) {
+        fwrite($this->tmpFile, $data);
+    }
+
+    private function Progress($download_size, $downloaded) {
+        if ($download_size > 0) {
+            getVar('tpl')->Write('<div>');
+            getVar('tpl')->Write(round($downloaded / $download_size * 100, 2));
+            getVar('tpl')->Write('</div>');
+        }
+        getVar('tpl')->Flush();
     }
 
 }

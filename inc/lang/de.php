@@ -133,7 +133,8 @@ switch ($key) {
         $loc['title'] = 'Updates';
         $loc['no.updates'] = 'Keine Updates';
         $loc['update.to.version'] = 'Updaten auf Version';
-        $loc['missed.updates'] = 'Sie haben die folgenden Updates verpasst';
+        $loc['success'] = "Update erfolgreich";
+        $loc['failure'] = "Update fehlgeschlagen";
         break;
 
     case 'menu':
