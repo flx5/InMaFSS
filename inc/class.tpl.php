@@ -101,11 +101,13 @@ class tpl {
         return "\n</body>\n</html>";
     }
 
-    public function Flush() {
+    public function Flush($explicitFlush = true) {
         $header = "";
         if (!$this->outputSent) {
-            $this->disable_gzip();
-            ob_start();
+            if ($explicitFlush) {
+                $this->disable_gzip();
+                ob_start();
+            }
             $header = $this->GetHeader();
         }
         $output = $header . $this->content;
@@ -113,9 +115,12 @@ class tpl {
             $output = preg_replace('/%' . $key . '%/', $value, $output);
         }
         echo $output;
-        echo str_pad('', 4096) . "\n";
-        ob_flush();
-        flush();
+
+        if ($explicitFlush) {
+            echo str_pad('', 4096) . "\n";
+            ob_flush();
+            flush();
+        }
         // Clean buffer
         $this->content = "";
         $this->outputSent = true;
@@ -132,13 +137,9 @@ class tpl {
         ob_implicit_flush(1);
     }
 
-    function __destruct() {
-        echo $this->GetFooter();
-        // ob_end_flush();
-    }
-
     public function Output() {
-        $this->Flush();
+        $this->Flush(false);
+        echo $this->GetFooter();
     }
 
 }
