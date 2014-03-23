@@ -1,7 +1,7 @@
 <?php
 
 // include our OAuth2 Server object
-require_once __DIR__ . '/server.php';
+require_once dirname(__FILE__) . '/server.php';
 
 if (!Authorization::IsLoggedIn("LDAP")) {   
     $auth = Authorization::GenerateInstance("LDAP");

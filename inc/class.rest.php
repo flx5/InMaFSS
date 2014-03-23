@@ -1,7 +1,7 @@
 <?php
 
-require_once(realpath(__DIR__) . "/class.HTTPStatus.php");
-require_once(realpath(__DIR__) . "/../oauth2/server.php");
+require_once(realpath(dirname(__FILE__)) . "/class.HTTPStatus.php");
+require_once(realpath(dirname(__FILE__)) . "/../oauth2/server.php");
 require_once(INC . "libs/Array2XML.php");
 require_once(INC . "class.api.php");
 require_once(INC . "libs/OAuthResponse.php");

@@ -31,7 +31,7 @@
 # IPv4 requires at a minimum 32 bit unsigned integers.  PHP  can only do 32 bit signed.
 # FLOAT types on the other hand can do anything.... except bitwise operators :)
 # This mini-lib provides the ability for logical/bitwise AND and OR on floating types.
-include __DIR__."/bitwise_float.php";
+include dirname(__FILE__)."/bitwise_float.php";
 
 # Wrapper / replacement for PHP's ip2long() function to give us the IP address as a FLOAT
 Function ip2float($ipstring) {
