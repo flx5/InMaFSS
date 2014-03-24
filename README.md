@@ -10,7 +10,20 @@ The scrolling used quite a lot of CPU, causing the very small client PC displayi
 
 This is why InMaFSS is aimed to process most data upon the server and only give the client very little to process.
 
-Currently I'm developing upon a new REST-API, so I recommend against using the current API as it won't be supported for long anymore. Please also  consider that the new API will use OAuth1.0a to authenticate single users in order to make it possible to get only user-related substitutions.
+This release should run stable, but there are lots of things to be improved. 
+The features capable of being improved are:
+
++ OAuth User Panel (If the user hasn't authenticated any user, the page looks quite empty :) )
++ Improve the API and add an endpoint to get some information about the user (like username, class, usertype, etc.)
++ Design?
+
+Licencing
+---------
+
+The licence included in this project only affects the files that are part of this project.
+The libraries still underlie their own licences. 
+
+Please note that a missing licence header in a file that is part of InMaFSS doesn't mean that it is not included in the licence. It only means that I've forgot to add the header to the file.
 
 Requirements
 ------------
@@ -24,3 +37,4 @@ Libraries
 + [Tigra Calendar](http://www.softcomplex.com/products/tigra_calendar/) (v5.2)      
 + [ip_in_range](http://www.pgregg.com/projects/php/ip_in_range/) (v1.2)
 + [OAuth2 Server](https://github.com/bshaffer/oauth2-server-php) (v0.9) (Using an old version to ensure compability with pre PHP 5.3.9
++ [ics-parser] (http://code.google.com/p/ics-parser/)
