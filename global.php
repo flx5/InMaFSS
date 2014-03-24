@@ -46,16 +46,16 @@ date_default_timezone_set('Europe/Berlin');
 
 header('Content-Type: text/html');
 
-if (file_exists(CWD . "install.php") && file_exists(CWD . "inc/config.php")) {
-    # die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
+if (is_dir(CWD . "installer") && file_exists(CWD . "inc/config.php")) {
+     die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
 }
 
-if (!file_exists(CWD . "inc/config.php") && !file_exists(CWD . "install.php")) {
+if (!file_exists(CWD . "inc/config.php") && !is_dir(CWD . "installer")) {
     die("ERROR: CONFIG AND INSTALLER NOT FOUND!");
 }
 
-if (!file_exists(CWD . "inc/config.php") && file_exists(CWD . "install.php")) {
-    header("Location: " . WWW . "/install.php");
+if (!file_exists(CWD . "inc/config.php")) {
+    header("Location: " . WWW . "/installer/");
     exit;
 }
 

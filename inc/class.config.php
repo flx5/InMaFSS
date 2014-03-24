@@ -34,8 +34,6 @@ class config {
     private $auto_addition;
     private $time_for_next_page;
     private $teacher_time_for_next_page;
-    private $use_ftp;
-    private $ftp;
     private $system;
     private $updateStyle;
     private $spalten_t = Array('200px', '30px', '100px', '75px', '*');
@@ -59,15 +57,7 @@ class config {
         $this->auto_addition = (bool)$val->auto_addition;
         $this->time_for_next_page = (int)$val->time_for_next_page;
         $this->teacher_time_for_next_page = (int)$val->teacher_time_for_next_page;
-        $this->use_ftp = (bool)$val->use_ftp;
 
-        $ftp = Array();
-        $ftp['server'] = (string)$val->ftp_server;
-        $ftp['usr'] = (string)$val->ftp_user;
-        $ftp['pwd'] = (string)$val->ftp_password;
-        $ftp['path'] = (string)$val->ftp_path;
-
-        $this->ftp = $ftp;
         $this->system = (string)$val->system;
         $this->updateStyle = (string)$val->updateStyle;
     }
