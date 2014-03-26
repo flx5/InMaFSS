@@ -5,6 +5,9 @@
         <?php
         $apps = OAuthHelper::GetConsumers(Authorization::GetUserID('LDAP'));
 
+        if(count($apps) == 0)   
+            echo '<h4>'.lang()->loc('no.consumer', false).'</h4>';
+        
         foreach ($apps as $id => $scopes) {
             $name = OAuthHelper::GetConsumerName($id);
 

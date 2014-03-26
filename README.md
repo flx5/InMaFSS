@@ -13,7 +13,6 @@ This is why InMaFSS is aimed to process most data upon the server and only give 
 This release should run stable, but there are lots of things to be improved. 
 The features capable of being improved are:
 
-+ OAuth User Panel (If the user hasn't authenticated any consumer, the page looks quite empty :) )
 + Improve the API and add an endpoint to get some information about the user (like username, class, usertype, etc.)
 + Design?
 

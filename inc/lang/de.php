@@ -329,7 +329,8 @@ switch ($key) {
         $loc['information'] = "Informationen";
         $loc['mensa'] = "Informationen";
         $loc['menu'] = "Men&uuml;";
-        $loc['delete'] = "L&ouml;schen";
+        $loc['delete'] = "L&ouml;schen"; 
+        $loc['no.consumer'] = "Du hast noch keine Anwendung zugelassen.";
         break;
     
     case 'scopes':
