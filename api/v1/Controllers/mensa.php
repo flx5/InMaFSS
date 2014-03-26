@@ -14,6 +14,12 @@ class Controller_Mensa extends RestController {
         }
     }
 
+    public function RequireUser($method) {
+        if ($method == "POST")
+            return false;
+        return true;
+    }
+
     public function GET() {
         if (!isset($this->args[0])) {
             $this->AddError(APIErrorCodes::PARAM_DAY_MISSING);
@@ -29,7 +35,7 @@ class Controller_Mensa extends RestController {
 
         $menu['additives'] = unserialize($menu['additives']);
 
-        $this->meta = Array('next'=>  RestUtil::GetNextTFrom($tfrom));
+        $this->meta = Array('next' => RestUtil::GetNextTFrom($tfrom));
         $this->response = $menu;
         $this->responseStatus = 200;
     }

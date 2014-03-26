@@ -14,6 +14,12 @@ class Controller_Appointments extends RestController {
         }
     }
 
+    public function RequireUser($method) {
+        if ($method == "POST")
+            return false;
+        return true;
+    }
+
     public function GET() {
         if (!isset($this->args[0])) {
             $this->AddError(APIErrorCodes::PARAM_DAY_MISSING);
@@ -26,13 +32,13 @@ class Controller_Appointments extends RestController {
         $sql = dbquery("SELECT * FROM events WHERE startdate >= " . $tfrom . " AND startdate < " . ($tfrom + 24 * 3600));
 
         $events = Array();
-        
-        while($event = $sql->fetchAssoc()) {
-            $event['startdate'] = (int)$event['startdate'];
+
+        while ($event = $sql->fetchAssoc()) {
+            $event['startdate'] = (int) $event['startdate'];
             $events[] = $event;
         }
 
-        $this->meta = Array('next'=>  RestUtil::GetNextTFrom($tfrom));
+        $this->meta = Array('next' => RestUtil::GetNextTFrom($tfrom));
         $this->response = $events;
         $this->responseStatus = 200;
     }
@@ -50,14 +56,14 @@ class Controller_Appointments extends RestController {
             }
         }
 
-        $p = new parseMensa();
+        $p = new parseAppointments();
         $count = Array('success' => 0, 'failure' => 0);
-
+        
         foreach ($_FILES as $file) {
             $status = $p->parse($file['tmp_name']);
             if ($status)
                 $count['success']++;
-            else
+            else 
                 $count['failure']++;
         }
 
