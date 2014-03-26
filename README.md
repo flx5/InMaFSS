@@ -30,6 +30,10 @@ Requirements
 + >= PHP 5.2.3
 + mysql/mysqli
 
+API
+----
+The API documentation is currently in work. I'm using the Swagger standard as specified here: https://github.com/wordnik/swagger-spec
+
 Libraries
 ---------
 
@@ -38,3 +42,4 @@ Libraries
 + [ip_in_range](http://www.pgregg.com/projects/php/ip_in_range/) (v1.2)
 + [OAuth2 Server](https://github.com/bshaffer/oauth2-server-php) (v0.9) (Using an old version to ensure compability with pre PHP 5.3.9
 + [ics-parser] (http://code.google.com/p/ics-parser/)
++ [SwaggerUI] (https://github.com/wordnik/swagger-ui)

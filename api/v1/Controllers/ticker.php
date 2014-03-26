@@ -5,6 +5,10 @@ class Controller_Ticker extends RestController {
         return ScopeData::TICKER;
     }
 
+    public function GetDescription() {
+        return "Tickers";
+    }
+    
     public function GET() {
         if (!isset($this->args[0])) {
             $this->AddError(APIErrorCodes::PARAM_DAY_MISSING);

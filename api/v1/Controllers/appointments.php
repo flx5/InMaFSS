@@ -14,6 +14,10 @@ class Controller_Appointments extends RestController {
         }
     }
 
+    public function GetDescription() {
+        return "Operations about appointments";
+    }
+
     public function RequireUser($method) {
         if ($method == "POST")
             return false;
@@ -58,12 +62,12 @@ class Controller_Appointments extends RestController {
 
         $p = new parseAppointments();
         $count = Array('success' => 0, 'failure' => 0);
-        
+
         foreach ($_FILES as $file) {
             $status = $p->parse($file['tmp_name']);
             if ($status)
                 $count['success']++;
-            else 
+            else
                 $count['failure']++;
         }
 

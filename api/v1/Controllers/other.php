@@ -5,6 +5,10 @@ class Controller_Other extends RestController {
         return ScopeData::OTHER;
     }
 
+    public function GetDescription() {
+        return "Operations concerning additional substitution plan data";
+    }
+    
     public function GET() {
         if (!isset($this->args[0])) {
             $this->AddError(APIErrorCodes::PARAM_DAY_MISSING);

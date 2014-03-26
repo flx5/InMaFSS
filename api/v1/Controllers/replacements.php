@@ -13,6 +13,10 @@ class Controller_Replacements extends RestController {
         }
     }
     
+    public function GetDescription() {
+        return "Operations about the substitution plan";
+    }
+    
     public function RequireUser($method) {
         if($method == "POST")
             return false;

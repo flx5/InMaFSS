@@ -14,6 +14,10 @@ class Controller_Mensa extends RestController {
         }
     }
 
+    public function GetDescription() {
+        return "Operations concerning the mensa";
+    }
+    
     public function RequireUser($method) {
         if ($method == "POST")
             return false;

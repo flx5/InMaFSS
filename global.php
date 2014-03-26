@@ -47,7 +47,7 @@ date_default_timezone_set('Europe/Berlin');
 header('Content-Type: text/html');
 
 if (is_dir(CWD . "installer") && file_exists(CWD . "inc/config.php")) {
-     die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
+     #die("ERROR: YOU HAVE TO REMOVE THE installer folder BEFORE YOU WILL BE ABLE TO USE THIS!");
 }
 
 if (!file_exists(CWD . "inc/config.php") && !is_dir(CWD . "installer")) {

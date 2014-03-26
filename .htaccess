@@ -1,6 +1,8 @@
 Order Deny,Allow
 Allow from all
 
+AcceptPathInfo Off
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f

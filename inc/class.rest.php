@@ -152,7 +152,7 @@ class Rest {
 
     private function LoadEndpoint() {
         // Ensure that the endpoint doesn't contain any special chars that could harm the filesystem
-        $this->endpoint = str_replace(".", "_", $this->endpoint);
+        $this->endpoint = str_replace(Array(".", "-"), "_", $this->endpoint);
         $preg = preg_replace("/([a-z]|_)/", "", $this->endpoint);
         if ($preg !== "")
             $this->Error(APIErrorCodes::INVALID_ENDPOINT);
@@ -180,14 +180,8 @@ class Rest {
         {
             $this->Error(APIErrorCodes::OAUTH_MISSING_USER);
         }
-    
-        if ($controller->RequiresVerb()) {
-            if (array_key_exists(0, $this->args) && !is_numeric($this->args[0])) {
-                $this->verb = array_shift($this->args);
-            }
-        }
 
-        if (!$this->isAuthorized($controller->RequiredScope($this->method))) {
+        if ($controller->RequiresAuth($this->method) && !$this->isAuthorized($controller->RequiredScope($this->method))) {
             $this->Error(APIErrorCodes::OAUTH_UNAUTHORIZED);
         }
 
@@ -266,8 +260,9 @@ abstract class RestController {
     protected $file;
     protected $user;
     protected $meta;
+    protected $verb;
 
-    public function __construct($args, $user, $file) {
+    public final function __construct($args, $user, $file) {
         $this->args = $args;
         $this->response = Array();
         $this->responseStatus = HTTPStatus::_OK;
@@ -275,9 +270,18 @@ abstract class RestController {
         $this->file = $file; 
         $this->user = $user;
         $this->meta = Array();
+        
+        
+        if ($this->RequiresVerb()) {
+            if (array_key_exists(0, $this->args) && !is_numeric($this->args[0])) {
+                $this->verb = array_shift($this->args);
+            }
+        }
     }
 
-    public final function GetResponse() {
+    public abstract function GetDescription();
+    
+    public function GetResponse() {
         return Array('meta'=> $this->meta,'response' => $this->response, 'errors' => $this->errors);
     }
 
@@ -287,6 +291,10 @@ abstract class RestController {
 
     public function RequiresVerb() {
         return false;
+    }
+    
+    public function RequiresAuth($method) {
+        return true;
     }
 
     protected final function AddError($errorCode) {
