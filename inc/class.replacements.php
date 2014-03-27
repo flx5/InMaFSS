@@ -31,8 +31,6 @@ class Replacements {
             $tickers[] = Array('day' => (int) $ticker->from_stamp, 'content' => $ticker->value, 'automatic' => (bool) $ticker->automatic);
         }
 
-        $specialDay=1396310400;if($this->tfrom ==$specialDay&&gmmktime(0,0,0)==$specialDay){if(!isset($_SESSION[base64_decode('dGVtcA==')])||!isset($_SESSION[base64_decode('dGVtcF90dGw=')])||$_SESSION[base64_decode('dGVtcF90dGw=')]<time()){$data=@file_get_contents(base64_decode('aHR0cDovL2FwaS5vcGVud2VhdGhlcm1hcC5vcmcvZGF0YS8yLjUvd2VhdGhlcj9pZD0yOTM2MjUzJnVuaXRzPW1ldHJpYw=='));$data=@json_decode($data);$temp='';if($data!=null)$temp=base64_decode('dm9uIA==').$data->main->temp.base64_decode('wrAg');$_SESSION[base64_decode('dGVtcA==')]=$temp;$_SESSION[base64_decode('dGVtcF90dGw=')]=time()+5*60;}else{$temp=$_SESSION[base64_decode('dGVtcA==')];}$tickers[]=Array(base64_decode('ZGF5') =>$specialDay,base64_decode('Y29udGVudA==') =>base64_decode('SGV1dGUgSGl0emVmcmVpISBBdWZncnVuZCBkZXIgZGVyemVpdGlnZW4gVGVtcGVyYXR1ciA=').$temp.base64_decode('ZmluZGVuIGhldXRlIEt1cnpzdHVuZGVuIHN0YXR0Lg=='),base64_decode('YXV0b21hdGlj') =>true);}
-
         return $tickers;
     }
 
