@@ -108,12 +108,16 @@ function GenerateTable(&$tickers, $day) {
         if (Authorization::GetUserType('LDAP') == ReplacementsTypes::TEACHER) {
             echo '<tr><th>Std.</th><th>Klasse</th><th>Raum</th><th>Bemerkung</th></tr>';
         } else {
-            echo '<tr><th>Std.</th><th>Lehrer</th><th>vertreten durch</th><th>Raum</th><th>Bemerkung</th></tr>';
+            echo '<tr><th>Klasse</th><th>Std.</th><th>Lehrer</th><th>vertreten durch</th><th>Raum</th><th>Bemerkung</th></tr>';
         }
 
-        foreach ($data as $grade) {
+        foreach ($data as $k=>$grade) {
+            $first = true;
             foreach ($grade as $replacement) {
                 echo '<tr>';
+                if($first && Authorization::GetUserType('LDAP') == ReplacementsTypes::PUPIL)
+                    echo '<td rowspan='.count($grade).'>' . $k.'</td>';
+                
                 echo '<td>' . $replacement['lesson'] . '</td>';
                 if (Authorization::GetUserType('LDAP') == ReplacementsTypes::TEACHER) {
                     echo '<td>' . $replacement['grade'] . '</td>';
@@ -124,6 +128,7 @@ function GenerateTable(&$tickers, $day) {
                 echo '<td>' . $replacement['room'] . '</td>';
                 echo '<td>' . $replacement['comment'] . '</td>';
                 echo '</tr>';
+                $first = false;
             }
         }
         ?>

@@ -110,6 +110,7 @@ class Replacements {
         $content = Array();
 
         $gradeFilter = Array();
+        $whereFilter = "";
 
         // Using explicit comparisation as an empty Array would be equals null?!
         if ($filterGrades !== null) {
@@ -119,21 +120,22 @@ class Replacements {
                 if ($grade['prefix'] == 'Q' && ($grade['num'] == 11 || $grade['num'] == 12)) {
                     $gradeFilter[] = "grade = " . filter($grade['num']);
                 } else {
-                    $gradeFilter[] = "(grade = " . filter($grade['num']) . " AND grade_pre = '" . filter($grade['prefix']) . "' AND grade_last =  '" . filter($grade['suffix']) . "')";
+                    $gradeFilter[] = "(grade = " . filter($grade['num']) . " AND grade_pre = '" . filter($grade['prefix']) . "' AND grade_last LIKE  '" . filter($grade['suffix']) . "%')";
                 }
             }
 
             // Deliver nothing if we've got an empty filter (that was not set to null)
             if (count($gradeFilter) == 0)
                 return Array();
-
+            
             $filterString = implode(" OR ", $gradeFilter);
-            $where .= " AND " . $filterString;
+            $whereFilter = " AND " . $filterString;
         }
 
 
 
-        $sql = dbquery("SElECT * FROM replacements WHERE " . $where . " AND grade != 0 ORDER BY CAST(grade AS SIGNED) , grade_pre, grade_last, lesson");
+        $sql = dbquery("SElECT * FROM replacements WHERE " . $where.$whereFilter . " AND grade != 0 ORDER BY CAST(grade AS SIGNED) , grade_pre, grade_last, lesson");
+        // Add additional lessons marked as WU.
         $sql2 = dbquery("SElECT * FROM replacements WHERE " . $where . " AND grade = 0 ORDER BY grade_pre, grade_last, lesson");
 
         while ($data = $sql->fetchAssoc()) {
@@ -147,6 +149,7 @@ class Replacements {
             usort($lessons, Array($this, 'my_sort'));
             $content[$k] = $lessons;
         }
+
         return $content;
     }
 
