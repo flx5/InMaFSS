@@ -34,7 +34,7 @@ class parse {
                 if($html == "")
                     return;
            
-               $html = html_entity_decode($html);
+               $html = html_entity_decode($html, ENT_COMPAT, "UTF-8");
                $html = preg_replace("#\r\n#","\n",$html);
 
                require_once(CWD.DS."inc".DS."parse".DS.config("system").".php");
