@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /* =================================================================================*\
   |* This file is part of InMaFSS                                                    *|
@@ -25,9 +25,9 @@ class PARSE_PLAN_WILLI2 implements Parser {
 
     public function parse($file) {
         $html = file_get_contents($file);
-        $html = html_entity_decode($html);
+        $html = html_entity_decode($html, ENT_COMPAT | ENT_HTML401, "UTF-8"); 
         $html = str_replace("\r\n", "\n", $html);
-        
+     
         if (strpos($html, 'Vertretungsplan') === false)
             return false;
 
@@ -173,9 +173,9 @@ class PARSE_PLAN_WILLI2 implements Parser {
 
         $grades = substr($html, strpos($html, 'Abwesende Klassen'));
         $grades = substr($grades, strpos($grades, '<tr'));
-        $grades = substr($grades, 0, strpos($grades, '</table>'));
+        $grades = substr($grades, 0, strpos($grades, '</table>')); 
 
-        $rooms = substr($html, strpos($html, 'R�ume'));
+        $rooms = substr($html, strpos($html, 'Räume'));
         $rooms = substr($rooms, strpos($rooms, '<tr'));
         $rooms = substr($rooms, 0, strpos($rooms, '</table>'));
 

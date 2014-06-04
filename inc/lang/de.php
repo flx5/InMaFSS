@@ -327,8 +327,12 @@ switch ($key) {
         $loc['home'] = 'Home';
         $loc['settings'] = 'Einstellungen';
         $loc['information'] = "Informationen";
-        $loc['mensa'] = "Informationen";
+        $loc['mensa'] = "Speiseplan";
         $loc['menu'] = "Men&uuml;";
+        $loc['appointments'] = "Termine";
+        $loc['begin'] = "Beginn";
+        $loc['end'] = "Ende";
+        $loc['desc'] = "Beschreibung";
         $loc['delete'] = "L&ouml;schen"; 
         $loc['no.consumer'] = "Du hast noch keine Anwendung zugelassen.";
         break;

@@ -16,7 +16,7 @@ class parseAppointments implements ParseInterface {
         if($data === false)
             return false;
         
-        $this->data[] = $data;
+        $this->data[] = $data; 
         return true;
     }
 
@@ -29,7 +29,7 @@ class parseAppointments implements ParseInterface {
         
         foreach($this->data as $data) {
             foreach($data as $entry) { 
-                dbquery("INSERT INTO events (startdate, title, content) VALUES (".filter($entry['start']).", '".filter($entry['title'])."', '".filter($entry['desc'])."')");
+                dbquery("INSERT INTO events (startdate, end, title, content) VALUES (".filter($entry['start']).", ".filter($entry['end']).", '".filter($entry['title'])."', '".filter($entry['desc'])."')");
             }
         }
     }

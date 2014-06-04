@@ -9,19 +9,17 @@ class parsePlan implements ParseInterface {
     var $rooms = Array();
     var $supervisor = Array();
 
-    public function parse($content) {
+    public function parse($file) {
 
-        if ($content == "")
+        if (empty($file))
             return false;
-
-        $content = html_entity_decode($content);
-        $content = preg_replace("#\r\n#", "\n", $content);
+        
 
         require_once(CWD . DS . "inc" . DS . "parse" . DS . "plan" . DS . config("system") . ".php");
         $parser = "PARSE_PLAN_" . strtoupper(config("system"));
         $parser = new $parser();
 
-        $data = $parser->Parse($content);
+        $data = $parser->Parse($file);
 
         if($data === false)
             return false;

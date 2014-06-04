@@ -1,42 +1,43 @@
 <?php
 
-require_once(INC . "libs/ics-parser/class.iCalReader.php");
+require_once(INC . "libs/iCalcreator.class.php");
 
 class PARSE_APPOINTMENTS_ICS implements Parser {
 
     public function parse($file) {
-        $ical = new ICal($file);
-
-        if ($ical === false)
+        $ical = new vcalendar();
+        if (!$ical->parse(file_get_contents($file)))
             return false;
 
-        $timeZone = date_default_timezone_get();
-
-        if (isset($ical->cal["VTIMEZONE"]["TZID"]) && in_array($ical->cal["VTIMEZONE"]["TZID"], timezone_identifiers_list()))
-            $timeZone = $ical->cal["VTIMEZONE"]["TZID"];
-
-        $date = new DateTime(null, new DateTimeZone($timeZone));
+        $timeZone = getTimezonesAsDateArrays($ical);
 
         $events = Array();
 
-        foreach ($ical->events() as $event) {
-            $start = $ical->iCalDateToUnixTimestamp($event["DTSTART"]);
-            $end = $ical->iCalDateToUnixTimestamp($event["DTEND"]);
+        while (($event = $ical->getComponent("vevent")) !== false) {
+            $tstart = iCalUtilityFunctions::_date2timestamp($event->dtstart['value']);
+            $tend = iCalUtilityFunctions::_date2timestamp($event->dtend['value']);
 
-            $date->setTimestamp($start);
-            $start = strtotime($date->format('Y-m-d') . " GMT");
+            //var_dump(iCalUtilityFunctions::_date2timestamp($event->dtstart['value']));
+            $offset = getTzOffsetForDate($timeZone, 'Westeuropäische Normalzeit', $tstart);
+            $tstart += $offset['offsetSec'];
 
-            $date->setTimestamp($end);
-            $end = strtotime($date->format('Y-m-d') . " GMT");
+            $categories = Array();
 
+            while ($category = $event->getProperty("CATEGORIES")) {
+                if (is_array($category))
+                    array_merge($categories, $category);
+                else
+                    $categories[] = $category;
+            }
+            var_dump($categories);
             $events[] = Array(
-                "start" => $start,
-                "end" => $end,
-                "title" => $event["SUMMARY"],
-                "desc" => $event["DESCRIPTION"]
+                "categories" => $event->categories,
+                "start" => $tstart,
+                "end" => $tend,
+                "title" => $event->summary['value'],
+                "desc" => trim($event->getProperty("description"))
             );
         }
-
         return $events;
     }
 

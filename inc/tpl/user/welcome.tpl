@@ -66,13 +66,23 @@ $tickers = Array();
     <div style="width:50%;" class="space_wrapper">
         <div class="row_entry_wrapper">    
             <div id="appointments" class="row_entry">
-                <h2>Termine</h2>
+                <h2><?php lang()->loc('appointments'); ?></h2>
                 <?php
                 $sql = dbquery("SELECT * FROM events WHERE startdate >= " . gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) . " AND startdate <= " . (gmmktime(0, 0, 0, date("n"), date("j"), date("Y")) + 7 * 24 * 3600));
                 while ($day = $sql->fetchAssoc()) {
                     echo '<div class="appointments_entry">';
-                    echo '<div class="day_header">' . core::GetDay($day['startdate']). ', '. gmdate("d.M.Y", $day['startdate']) . '</div>';
-                    echo '<div class="appointments_data"><b>' . $day['title'].'</b><br> '. $day['content'] . '</div>';
+                    echo '<div class="day_header">' . $day['title'].'</div>';
+                    echo '<div class="appointments_data">';
+                    echo '<table width="100%">';
+                    echo '<tr><td><b>'.lang()->loc('begin', false).':</b></td><td>' . core::GetDay($day['startdate']). ', '. gmdate("d.M.Y H:i", $day['startdate']) . '</td></tr>';
+                    echo '<tr><td><b>'.lang()->loc('end', false).':</b></td><td>' . core::GetDay($day['end']). ', '. gmdate("d.M.Y H:i", $day['end']) . '</td></tr>';
+                    
+                    if($day['content'] != "") {
+                        echo '<tr><td><b>'.lang()->loc('desc', false).':</b></td><td>' . $day['content'] . '</td></tr>';
+                    }
+                    
+                    echo '</table>';
+                    echo '</div>';
                     echo '</div><br>';
                 }
                 ?>

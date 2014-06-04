@@ -23,6 +23,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `events`;
 CREATE TABLE IF NOT EXISTS `events` (
   `startdate` int(11) NOT NULL,
+  `end` int(11) NOT NULL,
   `title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`startdate`,`title`)
