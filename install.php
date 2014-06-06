@@ -171,7 +171,7 @@ function getPage() {
 
            $tomorrow = mktime(date("H"), date("i"), date("s"), date("m"), date("d")+1);
 
-           mysql_query("INSERT INTO pages (order_num, title, content, timestamp_from, timestamp_end) VALUES ('1', '".$loc['welcome']."', '".$loc['firstpage']."', '".time()."', '".$tomorrow."')");
+           mysql_query("INSERT INTO pages (order_num, title, content, timestamp_from, timestamp_end) VALUES ('1', '".$loc['welcome']."', '".$loc['firstpage']."', '".mktime(0, 0, 0)."', '".$tomorrow."')");
 
            echo '<b>'.$loc['db.set.up'].'</b>';
 
