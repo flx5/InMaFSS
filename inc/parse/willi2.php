@@ -167,7 +167,7 @@ function parseTeacherHTML($html) {
     $grades = substr($grades, strpos($grades, '<tr'));
     $grades = substr($grades, 0, strpos($grades, '</table>'));
 
-    $rooms = substr($html, strpos($html, 'R�ume'));
+    $rooms = substr($html, strpos($html, 'Räume'));
     $rooms = substr($rooms, strpos($rooms, '<tr'));
     $rooms = substr($rooms, 0, strpos($rooms, '</table>'));
 
