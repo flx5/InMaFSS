@@ -28,8 +28,9 @@ define('PLUGIN_DIR', CWD . DS . "plugins" . DS);
 
 $www = "http";
 
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off")
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
     $www .= "s";
+}
 
 $req = $_SERVER['REQUEST_URI'];
 if (strpos($req, "?") !== false) {
@@ -38,7 +39,7 @@ if (strpos($req, "?") !== false) {
 
 $www .= "://" . $_SERVER['SERVER_NAME'];
 
-if(($_SERVER['SERVER_PORT'] != 80 && $www == "http") || ($_SERVER['SERVER_PORT'] != 443 && $www == "https"))
+if($_SERVER['SERVER_PORT'] != 80 && $_SERVER['SERVER_PORT'] != 443)
     $www .= ":".$_SERVER['SERVER_PORT'];
     
 $www .= $req;
