@@ -167,7 +167,9 @@ function parseTeacherHTML($html) {
     $grades = substr($grades, strpos($grades, '<tr'));
     $grades = substr($grades, 0, strpos($grades, '</table>'));
 
-    $rooms = substr($html, strpos($html, 'Räume'));
+    // To prevent encoding issues we use ascii codes... 
+    $rooms = substr($html, strpos($html, 'R'.chr(195).chr(164).'ume')); 
+
     $rooms = substr($rooms, strpos($rooms, '<tr'));
     $rooms = substr($rooms, 0, strpos($rooms, '</table>'));
 
@@ -379,5 +381,4 @@ function parseTeacherHTML($html) {
 
     return $final;
 }
-
 ?>
