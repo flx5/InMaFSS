@@ -1,5 +1,7 @@
 <?php
-require_once INC.'class.replacements.php';
+
+require_once INC . 'class.replacements.php';
+
 class View {
 
     private $replacements = Array();
@@ -7,16 +9,15 @@ class View {
     private $limit;
     private $pages = Array();
     private $type = 0;  // 0 Pupils ; 1 teachers
-    
     private $ReplacementHelper;
 
     public function View($site, $limit, $type = ReplacementsTypes::PUPIL) {
         $this->site = $site;
         $this->limit = $limit;
         $this->type = $type;
-        
+
         $day = ($site == "left" ? 'today' : 'tomorrow');
-        
+
         $this->ReplacementHelper = new Replacements($type, $day);
         $this->AddRepacements();
         $this->CreateTables();
@@ -28,20 +29,29 @@ class View {
         $i = -1;
 
         $replacements = $this->ReplacementHelper->GetReplacements();
-        if($this->type == ReplacementsTypes::TEACHER)
-        { 
+        if ($this->type == ReplacementsTypes::TEACHER) {
             // Adding two arrays is working thanks to overloaded operators (http://www.techfounder.net/2008/07/08/operator-overloading-in-php/)
             $replacements = $this->ReplacementHelper->GetOthers() + $replacements;
         }
-      
+
         foreach ($replacements as $k => $grade) {
             if (($i + count($grade)) > $this->limit || $i == -1) {
                 $p++;
                 $i = 0;
             }
 
-            $i = $i + count($grade);
-            $this->replacements[$p][$k] = $grade;
+            $offset = 0;
+
+            while (count($grade) - $offset > $this->limit) {
+
+                $this->replacements[$p][$k] = array_slice($grade, $offset, $this->limit);
+                ++$p;
+                $offset += $this->limit;
+            }
+
+            $i += count($grade) - $offset;
+
+            $this->replacements[$p][$k] = array_slice($grade, $offset);
         }
     }
 
@@ -178,7 +188,7 @@ class View {
         $spalten = config("spalten");
 
         $output = '<tr><th colspan="6" >';
-        $output .= '<span style="float:left;" >' . core::GetDay($this->ReplacementHelper->GetDate()). ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
+        $output .= '<span style="float:left;" >' . core::GetDay($this->ReplacementHelper->GetDate()) . ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
         $output .= '</th></tr>';
         $output .= '<tr><th width="' . $spalten[0] . '">' . lang()->loc('grade', false) . '</th><th width="' . $spalten[1] . '">' . lang()->loc('teacher.short', false) . '</th><th width="' . $spalten[2] . '">' . lang()->loc('lesson.short', false) . '</th><th width="' . $spalten[3] . '">' . lang()->loc('replaced.by', false) . '</th><th width="' . $spalten[4] . '">' . lang()->loc('room', false) . '</th><th width="' . $spalten[5] . '">' . lang()->loc('comment', false) . '</th></tr>';
@@ -195,18 +205,18 @@ class View {
 
     private function GetLastUpdate() {
         $last = -1;
-        foreach($this->replacements as $replacements) {
+        foreach ($this->replacements as $replacements) {
             $tmp = $this->ReplacementHelper->GetLastUpdate($replacements);
-            if($last < $tmp)
+            if ($last < $tmp)
                 $last = $tmp;
         }
         return $last;
     }
-    
+
     public function GetMenu() {
         $menu = "";
         foreach ($this->pages as $i => $page) {
-            $menu .= '<span id="info_' . $this->site . '_' . $i . '" class="'.(($i==0) ? 'active' : '').'">' . $page['title'] . '</span> * ';
+            $menu .= '<span id="info_' . $this->site . '_' . $i . '" class="' . (($i == 0) ? 'active' : '') . '">' . $page['title'] . '</span> * ';
         }
 
         $menu = substr($menu, 0, -3);
@@ -222,19 +232,21 @@ class View {
         }
         return $output;
     }
-    
+
     private function GetPages() {
         $pages = $this->ReplacementHelper->GetPages();
-        foreach($pages as $page)
+        foreach ($pages as $page)
             $this->AddPage($page['title'], $page['content']);
     }
 
     public function AddPage($title, $content) {
         $this->pages[] = Array('title' => $title, 'content' => $content);
     }
-    
+
     public function GetTickers() {
         return $this->ReplacementHelper->GetTickers();
     }
+
 }
+
 ?>

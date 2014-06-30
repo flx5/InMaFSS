@@ -36,7 +36,12 @@ if (strpos($req, "?") !== false) {
     $req = substr($req, 0, strpos($req, "?"));
 }
 
-$www .= "://" . $_SERVER['SERVER_NAME'] . $req;
+$www .= "://" . $_SERVER['SERVER_NAME'];
+
+if(($_SERVER['SERVER_PORT'] != 80 && $www == "http") || ($_SERVER['SERVER_PORT'] != 443 && $www == "https"))
+    $www .= ":".$_SERVER['SERVER_PORT'];
+    
+$www .= $req;
 $www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))) . basename(dirname(__FILE__));
 define('WWW', $www);
 
