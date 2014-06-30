@@ -38,9 +38,15 @@ class View {
                 $p++;
                 $i = 0;
             }
-
-            $i = $i + count($grade);
-            $this->replacements[$p][$k] = $grade;
+            
+            $offset = 0;
+            while (count($grade) - $offset > $this->limit) {
+                $this->replacements[$p][$k] = array_slice($grade, $offset, $this->limit);
+                $p++;
+                $offset += $this->limit;
+            }
+            $i = $i + count($grade) - $offset;
+            $this->replacements[$p][$k] = array_slice($grade, $offset);
         }
     }
 
