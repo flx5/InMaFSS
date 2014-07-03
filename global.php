@@ -185,8 +185,6 @@ function findFirstLetter($str) {
 
         $i++;
     }
-
     return false;
 }
-
 ?>
