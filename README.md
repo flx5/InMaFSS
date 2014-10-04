@@ -35,6 +35,18 @@ The features capable of being improved are:
 + Improve the API and add an endpoint to get some information about the user (like username, class, usertype, etc.)
 + Design?
 
+
+Installation
+------------
+1. Put the downloaded folder into the public html folder.
+2. Open the matching path within the browser
+3. Follow installation instructions
+4. Installing LDAP requires additional manual steps:
+
+   - Open inc/auth/LDAP_Auth.php in your favorite text editor (vi, nano, gedit, Notepad++, ...)
+   - Edit the variables $ldaphost, $ldapport, $base_dn to your system requirements.
+   - Now you should be able to login at the users section.
+
 Licencing
 ---------
 
