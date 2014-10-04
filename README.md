@@ -7,7 +7,7 @@ InMaFSS
 STATUS
 ======
 
-As of today InMaFSS has reached the end of support.
+As of today InMaFSS has reached the end of life.
 There won't be any updates for InMaFSS v1 anymore and only security patches for InMaFSS v2.
 
 If you want to keep using InMaFSS, you may do so, but don't expect any additional features to  be developed.
