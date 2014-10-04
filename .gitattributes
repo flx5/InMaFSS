@@ -1,1 +1,7 @@
-gitversion.php ident
+# Set default behaviour, in case users don't have core.autocrlf set.
+* text=auto
+
+# Declare files that will always have LF line endings on checkout.
+*.php text eol=lf
+*.tpl text eol=lf
+*.js text eol=lf

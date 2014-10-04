@@ -77,6 +77,10 @@ switch ($key) {
         $loc['cache.warning'] = 'ACHTUNG: DIES IST EINE ZWISCHENGESPEICHERTE ANSICHT';
         break;
 
+    case 'index':
+        $loc['title'] = "Willkommen";
+        break;
+
     case 'errors':
         $loc['too.small'] = 'FEHLER: Ihr Bildschirm ist zu klein!';
         $loc['no.js'] = 'FEHLER: Ihr Browser unterst&uuml;tzt kein JavaScript.';
@@ -91,6 +95,7 @@ switch ($key) {
         $loc['username'] = 'Nutzername';
         $loc['password'] = 'Passwort';
         $loc['wrong'] = 'Der Nutzername/das Passwort stimmt nicht.';
+        $loc['no.fuse'] = 'Du hast keine Berechtigung f&uuml;r diesen Bereich.';
         $loc['welcome'] = 'Willkommen, %username%';
         $loc['back.to.home'] = 'Zur&uuml;ck zur Hauptseite';
         $loc['logout'] = 'Abmelden';
@@ -104,7 +109,7 @@ switch ($key) {
 
     case 'ticker':
         $loc['title'] = 'Ticker';
-        $loc['no.ticker'] = 'Derzeit sind keine Ticker vorhanden';
+        $loc['no.ticker'] = 'Derzeit sind keine weiteren Informationen vorhanden';
         $loc['save'] = 'Speichern';
         $loc['add'] = 'Hinzuf&uuml;gen';
         $loc['delete'] = 'L&ouml;schen';
@@ -128,7 +133,8 @@ switch ($key) {
         $loc['title'] = 'Updates';
         $loc['no.updates'] = 'Keine Updates';
         $loc['update.to.version'] = 'Updaten auf Version';
-        $loc['missed.updates'] = 'Sie haben die folgenden Updates verpasst';
+        $loc['success'] = "Update erfolgreich";
+        $loc['failure'] = "Update fehlgeschlagen";
         break;
 
     case 'menu':
@@ -137,8 +143,9 @@ switch ($key) {
         $loc['pages'] = 'Seiten';
         $loc['users'] = 'Nutzer';
         $loc['import'] = 'Importieren';
-        $loc['api'] = 'API';
         $loc['settings'] = 'Einstellungen';
+        $loc['oauth'] = 'OAuth';
+        $loc['ip_protection'] = 'Zugangsrechte';
         break;
 
     case 'info':
@@ -154,7 +161,11 @@ switch ($key) {
         $loc['title'] = 'Importieren';
         $loc['file.upload'] = 'W&auml;hlen sie die Datei zum Import';
         $loc['success'] = 'Import erfolgreich abgeschlossen!';
+        $loc['parse.fail'] = 'Die Datei hatte das falsche Format.';
         $loc['upload'] = 'Hochladen';
+        $loc['mensa'] = 'Mensa';
+        $loc['plan'] = 'Vertretungsplan';
+        $loc['appointments'] = 'Termine';
         break;
 
     case 'pages':
@@ -203,7 +214,7 @@ switch ($key) {
         $loc['save'] = 'Speichern';
         $loc['saved'] = 'Speichern erfolgreich';
         $loc['no.settings.found'] = 'Etwas lief schief: Es konnten keine Einstellungen gefunden werden! Bitte installieren sie das System neu!';
-       
+
         $loc['schoolname'] = 'Name der Schule';
         $loc['system'] = 'Vertretungsplansystem';
         $loc['lang'] = 'Sprache';
@@ -215,9 +226,28 @@ switch ($key) {
         $loc['ftp_user'] = 'FTP Nutzer';
         $loc['ftp_password'] = 'FTP Passwort';
         $loc['ftp_path'] = 'Pfad zu InMaFSS auf dem FTP Server';
-        $loc['useMarquee'] = 'Nutze den Marquee Befehl und nicht das Bl&auml;ttern beim Ticker <br>(HTML Standard unterstützt Marquee offiziell NICHT!)';
         break;
     
+    case 'ip_protection':
+        $loc['title'] = 'Zugangsrechte';
+        $loc['range'] = 'Bereich';
+        $loc['edit'] = 'Bearbeiten';
+        $loc['delete'] = 'L&ouml;schen';
+        $loc['id'] = 'ID';
+        $loc['save'] = 'Speichern';
+        $loc['del.rly'] = 'Den Bereich mit der ID %id% wirklich l&ouml;schen?';
+        $loc['abort'] = 'Abbrechen';
+        $loc['deleted'] = 'Der Bereich mit der ID %id% wurde gel&ouml;scht.';
+        $loc['add'] = 'Hinzuf&uuml;gen';
+        $loc['empty.range'] = 'Bereich darf nicht leer sein!';
+        $loc['invalid.range'] = 'Range ung&uumlltig';
+        $loc['desc'] = 'Nur Clients mit einer IP, die innerhalb eines der unteren Bereiche liegt, wird automatisch den Plan einsehen k&ouml;nnen.<br> Alle anderen Clients m&uuml;ssen sich zuerst mit einem Managementaccount einloggen.';
+        $loc['formats'] = 'Netzwerkbereiche k&ouml;nnen wie folgt definiert werden:';
+        $loc['wildcard'] = 'Wildcard format';
+        $loc['cidr'] = 'CIDR format';
+        $loc['start.end.format'] = 'Start-End IP format';
+        break;
+
     case 'date':
         $loc['january'] = 'Januar';
         $loc['february'] = 'Februar';
@@ -254,31 +284,72 @@ switch ($key) {
         $loc['prev.year'] = 'Vorheriges Jahr';
         $loc['next.year'] = 'N&auml;chstes Jahr';
         break;
-
-    case 'api':
-        $loc['title'] = 'API Management';
-        $loc['id'] = 'ID';
-        $loc['name'] = 'Name';
-        $loc['key'] = 'API Schl&uuml;ssel';
-        $loc['edit'] = 'Bearbeiten';
-        $loc['delete'] = 'L&ouml;schen';
-        $loc['save'] = 'Speichern';
-        $loc['name.too.short'] = 'Der Name ist zu kurz!';
-        $loc['api.too.short'] = 'Der API Key ist zu kurz!';
+    
+    case 'oauth':
+        $loc['title'] = "OAuth";
+        $loc['id'] = "ID";
+        $loc['application_uri'] = "Anwendungs-URI";
+        $loc['consumer_key'] = "Anwendungsschl&uuml;ssel";
+        $loc['consumer_secret'] = "Anwendungs-Geheimcode";
+        $loc['callback_uri'] = "Callback URI";
+        $loc['application_title'] = "Anwendungsname";
+        $loc['options'] = "Optionen";
+        $loc['new'] = "Neu";
+        $loc['login.rights'] = "Loginmethoden";
+        $loc['save'] = "Speichern";
+        $loc['edit'] = "Bearbeiten";
+        $loc['delete'] = "L&ouml;schen";
+        $loc['deleted'] = "L&ouml;schen erfolgreich";
+        $loc['deletion.failure'] = "L&ouml;schen fehlgeschlagen";
+        $loc['name.too.short'] = 'Der Anwendungsname muss mindestens 3 Zeichen haben.';
+        $loc['consumer.exists'] = "Eine Anwendung mit diesem Namen ist bereits registeriert";
         
-        $loc['permissions'] = 'Rechte';
-        $loc['replacements_all'] = 'Alle Vertretungen anzeigen (Sch&uuml;ler)';
-        $loc['replacements'] = 'Eigene Vertretungen anzeigen (Sch&uuml;ler)';
-        $loc['plan_update'] = 'Plan aktualisieren';
-        $loc['teacher_sub'] = 'Lehrervertretungsplan anzeigen';
-        $loc['ticker'] = 'Ticker anzeigen';
-        $loc['other'] = 'Andere Daten (Pausenaufsicht, Abwesenheit, etc.) anzeigen';
+        $loc['grant_authorization_code'] = "Nutzer gibt Zugriff &uuml;ber InMaFSS Homepage (empfohlen)";
+        $loc['grant_password'] = "Passwort basiert (nur bei eigenen Anwendungen!)";
+        $loc['grant_client_credentials'] = "Anwendung darf ohne Nutzer auf die API zugreifen";
+        $loc['grant_refresh_token'] = "Anwendung darf Zugriffsschl&uuml;ssel erneuern (empfohlen)";
+        $loc['grant_implicit'] = "Nutzer gibt Zugriff &uuml;ber InMaFSS Homepage (f&uuml;r Mobile Applikationen oder Javascript Anwendungen)";
+       
+        $loc['further.information'] = "Weitere Informationen";
+        
+        $loc['scopes'] = "Zugriffsrechte";
+        
+        break;
 
-        $loc['saved'] = 'Erfolgreich gespeichert.';
-        $loc['del.rly'] = 'Den API-Key mit der ID %id% wirklich l&ouml;schen?';
-        $loc['abort'] = 'Abbrechen';
-        $loc['deleted'] = 'Der API-Key mit der ID %id% wurde gel&ouml;scht.';
-        $loc['not.found'] = 'Der API-Key existiert nicht.';     
+    case 'user':
+        $loc['title'] = 'Nutzerbereich';
+        $loc['login'] = 'Login';
+        $loc['username'] = 'Nutzername';
+        $loc['password'] = 'Passwort';
+        $loc['wrong'] = 'Der Nutzername/das Passwort stimmt nicht.';
+        $loc['welcome'] = 'Willkommen, %displayname%';
+        $loc['logout'] = 'Abmelden';
+        $loc['home'] = 'Home';
+        $loc['settings'] = 'Einstellungen';
+        $loc['information'] = "Informationen";
+        $loc['mensa'] = "Speiseplan";
+        $loc['menu'] = "Men&uuml;";
+        $loc['appointments'] = "Termine";
+        $loc['begin'] = "Beginn";
+        $loc['end'] = "Ende";
+        $loc['desc'] = "Beschreibung";
+        $loc['delete'] = "L&ouml;schen"; 
+        $loc['no.consumer'] = "Du hast noch keine Anwendung zugelassen.";
+        break;
+    
+    case 'scopes':
+        $loc['authorize_title'] = "OAuth";
+        $loc['scope_basic'] = "Zugriff auf Basisdaten";
+        $loc['scope_substitutions'] = "Zugriff auf deinen pers&ouml;nlichen Vertretungsplan";
+        $loc['scope_all_substitutions'] = "Zugriff auf den gesamten Vertretungsplan (Sch&uuml;ler)";
+        $loc['scope_teacher_plan_full'] = "Zugriff auf den gesamten Vertretungsplan (Lehrer)";
+        $loc['scope_update_substitutions'] = "Vertretungsplan aktualisieren";
+        $loc['scope_ticker'] = "Zugriff auf Ticker";
+        $loc['scope_other'] = "Zugriff auf abwesende Lehrkr&auml;fte, Aufsichten, belegte R&auml;ume, abwesende Klassen";
+        $loc['scope_update_mensa'] = "Mensa aktualisieren";
+        $loc['scope_update_events'] = "Termine aktualisieren";
+        $loc['scope_events'] = "Zugriff auf Termine";
+        $loc['scope_mensa'] = "Zugriff auf Mensaspeiseplan";
         break;
 }
 ?>

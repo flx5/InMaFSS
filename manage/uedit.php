@@ -27,6 +27,6 @@ lang()->add('users');
 getVar("tpl")->Init(lang()->loc('title',false));
 getVar("tpl")->addStandards('admin');
 
-getVar("tpl")->addTemplate('user_edit');
+getVar("tpl")->addTemplate('manage/user_edit');
 getVar("tpl")->Output();
 ?>

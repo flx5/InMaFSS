@@ -1,0 +1,215 @@
+/*=================================================================================*\
+|* This file is part of InMaFSS                                                    *|
+|* InMaFSS - INformation MAnagement for School Systems - Keep yourself up to date! *|
+|* ############################################################################### *|
+|* Copyright (C) flx5                                                              *|
+|* E-Mail: me@flx5.com                                                             *|
+|* ############################################################################### *|
+|* InMaFSS is free software; you can redistribute it and/or modify                 *|
+|* it under the terms of the GNU Affero General Public License as published by     *|
+|* the Free Software Foundation; either version 3 of the License,                  *|
+|* or (at your option) any later version.                                          *|
+|* ############################################################################### *|
+|* InMaFSS is distributed in the hope that it will be useful,                      *|
+|* but WITHOUT ANY WARRANTY; without even the implied warranty of                  *|
+|* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                            *|
+|* See the GNU Affero General Public License for more details.                     *|
+|* ############################################################################### *|
+|* You should have received a copy of the GNU Affero General Public License        *|
+|* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
+\*=================================================================================*/
+
+#header {
+    height:60px;
+    background-color: #ccc;
+    margin: 0 30px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+#header #menu {
+    margin: 0 50px;
+    height:100%;
+}
+
+#header #menu span {
+    display: block;
+    float: left;
+    background-color: #999;
+    height:100%;
+    padding: 0 7px;
+    cursor: pointer;
+}
+
+#header #menu span a {
+    font-family: Georgia, Times;
+    font-size: 30px;   
+    height: 30px;
+    position:relative;
+    top:50%;
+    margin-top:-18px;
+    display: block;
+    text-decoration: none;
+}
+
+#header #menu span:hover {
+    background-color: #888;
+}
+
+#header #menu .selected {
+    background-color: #777;
+    cursor: default;
+}
+
+#header #menu .selected:hover {
+    background-color: #777;
+}
+
+#footer {
+    position:absolute; 
+    bottom: 0px;
+    left:30px;
+    right:30px;
+    height:20px;
+    background-color: #ccc;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    text-align: center;
+}
+
+#content {
+    position: absolute;
+    top:70px;
+    left:30px;
+    right:30px;
+    bottom: 60px;
+    overflow: auto;
+    padding:5px;
+}
+
+#content .row {
+    width:100%;
+    height:300px; 
+    margin: 10px 0px;
+    text-align: center;
+}
+
+#content .row .space_wrapper {
+    height:100%;
+    float:left;
+    margin:0;
+    padding:0;
+}
+
+#content .row .row_entry_wrapper {
+    border: 1px solid black;
+    padding:0;
+    margin:0 5px;
+    height:99%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+#content .row .row_entry_wrapper .row_entry {
+    overflow: auto;
+    height:100%;
+    width:100%;
+    border-radius: 15px;
+}
+
+#content .row .row_entry_wrapper .row_entry table {
+    border-collapse: collapse;
+}
+
+#content .row .row_entry h2 {
+    display:block;
+    width:100%;
+    height:25px;
+    background-color: #3359ab;
+    padding:10px 0;
+    margin:0px;
+    color:#fff;
+}
+
+#content .row .mensa_entry .menu_entry_left {
+    display: inline-block;
+    width:49%;
+}
+
+#content .row .mensa_entry .menu_entry_right {
+    display: inline-block;
+    width:49%;
+}
+
+.day_header {
+    background-color: #6699ff;
+    font-size: 20px;
+    width:100%;
+    height:26px;
+}
+
+#plan_left {
+    width:49%;
+}
+
+.login {
+   width:400px;
+   height:300px;
+   top:50%;
+   left:50%;
+   margin-top:-150px;
+   margin-left:-200px;
+   text-align:center;
+   position:absolute;
+   border:1px solid black;
+   background-color:#DADADA;
+}
+
+.settings {
+    text-align: center;
+}
+
+.settings .settings_region {
+    border: 1px solid black;
+    width:100%;
+    border-radius: 30px;
+}
+
+.settings .settings_region h2 {
+    background-color: #3359ab;
+    color:#fff;
+    display:block;
+    width:100%;
+    height:25px;
+    padding:10px 0;
+    margin:0 0 10px;
+    border-radius: 29px;
+}
+
+.settings .settings_region h3 {
+    background-color: #eee;
+    color:#000;
+    display:block;
+    width:100%;
+    height:25px;
+    padding:10px 0;
+    margin:0 0 10px;
+    font-size: 23px;
+}
+
+.consumer {
+    width:95%;
+    border:1px solid #777;
+    margin:20px auto;
+    padding: 0px 5px 10px;
+}
+
+.consumer  .scope {
+    width:99%;
+    border: 1px solid #ccc;
+    padding:5px;
+    margin:10px auto;
+}
+
+.appointments_data {
+    padding: 5px;
+}

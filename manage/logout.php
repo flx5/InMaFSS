@@ -22,6 +22,6 @@
 
 
 require_once("global.php");
-session_destroy();
+Authorization::GenerateInstance('DB')->Logout();
 header("Location: ../");
 ?>

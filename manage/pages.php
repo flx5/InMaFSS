@@ -32,6 +32,6 @@ if(isset($_GET['del'])) {
   getVar("tpl")->setParam("id",$_GET['del']);
 }
 
-getVar("tpl")->addTemplate('pages');
+getVar("tpl")->addTemplate('manage/pages');
 getVar("tpl")->Output();
 ?>

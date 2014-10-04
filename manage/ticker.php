@@ -53,6 +53,6 @@ if(isset($_GET['del'])) {
   getVar("tpl")->setParam("id",$_GET['del']);
 }
 
-getVar("tpl")->addTemplate('ticker');
+getVar("tpl")->addTemplate('manage/ticker');
 getVar("tpl")->Output();
 ?>

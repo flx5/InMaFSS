@@ -1,0 +1,9 @@
+<?php
+$dbtype = '%db_type%';
+$dbhost = '%db_host%';
+$dbusr = '%db_user%';
+$dbpass = '%db_pass%';
+$dbname = '%db_name%';
+
+$salt = '%salt%';
+?>

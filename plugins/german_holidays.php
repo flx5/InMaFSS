@@ -34,7 +34,7 @@ class german_holidays {
         $this->events = Array();
 
         $this->handler = $handler;
-        $this->handler->RegisterEvent($this, "generate_tfrom_right", "check");
+        $this->handler->RegisterEvent($this, "generate_tfrom_next", "check");
         return true;
     }
 

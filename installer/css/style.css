@@ -1,0 +1,113 @@
+html, body {
+    margin:0px;
+    width: 100%;
+    font-family: Arial,Helvetica,sans-serif;
+}
+#container {
+    position: absolute;
+    left:50%;
+    top:20px;
+    margin-left:-475px;
+    width:950px;
+    padding-bottom: 10px;
+}
+
+#container #header {
+    font-size: 36px;
+    color:#111;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#container #menu {
+    float:left;
+    width:200px;
+    padding:4px;
+    font-size:15px;
+}
+
+#container button {
+    background-color: #F5F5F5;
+    border: 1px solid #aaa;
+    padding:5px;
+    box-shadow: 1px 1px #000;
+    font-size:16px;
+}
+
+#container button:active {
+    box-shadow: none;
+}
+
+#container #menu ul {
+    list-style: decimal;
+}
+
+#container #menu ul .active {
+    font-weight: bold;
+}
+
+#container .seperator {
+    position: absolute;
+    left:200px;
+    top:70px;
+    bottom:25px;
+    border-left: 1px solid #ccc;
+}
+
+#container #content {
+    float:left;
+    width:650px;
+    padding:4px;
+    margin-left: 12px;
+}
+
+#container #content .box {
+    width:100%;
+    margin: 10px 0px;
+    background-color: #D5EDF8;
+    padding:10px;
+    color: #205791;
+    font-size: 15px;
+}
+
+#container #content textarea {
+    width:100%;
+    margin: 10px 0px;
+    resize: none;
+    padding:10px;
+    height:400px;
+}
+
+#container #content table {
+    width: 100%;
+    text-align: left;
+    border-spacing: 0px;
+    float: none;
+    font-size: 13px;
+}
+
+#container #content table tr:nth-child(odd) {
+    background-color: #dbe8ff;
+}
+
+#container #content th, td {
+    padding: 5px 10px;
+}
+
+#container #content th {
+    background-color: #C3D9FF;
+    
+    font-weight: bold;
+}
+
+#container hr {
+    clear: both;
+    color: #ccc;
+    height:1px;
+}
+
+h3 {
+    font-size:18px;
+    font-weight: normal;
+}

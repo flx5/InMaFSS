@@ -32,6 +32,6 @@ if(isset($_GET['del'])) {
   getVar("tpl")->setParam("id",$_GET['del']);
 }
 
-getVar("tpl")->addTemplate('users');
+getVar("tpl")->addTemplate('manage/users');
 getVar("tpl")->Output();
 ?>

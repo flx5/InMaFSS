@@ -1,3 +1,16 @@
 Order Deny,Allow
 Allow from all
 
+AcceptPathInfo Off
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule api/v1/(.*)$ api/v1/index.php?RESTurl=$1 [QSA,NC,L]
+</IfModule>
+
+# forbid access to subdirectories
+RedirectMatch 403 ^.*/inc/.*$
+RedirectMatch 403 ^.*/plugins/.*$
+RedirectMatch 403 ^.*/tmp/.*$

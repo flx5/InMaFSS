@@ -26,8 +26,24 @@ define('CWD', dirname(__FILE__) . DS);
 define('INC', CWD . "inc" . DS);
 define('PLUGIN_DIR', CWD . DS . "plugins" . DS);
 
-$www = $_SERVER['REQUEST_URI'];
-$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))).basename(dirname(__FILE__));
+$www = "http";
+
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
+    $www .= "s";
+}
+
+$req = $_SERVER['REQUEST_URI'];
+if (strpos($req, "?") !== false) {
+    $req = substr($req, 0, strpos($req, "?"));
+}
+
+$www .= "://" . $_SERVER['SERVER_NAME'];
+
+if($_SERVER['SERVER_PORT'] != 80 && $_SERVER['SERVER_PORT'] != 443)
+    $www .= ":".$_SERVER['SERVER_PORT'];
+    
+$www .= $req;
+$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))) . basename(dirname(__FILE__));
 define('WWW', $www);
 
 #register_shutdown_function('Shutdown');
@@ -36,28 +52,29 @@ date_default_timezone_set('Europe/Berlin');
 
 header('Content-Type: text/html');
 
-if (file_exists(CWD . "install.php") && file_exists(CWD . "inc/config.php")) {
-   # die("ERROR: YOU HAVE TO REMOVE THE install.php BEFORE YOU WILL BE ABLE TO USE THIS!");
+if (is_dir(CWD . "installer") && file_exists(CWD . "inc/config.php")) {
+     #die("ERROR: YOU HAVE TO REMOVE THE installer folder BEFORE YOU WILL BE ABLE TO USE THIS!");
 }
 
-if (!file_exists(CWD . "inc/config.php") && !file_exists(CWD . "install.php")) {
+if (!file_exists(CWD . "inc/config.php") && !is_dir(CWD . "installer")) {
     die("ERROR: CONFIG AND INSTALLER NOT FOUND!");
 }
 
-if (!file_exists(CWD . "inc/config.php") && file_exists(CWD . "install.php")) {
-    header("Location: " . WWW . "/install.php");
+if (!file_exists(CWD . "inc/config.php")) {
+    header("Location: " . WWW . "/installer/");
     exit;
 }
 
-require_once("inc/variables.php");
-require_once("inc/class.config.php");
-require_once("inc/core.php");
-require_once("inc/sql.php");
-require_once("inc/lang.php");
-require_once("inc/tpl.php");
-require_once("inc/update.php");
-require_once("inc/plugin.php");
-require_once("inc/parse.php");
+require_once(INC . "class.variables.php");
+require_once(INC . "class.config.php");
+require_once(INC . "class.core.php");
+require_once(INC . "class.sql.php");
+require_once(INC . "class.lang.php");
+require_once(INC . "class.tpl.php");
+require_once(INC . "class.update.php");
+require_once(INC . "class.plugin.php");
+require_once(INC . "class.parse.php");
+require_once(INC . "class.authorize.php");
 
 core::MagicQuotesCompability();
 
@@ -71,17 +88,19 @@ $config->LoadFromDB();
 
 $vars->Set("lang", new lang($config->Get("lang")));
 getVar("pluginManager")->Init();
-getVar("update")->Init();
-
 
 session_start();
 
-if (isset($_SESSION['user']) && isset($_SESSION['timestamp'])) {
+
+$user = Authorization::IsLoggedIn();
+if ($user != NULL) {
     define('LOGGED_IN', true);
-    define('USERNAME', $_SESSION['user']);
+    define('USERNAME', $user['name']);
+    define('USER_ID', $user['id']);
 } else {
     define('LOGGED_IN', false);
     define('USERNAME', 'GUEST');
+    define('USER_ID', -1);
 }
 
 function lang() {
@@ -110,12 +129,13 @@ function config($var) {
 }
 
 class vars {
+
     private static $vars;
 
     public static function Init($vars) {
         self::$vars = $vars;
     }
-    
+
     public static function getVar($var) {
         return self::$vars->Get($var);
     }
@@ -123,10 +143,11 @@ class vars {
     public static function setVar($var, $val) {
         self::$vars->Set($var, $val);
     }
-    
+
     public static function get() {
         return self::$vars;
     }
+
 }
 
 function getVar($var) {
@@ -138,13 +159,7 @@ function setVar($var, $val) {
 }
 
 function setPlugin($val, $actor) {
-    global $vars;
     vars::get()->setPlugin($val, $actor);
-}
-
-function getVersion() {
-    include("inc/version.php");
-    return $version;
 }
 
 function error_handler($errno, $errstr, $errfile, $errline) {
@@ -162,4 +177,14 @@ function Shutdown() {
     }
 }
 
+function findFirstLetter($str) {
+    $i = 0;
+    while ($i < strlen($str)) {
+        if (ctype_alpha($str[$i]))
+            return $i;
+
+        $i++;
+    }
+    return false;
+}
 ?>
