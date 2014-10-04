@@ -1,5 +1,4 @@
 ﻿<?php
-
 /* =================================================================================*\
   |* This file is part of InMaFSS                                                    *|
   |* InMaFSS - INformation MAnagement for School Systems - Keep yourself up to date! *|
@@ -25,9 +24,9 @@ class PARSE_PLAN_WILLI2 implements Parser {
 
     public function parse($file) {
         $html = file_get_contents($file);
-        $html = html_entity_decode($html, ENT_COMPAT | ENT_HTML401, "UTF-8"); 
+        $html = html_entity_decode($html, ENT_COMPAT | ENT_HTML401, "UTF-8");
         $html = str_replace("\r\n", "\n", $html);
-     
+
         if (strpos($html, 'Vertretungsplan') === false)
             return false;
 
@@ -94,7 +93,7 @@ class PARSE_PLAN_WILLI2 implements Parser {
             }
 
             $vertretung = explode("<tr>", $grade);
-            preg_match('#<th rowspan="(.*)" class="k">\n(.*)</th>#i', $vertretung[0], $data); 
+            preg_match('#<th rowspan="(.*)" class="k">\n(.*)</th>#i', $vertretung[0], $data);
             $grade = htmlentities($data[2]);
 
             foreach ($vertretung as $v) {
@@ -173,11 +172,21 @@ class PARSE_PLAN_WILLI2 implements Parser {
 
         $grades = substr($html, strpos($html, 'Abwesende Klassen'));
         $grades = substr($grades, strpos($grades, '<tr'));
-        $grades = substr($grades, 0, strpos($grades, '</table>')); 
+        $grades = substr($grades, 0, strpos($grades, '</table>'));
 
-        $rooms = substr($html, strpos($html, 'Räume'));
-        $rooms = substr($rooms, strpos($rooms, '<tr'));
-        $rooms = substr($rooms, 0, strpos($rooms, '</table>'));
+        // To prevent encoding issues we use ascii codes... If it still doesn't work we fall back to the relative memory/CPU expensive REGEX
+        if (($pos = strpos($html, 'R' . chr(228) . 'ume')) === false) {
+            $matches = null;
+            if (preg_match('/Nicht verf(.*)gbare R(.*)ume/', $html, $matches, PREG_OFFSET_CAPTURE) == 1) {
+                $pos = $matches[0][1];
+                $rooms = substr($html, $pos);
+                $rooms = substr($rooms, strpos($rooms, '<tr'));
+                $rooms = substr($rooms, 0, strpos($rooms, '</table>'));
+            } else {
+                $rooms = "";
+            }
+        }
+
 
         $school = substr($html, strpos($html, 'Gesamte Schule'));
         $school = substr($school, strpos($school, '<tr'));
@@ -389,5 +398,4 @@ class PARSE_PLAN_WILLI2 implements Parser {
     }
 
 }
-
 ?>
