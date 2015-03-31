@@ -129,7 +129,8 @@ class Update {
             "GET " . $url['path'] . " HTTP/1.0",
             "Host: " . $url['host'],
             "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0",
-            "Connection: Close"
+            "Connection: Close",
+            "Accept: application/vnd.github.v3+json"
         );
 
         fwrite($fp, implode("\r\n", $headers));
@@ -227,8 +228,11 @@ class Update {
     public function Unpack($zipFile) {
         set_time_limit(0);
         $zH = zip_open($zipFile);
+
         while ($file = zip_read($zH)) {
             $fileName = zip_entry_name($file);
+            $fileName = substr($fileName, strpos($fileName, "/")+1);
+
             $fileDir = dirname($fileName);
 
             //Continue if its not a file
