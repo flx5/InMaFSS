@@ -202,3 +202,14 @@ h2 {
     text-align: center;
     font-weight: bold;
 }
+
+input[type="text"] {
+     width: 100%; 
+     box-sizing: border-box;
+     -webkit-box-sizing:border-box;
+     -moz-box-sizing: border-box;
+}
+
+.tcalInput {
+    width: auto !important;
+}

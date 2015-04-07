@@ -31,20 +31,12 @@ getVar("tpl")->addStandards('admin');
 getVar("tpl")->addJS('./tinymce/tinymce.min.js');
 getVar("tpl")->addHeader('<script type="text/javascript" >
 tinyMCE.init({
-        mode : "textareas",
+        selector : "textarea",
         theme : "modern",
         language  : "'.lang()->info('lang.short',false).'",
-        plugins : "emoticons,hr,insertdatetime,preview",
-        // Theme options - button# indicated the row# only
-        theme_advanced_buttons1 : "newdocument,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,fontselect,fontsizeselect,formatselect",
-        theme_advanced_buttons2 : "cut,copy,paste,|,bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,|,code,preview,|,forecolor,backcolor",
-        theme_advanced_buttons3 : "insertdate,inserttime,|,spellchecker,advhr,,removeformat,|,sub,sup,|,charmap,emotions",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_statusbar_location : "bottom",
-        theme_advanced_resizing : true,
+        plugins : "advlist autolink link image lists charmap emoticons hr insertdatetime preview",
         height:"400px",
-        width:"1000px"
+      
 });
 </script>
 <link rel="stylesheet" type="text/css" href="./calendar/tcal.css" />
