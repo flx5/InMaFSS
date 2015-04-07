@@ -94,10 +94,10 @@
                                 case 'varchar':
                                 case 'text':
                                 case 'int':
-                                    echo '<input style="width:90%; background-color:#ddd;" type="text" name="' . $field['name'] . '" value="' . $data[$field['name']] . '">';
+                                    echo '<input style="width:90%;" type="text" name="' . $field['name'] . '" value="' . $data[$field['name']] . '">';
                                     break;
                                 case 'tinyint':
-                                    echo '<input type="checkbox" name="' . $field['name'] . '" ' . (($data[$field['name']] == 1) ? 'checked' : '' ) . '>'; // TODO
+                                    echo '<input type="checkbox" name="' . $field['name'] . '" ' . (($data[$field['name']] == 1) ? 'checked' : '' ) . '>'; 
                                     break;
                                 case 'enum':
                                     echo '<select name="' . $field['name'] . '">';

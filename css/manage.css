@@ -213,3 +213,8 @@ input[type="text"] {
 .tcalInput {
     width: auto !important;
 }
+
+table {
+    border-collapse: collapse;
+    border-color: #000;
+}
