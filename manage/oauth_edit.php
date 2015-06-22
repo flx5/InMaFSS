@@ -21,12 +21,12 @@
 \*=================================================================================*/
 
 
-require_once("global.php");
+require_once "global.php";
 
 lang()->add('oauth');
 lang()->add('scopes');
 
-getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->Init(lang()->loc('title', false));
 getVar("tpl")->addStandards('admin');
 
 getVar("tpl")->addTemplate('manage/oauth/edit');

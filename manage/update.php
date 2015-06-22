@@ -22,7 +22,7 @@
   \*================================================================================= */
 
 
-require_once("global.php");
+require_once "global.php";
 
 lang()->add('updates');
 
@@ -56,8 +56,9 @@ if ($version !== false) {
     }
 } 
 
-if (!$success)
-    getVar('tpl')->Write('<font color="#ff0000">' . lang()->loc('failure', false) . '</font>');
+if (!$success) {
+    getVar('tpl')->Write('<font color="#ff0000">' . lang()->loc('failure', false) . '</font>'); 
+}
 
 getVar("tpl")->Write('</div></div>');
 getVar("tpl")->Output();

@@ -21,16 +21,16 @@
 \*=================================================================================*/
 
 
-require_once("global.php");
+require_once "global.php";
 
-getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->Init(lang()->loc('title', false));
 getVar("tpl")->addStandards('admin');
 
 $updatetpl = getVar("tpl")->getTemplate('manage/update_info');
 $info = getVar("tpl")->getTemplate('manage/info');
 
-getVar("tpl")->setParam('right',$updatetpl->GetHTML());
-getVar("tpl")->setParam('left',$info->GetHTML());
+getVar("tpl")->setParam('right', $updatetpl->GetHTML());
+getVar("tpl")->setParam('left', $info->GetHTML());
 
 getVar("tpl")->addTemplate('manage/main');
 getVar("tpl")->Output(); 

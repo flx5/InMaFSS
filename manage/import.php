@@ -22,7 +22,7 @@
   \*================================================================================= */
 
 
-require_once("global.php");
+require_once "global.php";
 
 lang()->add('import');
 
@@ -35,39 +35,39 @@ if (isset($_FILES['uploadedfile']) && isset($_POST['type'])) {
         $msg_color = "ff0000";
     } else {
         switch ($_POST['type']) {
-            case 'plan':
-                $p = new parsePlan();
-                $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
-                if ($success) {
-                    $p->UpdateDatabase();
-                    $msg = lang()->loc('success', false);
-                } else {
-                    $msg = lang()->loc('parse.fail', false);
-                    $msg_color = 'ff0000';
-                }
-                break;
-            case 'mensa':
-                $p = new parseMensa();
-                $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
-                if ($success) {
-                    $p->UpdateDatabase();
-                    $msg = lang()->loc('success', false);
-                } else {
-                    $msg = lang()->loc('parse.fail', false);
-                    $msg_color = 'ff0000';
-                }
-                break;
-            case 'appointments':
-                $p = new parseAppointments();
-                $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
-                if ($success) {
-                    $p->UpdateDatabase();
-                    $msg = lang()->loc('success', false);
-                } else {
-                    $msg = lang()->loc('parse.fail', false);
-                    $msg_color = 'ff0000';
-                }
-                break;
+        case 'plan':
+            $p = new parsePlan();
+            $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
+            if ($success) {
+                $p->UpdateDatabase();
+                $msg = lang()->loc('success', false);
+            } else {
+                $msg = lang()->loc('parse.fail', false);
+                $msg_color = 'ff0000';
+            }
+            break;
+        case 'mensa':
+            $p = new parseMensa();
+            $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
+            if ($success) {
+                $p->UpdateDatabase();
+                $msg = lang()->loc('success', false);
+            } else {
+                $msg = lang()->loc('parse.fail', false);
+                $msg_color = 'ff0000';
+            }
+            break;
+        case 'appointments':
+            $p = new parseAppointments();
+            $success = $p->parse($_FILES['uploadedfile']['tmp_name']);
+            if ($success) {
+                $p->UpdateDatabase();
+                $msg = lang()->loc('success', false);
+            } else {
+                $msg = lang()->loc('parse.fail', false);
+                $msg_color = 'ff0000';
+            }
+            break;
         }
     }
 }

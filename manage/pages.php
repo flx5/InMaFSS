@@ -21,15 +21,15 @@
 \*=================================================================================*/
 
 
-require_once("global.php");
+require_once "global.php";
 lang()->add('pages');
 
-getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->Init(lang()->loc('title', false));
 getVar("tpl")->addStandards('admin');
-getVar("tpl")->setParam("id",'');
+getVar("tpl")->setParam("id", '');
 
 if(isset($_GET['del'])) {
-  getVar("tpl")->setParam("id",$_GET['del']);
+    getVar("tpl")->setParam("id", $_GET['del']);
 }
 
 getVar("tpl")->addTemplate('manage/pages');

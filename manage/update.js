@@ -5,20 +5,19 @@ var Update = {
     
     FindStatus : function() {
         var statusEL = document.getElementById('statusValue');
-        if(statusEL == null)
-            return null;
+        if(statusEL == null) {
+            return null; }
         
         var lastStatus = null;
         for(var i = statusEL.childNodes.length-1; i>=0;i--) {
-            if(statusEL.childNodes[i].nodeName == 'DIV')
-            {
+            if(statusEL.childNodes[i].nodeName == 'DIV') {
                 lastStatus = statusEL.childNodes[i];
                 break;
             }
         }
 
-        if(lastStatus == null)
-            return null;
+        if(lastStatus == null) {
+            return null; }
         
         return lastStatus.innerHTML;
     },

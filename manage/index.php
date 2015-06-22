@@ -22,7 +22,7 @@
   \*================================================================================= */
 
 define('LOGIN', true);
-require_once("global.php");
+require_once "global.php";
 
 $auth = Authorization::GenerateInstance('DB');
 /* @var $auth DB_Auth */

@@ -21,7 +21,7 @@
 \*=================================================================================*/
 
 
-require_once("global.php");
+require_once "global.php";
 Authorization::GenerateInstance('DB')->Logout();
 header("Location: ../");
 ?>

@@ -22,7 +22,7 @@
   \*================================================================================= */
 
 
-require_once(dirname(__FILE__) . "/../global.php");
+require_once dirname(__FILE__) . "/../global.php";
 
 $auth = Authorization::GenerateInstance('DB');
 
@@ -31,7 +31,8 @@ if ((!LOGGED_IN || !$auth->HasFuse('manage')) && !defined('LOGIN')) {
     exit;
 }
 
-function AdminRegisterStandard($tpl) {
+function AdminRegisterStandard($tpl) 
+{
     $tpl->addCSS(WWW . '/css/manage.css');
 
     global $auth;
