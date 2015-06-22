@@ -20,7 +20,6 @@ class PARSE_APPOINTMENTS_ICS implements Parser
             $tstart = iCalUtilityFunctions::_date2timestamp($event->dtstart['value']);
             $tend = iCalUtilityFunctions::_date2timestamp($event->dtend['value']);
 
-            //var_dump(iCalUtilityFunctions::_date2timestamp($event->dtstart['value']));
             $offset = getTzOffsetForDate($timeZone, 'Westeuropäische Normalzeit', $tstart);
             $tstart += $offset['offsetSec'];
 
@@ -34,7 +33,7 @@ class PARSE_APPOINTMENTS_ICS implements Parser
                     $categories[] = $category; 
                 }
             }
-            var_dump($categories);
+            
             $events[] = Array(
                 "categories" => $event->categories,
                 "start" => $tstart,
@@ -47,5 +46,3 @@ class PARSE_APPOINTMENTS_ICS implements Parser
     }
 
 }
-
-?>

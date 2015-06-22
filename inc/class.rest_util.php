@@ -20,7 +20,7 @@ class RestUtil
         case ReplacementsTypes::TEACHER:
             return $userData['type'];
         default:
-            $this->AddError(APIErrorCodes::UNKNOWN_USER_TYPE);
+            self::AddError(APIErrorCodes::UNKNOWN_USER_TYPE);
             return false;
         }
     }
@@ -32,7 +32,7 @@ class RestUtil
         try {
             $replacements = new Replacements($type, $day);
         } catch (Exception $e) {
-            $this->AddError(APIErrorCodes::PARAM_DAY_INVALID);
+            self::AddError(APIErrorCodes::PARAM_DAY_INVALID);
             return null;
         }
         
@@ -44,7 +44,7 @@ class RestUtil
         try {
             return TimeHelper::GetTFrom($day);
         } catch (Exception $e) {
-            $this->AddError(APIErrorCodes::PARAM_DAY_INVALID);
+            self::AddError(APIErrorCodes::PARAM_DAY_INVALID);
             return null;
         }
     }

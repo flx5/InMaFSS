@@ -121,7 +121,7 @@ class OAuth2_Controller_TokenController implements OAuth2_Controller_TokenContro
         }
 
         if (($requestedScope && !$this->scopeUtil->scopeExists($requestedScope, $clientId)) 
-            || ($availableScope && !$this->scopeUtil->checkScope($requestedScope, $availableScope))) {  var_dump($this->scopeUtil->checkScope($requestedScope, $availableScope));
+            || ($availableScope && !$this->scopeUtil->checkScope($requestedScope, $availableScope))) { 
             $response->setError(400, 'invalid_scope', 'An unsupported scope was requested');
             return null;
         }

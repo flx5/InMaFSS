@@ -229,7 +229,7 @@ class Rest
             }
 
             $server->getResponse()->send($this->format);
-            die();
+            return false;
         }
 
         return true;
