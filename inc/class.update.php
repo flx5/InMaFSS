@@ -21,7 +21,8 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-class Update {
+class Update
+{
 
     var $version;
 
@@ -30,12 +31,14 @@ class Update {
     private $tmpFile;
     private $tmpFileName;
 
-    public function __construct() {
-        include(CWD . "inc/version.php");
+    public function __construct() 
+    {
+        include CWD . "inc/version.php";
         $this->version = $version;
     }
 
-    private function IsOK($result) {
+    private function IsOK($result) 
+    {
         if (!is_object($result)) {
             return true;
         }
@@ -45,7 +48,8 @@ class Update {
         return true;
     }
 
-    public function GetLatest($cache = true) {
+    public function GetLatest($cache = true) 
+    {
         if (isset($_SESSION['updates'][$this->version]) && $cache) {
             return $_SESSION['updates'][$this->version];
         }
@@ -92,7 +96,8 @@ class Update {
         return $_SESSION['updates'][$this->version];
     }
 
-    private function GetURL($versionID) {
+    private function GetURL($versionID) 
+    {
         $release = $this->GetFSock(self::BASE_URL . "/releases/" . $versionID);
         $release = json_decode($release['content']);
 
@@ -100,13 +105,15 @@ class Update {
             return false;
         }
 
-        if (!isset($release->zipball_url))
-            return false;
+        if (!isset($release->zipball_url)) {
+            return false; 
+        }
 
         return $release->zipball_url;
     }
 
-    private function GetFSock($url, $followRedirect = true, $statusCallback = null, $readCallback = null) {
+    private function GetFSock($url, $followRedirect = true, $statusCallback = null, $readCallback = null) 
+    {
         set_time_limit(0);
         $url = parse_url($url);
 
@@ -118,12 +125,14 @@ class Update {
             $port = 443;
         }
 
-        if (isset($url['port']))
-            $port = $url['port'];
+        if (isset($url['port'])) {
+            $port = $url['port']; 
+        }
 
         $fp = fsockopen($scheme . $url['host'], $port);
-        if (!$fp)
-            return false;
+        if (!$fp) {
+            return false; 
+        }
 
         $headers = Array(
             "GET " . $url['path'] . " HTTP/1.0",
@@ -142,8 +151,9 @@ class Update {
         while (!feof($fp)) {
             $data = fgets($fp);
 
-            if ($data == "\r\n")
-                break;
+            if ($data == "\r\n") {
+                break; 
+            }
 
             $resultHeader .= $data;
         }
@@ -161,8 +171,9 @@ class Update {
 
         $finalHeader = Array();
         foreach ($resultHeader as $head) {
-            if ($head == "")
-                continue;
+            if ($head == "") {
+                continue; 
+            }
             $head = explode(":", $head, 2);
             $finalHeader[$head[0]] = trim($head[1]);
         }
@@ -179,8 +190,9 @@ class Update {
         }
 
         $expectedLength = 0;
-        if (isset($finalHeader['Content-Length']))
-            $expectedLength = intval($finalHeader['Content-Length']);
+        if (isset($finalHeader['Content-Length'])) {
+            $expectedLength = intval($finalHeader['Content-Length']); 
+        }
 
 
         $bytesRead = 0;
@@ -189,23 +201,28 @@ class Update {
             $data = fread($fp, 128);
             $bytesRead += mb_strlen($data, '8bit');
 
-            if ($readCallback == null)
-                $resultContent .= $data;
-            else
-                call_user_func($readCallback, $data);
+            if ($readCallback == null) {
+                $resultContent .= $data; 
+            }
+            else {
+                call_user_func($readCallback, $data); 
+            }
 
-            if ($statusCallback != null)
-                call_user_func($statusCallback, $expectedLength, $bytesRead);
+            if ($statusCallback != null) {
+                call_user_func($statusCallback, $expectedLength, $bytesRead); 
+            }
         }
         fclose($fp);
 
         return Array('status' => $statusCode, 'header' => $finalHeader, 'content' => $resultContent);
     }
 
-    public function Download($versionID) {
+    public function Download($versionID) 
+    {
         $url = $this->GetURL($versionID);
-        if ($url === false)
-            return false;
+        if ($url === false) {
+            return false; 
+        }
 
         $this->tmpFileName = CWD . DS . "tmp" . DS . $versionID . ".zip";
 
@@ -225,7 +242,8 @@ class Update {
         return $fileName;
     }
 
-    public function Unpack($zipFile) {
+    public function Unpack($zipFile) 
+    {
         set_time_limit(0);
         $zH = zip_open($zipFile);
 
@@ -236,15 +254,18 @@ class Update {
             $fileDir = dirname($fileName);
 
             //Continue if its not a file
-            if (substr($fileName, -1, 1) == '/')
-                continue;
+            if (substr($fileName, -1, 1) == '/') {
+                continue; 
+            }
 
-            if ($fileName == "inc/config.php" || $fileDir == "install")
-                continue;
+            if ($fileName == "inc/config.php" || $fileDir == "install") {
+                continue; 
+            }
 
             if (!is_dir(CWD . $fileDir)) {
-                if (mkdir(CWD . $fileDir, 0777, true))
-                    $this->Write('<li>Created directory ' . $fileDir . '</li>');
+                if (mkdir(CWD . $fileDir, 0777, true)) {
+                    $this->Write('<li>Created directory ' . $fileDir . '</li>'); 
+                }
                 else {
                     $this->WriteError('<li>Could not create directory ' . $fileDir . '. Abort!</li>');
                     zip_close($zH);
@@ -267,33 +288,39 @@ class Update {
             }
         }
         zip_close($zH);
-        require_once(INC . "class.upgrade.php");
+        include_once INC . "class.upgrade.php";
         Upgrade::Exec($this->version);
         return true;
     }
 
-    private function Write($txt) {
+    private function Write($txt) 
+    {
         getVar('tpl')->Write($txt);
         getVar('tpl')->Flush();
     }
 
-    private function WriteError($txt) {
+    private function WriteError($txt) 
+    {
         $this->Write('<font color="#ff0000">' . $txt . '</font>');
     }
 
-    function __destruct() {
+    function __destruct() 
+    {
         if ($this->tmpFile != null) {
             fclose($this->tmpFile);
-            if (file_exists($this->tmpFileName))
-                unlink($this->tmpFileName);
+            if (file_exists($this->tmpFileName)) {
+                unlink($this->tmpFileName); 
+            }
         }
     }
 
-    private function ReadCallback($data) {
+    private function ReadCallback($data) 
+    {
         fwrite($this->tmpFile, $data);
     }
 
-    private function Progress($download_size, $downloaded) {
+    private function Progress($download_size, $downloaded) 
+    {
         if ($download_size > 0) {
             getVar('tpl')->Write('<div>');
             getVar('tpl')->Write(round($downloaded / $download_size * 100, 2));

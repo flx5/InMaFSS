@@ -1,29 +1,35 @@
 <?php
 
-class Controller_Replacements extends RestController {
+class Controller_Replacements extends RestController
+{
 
-    public function RequiredScope($method) { 
+    public function RequiredScope($method) 
+    { 
         switch($method)
         {
-            case 'POST':
-                return ScopeData::UPDATE_SUBSTITION_PLAN;
+        case 'POST':
+            return ScopeData::UPDATE_SUBSTITION_PLAN;
                 break;
-            default:
-                return ScopeData::SUBSTITUTION_PLAN;
+        default:
+            return ScopeData::SUBSTITUTION_PLAN;
         }
     }
     
-    public function GetDescription() {
+    public function GetDescription() 
+    {
         return "Operations about the substitution plan";
     }
     
-    public function RequireUser($method) {
-        if($method == "POST")
-            return false;
+    public function RequireUser($method) 
+    {
+        if($method == "POST") {
+            return false; 
+        }
         return true;
     }
     
-    public function GET() {
+    public function GET() 
+    {
         if (!isset($this->args[0])) {
             $this->AddError(APIErrorCodes::PARAM_DAY_MISSING);
             return;
@@ -31,17 +37,19 @@ class Controller_Replacements extends RestController {
 
         $user = RestUtil::GetUserData($this->user);
         
-        if(RestUtil::CheckUserType($this->user, $user) === false)
-            return;
+        if(RestUtil::CheckUserType($this->user, $user) === false) {
+            return; 
+        }
 
         $replacements = RestUtil::GetReplacements($user['type'], $this->args[0]);
         
-        if($replacements === null)
-            return;
+        if($replacements === null) {
+            return; 
+        }
         
         if ($user['type'] == ReplacementsTypes::TEACHER) {
             $this->response = $replacements->GetReplacements(
-                    Array(
+                Array(
                         Array('type' => 'fullname', 'value' => $user['display_name'])
                     )
             );
@@ -58,7 +66,8 @@ class Controller_Replacements extends RestController {
         $this->responseStatus = 200;
     }
 
-    public function POST() {
+    public function POST() 
+    {
         if (count($_FILES) == 0) {
             $this->AddError(APIErrorCodes::MISSING_FILE);
             return;
@@ -77,10 +86,12 @@ class Controller_Replacements extends RestController {
         
         foreach($_FILES as $file) {
             $status = $p->parse($file['tmp_name']);
-            if($status)
-                $count['success']++;
-            else
-                $count['failure']++;
+            if($status) {
+                $count['success']++; 
+            }
+            else {
+                $count['failure']++; 
+            }
         }
         
         $count['uploaded'] = true;

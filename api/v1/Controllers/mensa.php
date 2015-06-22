@@ -1,30 +1,36 @@
 <?php
 
-require_once(INC . 'class.time_helper.php');
+require_once INC . 'class.time_helper.php';
 
-class Controller_Mensa extends RestController {
+class Controller_Mensa extends RestController
+{
 
-    public function RequiredScope($method) {
+    public function RequiredScope($method) 
+    {
         switch ($method) {
-            case 'POST':
-                return ScopeData::UPDATE_MENSA;
+        case 'POST':
+            return ScopeData::UPDATE_MENSA;
                 break;
-            default:
-                return ScopeData::MENSA;
+        default:
+            return ScopeData::MENSA;
         }
     }
 
-    public function GetDescription() {
+    public function GetDescription() 
+    {
         return "Operations concerning the mensa";
     }
     
-    public function RequireUser($method) {
-        if ($method == "POST")
-            return false;
+    public function RequireUser($method) 
+    {
+        if ($method == "POST") {
+            return false; 
+        }
         return true;
     }
 
-    public function GET() {
+    public function GET() 
+    {
         if (!isset($this->args[0])) {
             $this->AddError(APIErrorCodes::PARAM_DAY_MISSING);
             return;
@@ -44,7 +50,8 @@ class Controller_Mensa extends RestController {
         $this->responseStatus = 200;
     }
 
-    public function POST() {
+    public function POST() 
+    {
         if (count($_FILES) == 0) {
             $this->AddError(APIErrorCodes::MISSING_FILE);
             return;
@@ -62,10 +69,12 @@ class Controller_Mensa extends RestController {
 
         foreach ($_FILES as $file) {
             $status = $p->parse($file['tmp_name']);
-            if ($status)
-                $count['success']++;
-            else
-                $count['failure']++;
+            if ($status) {
+                $count['success']++; 
+            }
+            else {
+                $count['failure']++; 
+            }
         }
 
         $count['uploaded'] = true;

@@ -39,14 +39,15 @@ if (strpos($req, "?") !== false) {
 
 $www .= "://" . $_SERVER['SERVER_NAME'];
 
-if($_SERVER['SERVER_PORT'] != 80 && $_SERVER['SERVER_PORT'] != 443)
-    $www .= ":".$_SERVER['SERVER_PORT'];
+if($_SERVER['SERVER_PORT'] != 80 && $_SERVER['SERVER_PORT'] != 443) {
+    $www .= ":".$_SERVER['SERVER_PORT']; 
+}
     
 $www .= $req;
 $www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))) . basename(dirname(__FILE__));
 define('WWW', $www);
 
-#register_shutdown_function('Shutdown');
+// register_shutdown_function('Shutdown');
 set_error_handler('error_handler');
 date_default_timezone_set('Europe/Berlin');
 
@@ -65,16 +66,16 @@ if (!file_exists(CWD . "inc/config.php")) {
     exit;
 }
 
-require_once(INC . "class.variables.php");
-require_once(INC . "class.config.php");
-require_once(INC . "class.core.php");
-require_once(INC . "class.sql.php");
-require_once(INC . "class.lang.php");
-require_once(INC . "class.tpl.php");
-require_once(INC . "class.update.php");
-require_once(INC . "class.plugin.php");
-require_once(INC . "class.parse.php");
-require_once(INC . "class.authorize.php");
+require_once INC . "class.variables.php";
+require_once INC . "class.config.php";
+require_once INC . "class.core.php";
+require_once INC . "class.sql.php";
+require_once INC . "class.lang.php";
+require_once INC . "class.tpl.php";
+require_once INC . "class.update.php";
+require_once INC . "class.plugin.php";
+require_once INC . "class.parse.php";
+require_once INC . "class.authorize.php";
 
 core::MagicQuotesCompability();
 
@@ -93,7 +94,7 @@ session_start();
 
 
 $user = Authorization::IsLoggedIn();
-if ($user != NULL) {
+if ($user != null) {
     define('LOGGED_IN', true);
     define('USERNAME', $user['name']);
     define('USER_ID', $user['id']);
@@ -103,15 +104,18 @@ if ($user != NULL) {
     define('USER_ID', -1);
 }
 
-function lang() {
+function lang() 
+{
     return getVar("lang");
 }
 
-function filter($input) {
+function filter($input) 
+{
     return getVar("core")->filter($input);
 }
 
-function dbquery($input) {
+function dbquery($input) 
+{
     if (getVar("PLUGIN") || !getVar("sql")->IsConnected()) {
         return null;
     }
@@ -119,7 +123,8 @@ function dbquery($input) {
     return getVar("sql")->DoQuery($input);
 }
 
-function config($var) {
+function config($var) 
+{
     if (getVar("PLUGIN")) {
         return null;
     }
@@ -128,48 +133,58 @@ function config($var) {
     return $config->Get($var);
 }
 
-class vars {
+class vars
+{
 
     private static $vars;
 
-    public static function Init($vars) {
+    public static function Init($vars) 
+    {
         self::$vars = $vars;
     }
 
-    public static function getVar($var) {
+    public static function getVar($var) 
+    {
         return self::$vars->Get($var);
     }
 
-    public static function setVar($var, $val) {
+    public static function setVar($var, $val) 
+    {
         self::$vars->Set($var, $val);
     }
 
-    public static function get() {
+    public static function get() 
+    {
         return self::$vars;
     }
 
 }
 
-function getVar($var) {
+function getVar($var) 
+{
     return vars::getVar($var);
 }
 
-function setVar($var, $val) {
+function setVar($var, $val) 
+{
     vars::setVar($var, $val);
 }
 
-function setPlugin($val, $actor) {
+function setPlugin($val, $actor) 
+{
     vars::get()->setPlugin($val, $actor);
 }
 
-function error_handler($errno, $errstr, $errfile, $errline) {
-    if (error_reporting() == 0)
+function error_handler($errno, $errstr, $errfile, $errline) 
+{
+    if (error_reporting() == 0) {
         return true; // Ignore Messages with an @ before!
-
+    }
     return false;
 }
 
-function Shutdown() {
+function Shutdown() 
+{
     $error = error_get_last();
     if ($error != null) {
         ob_end_clean();
@@ -177,11 +192,13 @@ function Shutdown() {
     }
 }
 
-function findFirstLetter($str) {
+function findFirstLetter($str) 
+{
     $i = 0;
     while ($i < strlen($str)) {
-        if (ctype_alpha($str[$i]))
-            return $i;
+        if (ctype_alpha($str[$i])) {
+            return $i; 
+        }
 
         $i++;
     }

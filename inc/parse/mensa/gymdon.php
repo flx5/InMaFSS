@@ -1,12 +1,15 @@
 <?php
 
-class PARSE_MENSA_GYMDON implements Parser {
+class PARSE_MENSA_GYMDON implements Parser
+{
 
-    public function parse($file) {
+    public function parse($file) 
+    {
         $zip = zip_open($file);
 
-        if(!is_resource($zip))
-            return false;
+        if(!is_resource($zip)) {
+            return false; 
+        }
         
         $ret = null;
 
@@ -40,17 +43,21 @@ class PARSE_MENSA_GYMDON implements Parser {
 
             $startFrom = 20;
 
-            if ($m == 2)
-                $startFrom = 26;
+            if ($m == 2) {
+                $startFrom = 26; 
+            }
 
-            if (!isset($menu[$m]))
-                $menu[$m] = Array();
+            if (!isset($menu[$m])) {
+                $menu[$m] = Array(); 
+            }
 
             for ($i = 1; $i <= 5; $i++) {
-                if (isset($ret[$startFrom + $i]))
-                    $menu[$m][$i] = $ret[$startFrom + $i];
-                else
-                    $menu[$m][$i] = "";
+                if (isset($ret[$startFrom + $i])) {
+                    $menu[$m][$i] = $ret[$startFrom + $i]; 
+                }
+                else {
+                    $menu[$m][$i] = ""; 
+                }
             }
         }
 
@@ -81,11 +88,13 @@ class PARSE_MENSA_GYMDON implements Parser {
             $menu1 = "";
             $menu2 = "";
 
-            if (isset($menu[1][$i]))
-                $menu1 = $menu[1][$i];
+            if (isset($menu[1][$i])) {
+                $menu1 = $menu[1][$i]; 
+            }
 
-            if (isset($menu[2][$i]))
-                $menu2 = $menu[2][$i];
+            if (isset($menu[2][$i])) {
+                $menu2 = $menu[2][$i]; 
+            }
 
             $data[] = Array(
                 'date' => $date,

@@ -21,11 +21,11 @@
 \*=================================================================================*/
 
 
-require_once("global.php");
+require_once "global.php";
 
 lang()->add('index');
 
-getVar("tpl")->Init(lang()->loc('title',false));
+getVar("tpl")->Init(lang()->loc('title', false));
 getVar("tpl")->addCSS(WWW.'/css/index.css');
 getVar("tpl")->addTemplate('index');
 getVar("tpl")->Output();

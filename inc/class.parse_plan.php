@@ -1,5 +1,6 @@
 <?php
-class parsePlan implements ParseInterface {
+class parsePlan implements ParseInterface
+{
 
     var $replacements = Array(0 => Array(), 1 => Array());
     var $notes = Array(0 => Array(), 1 => Array());
@@ -9,20 +10,23 @@ class parsePlan implements ParseInterface {
     var $rooms = Array();
     var $supervisor = Array();
 
-    public function parse($file) {
+    public function parse($file) 
+    {
 
-        if (empty($file))
-            return false;
+        if (empty($file)) {
+            return false; 
+        }
         
 
-        require_once(CWD . DS . "inc" . DS . "parse" . DS . "plan" . DS . config("system") . ".php");
+        include_once CWD . DS . "inc" . DS . "parse" . DS . "plan" . DS . config("system") . ".php";
         $parser = "PARSE_PLAN_" . strtoupper(config("system"));
         $parser = new $parser();
 
         $data = $parser->Parse($file);
 
-        if($data === false)
-            return false;
+        if($data === false) {
+            return false; 
+        }
         
         if (isset($data['not_available'])) {
             $this->teachers[] = $data['not_available'];
@@ -49,7 +53,8 @@ class parsePlan implements ParseInterface {
         return true;
     }
 
-    public function CleanDatabase() {
+    public function CleanDatabase() 
+    {
         $stamp = gmmktime(0, 0, 0);
         dbquery("DELETE FROM others WHERE timestamp<" . $stamp);
         dbquery("DELETE FROM replacements WHERE timestamp<" . $stamp);
@@ -57,7 +62,8 @@ class parsePlan implements ParseInterface {
         dbquery("DELETE FROM ticker WHERE to_stamp<" . $stamp);
     }
 
-    public function UpdateDatabase() {
+    public function UpdateDatabase() 
+    {
 
         $this->CleanDatabase();
 

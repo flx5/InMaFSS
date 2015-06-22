@@ -21,9 +21,10 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-require_once(realpath(dirname(__FILE__)) . "/../global.php");
+require_once realpath(dirname(__FILE__)) . "/../global.php";
 
-function UserRegisterStandard($tpl) {
+function UserRegisterStandard($tpl) 
+{
     $tpl->addCSS(WWW . '/user/css/user.css');
 
     $user = Authorization::IsLoggedIn('LDAP');

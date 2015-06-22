@@ -1,6 +1,7 @@
 <?php
 
-class APIErrorCodes {
+class APIErrorCodes
+{
 
     const OK = 0;
     const HTTP_METHOD_NOT_ALLOWED = 1;
@@ -44,11 +45,13 @@ class APIErrorCodes {
         self::OAUTH_MISSING_USER => HTTPStatus::_UNAUTHORIZED
     );
 
-    public static function GetError($ID) {
+    public static function GetError($ID) 
+    {
         return Array('code' => $ID, 'message' => self::$messages[$ID]);
     }
 
-    public static function GetStatus($ID) {
+    public static function GetStatus($ID) 
+    {
         return self::$httpStatus[$ID];
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once("global.php");
+require_once "global.php";
 
 lang()->add('user');
 

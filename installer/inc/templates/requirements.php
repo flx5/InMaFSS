@@ -1,6 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER'))
-    exit;
+if (!defined('IN_INSTALLER')) {
+    exit; 
+}
 
 $mayContinue = true;
 
@@ -13,10 +14,12 @@ if (isset($requirements['php']['version'])) {
         </tr>
         <?php
         $ok = "Below requirement! Please update your PHP installation.";
-        if (version_compare(phpversion(), $requirements['php']['version']) >= 0)
-            $ok = "OK";
-        else
-            $mayContinue = false;
+        if (version_compare(phpversion(), $requirements['php']['version']) >= 0) {
+            $ok = "OK"; 
+        }
+        else {
+            $mayContinue = false; 
+        }
 
         echo '<tr><td>PHP ' . $requirements['php']['version'] . '</td><td>PHP ' . phpversion() . '</td><td>' . $ok . '</td></tr>';
         ?>
@@ -44,8 +47,9 @@ if (isset($requirements['php']['extensions']) && count($requirements['php']['ext
                 $ok = "OK";
 
                 if (isset($extension['version'])) {
-                    if ($versionInstalled === false)
-                        $versionInstalled = "Unknown";
+                    if ($versionInstalled === false) {
+                        $versionInstalled = "Unknown"; 
+                    }
                     else if (version_compare($versionInstalled, $extension['version']) < 0) {
                         $ok = "Version too low";
                         $mayContinue = false;
@@ -53,8 +57,9 @@ if (isset($requirements['php']['extensions']) && count($requirements['php']['ext
                 }
             }
 
-            if (!isset($extension['version']))
-                $extension['version'] = "";
+            if (!isset($extension['version'])) {
+                $extension['version'] = ""; 
+            }
 
             echo '<tr><td>' . $extension['name'] . '</td><td>' . $extension['version'] . '</td><td>' . $versionInstalled . '</td><td>' . $ok . '</td></tr>';
         }
@@ -83,16 +88,18 @@ if (isset($requirements['php']['optionalExt']) && count($requirements['php']['op
                 $ok = "OK";
 
                 if (isset($extension['version'])) {
-                    if ($versionInstalled === false)
-                        $versionInstalled = "Unknown";
+                    if ($versionInstalled === false) {
+                        $versionInstalled = "Unknown"; 
+                    }
                     else if (version_compare($versionInstalled, $extension['version']) < 0) {
                         $ok = "Version too low";
                     }
                 }
             }
 
-            if (!isset($extension['version']))
-                $extension['version'] = "";
+            if (!isset($extension['version'])) {
+                $extension['version'] = ""; 
+            }
 
             echo '<tr><td>' . $extension['name'] . '</td><td>' . $extension['version'] . '</td><td>' . $versionInstalled . '</td><td>' . $ok . '</td></tr>';
         }
@@ -135,14 +142,16 @@ if (isset($requirements['php']['exchangeableExt']) && count($requirements['php']
                     }
                 }
 
-                if (!isset($extension['version']))
-                    $extension['version'] = "";
+                if (!isset($extension['version'])) {
+                    $extension['version'] = ""; 
+                }
 
                 echo '<tr><td>' . $extension['name'] . '</td><td>' . $extension['version'] . '</td><td>' . $versionInstalled . '</td><td>' . $ok . '</td></tr>';
             }
 
-            if (!$foundOne)
-                $mayContinue = false;
+            if (!$foundOne) {
+                $mayContinue = false; 
+            }
             ?>
         </table>
         <?php
@@ -167,8 +176,9 @@ if (isset($requirements['server']['modules']) && count($requirements['server']['
         $modules = apache_get_modules();
         foreach ($requirements['server']['modules'] as $module) {
             if ($canCheck) {
-                if (in_array($module, $modules))
-                    $ok = "OK";
+                if (in_array($module, $modules)) {
+                    $ok = "OK"; 
+                }
                 else {
                     $ok = "Module not installed!";
                     $mayContinue = false;
@@ -184,6 +194,7 @@ if (isset($requirements['server']['modules']) && count($requirements['server']['
 }
 ?>
 <?php
-if (!$mayContinue)
-    $button['continue'] = Array('title' => 'Retry', 'target' => $nextStep);
+if (!$mayContinue) {
+    $button['continue'] = Array('title' => 'Retry', 'target' => $nextStep); 
+}
 ?>

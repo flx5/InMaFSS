@@ -1,6 +1,7 @@
 <?php
 
-abstract class SQL {
+abstract class SQL
+{
 
     public abstract function __construct($host, $user, $pass, $db);
 
@@ -26,21 +27,27 @@ abstract class SQL {
     
     public abstract function GetLink();
 
-    public function Error($errorString) {
-        if (class_exists("core"))
-            core::systemError('Database Error', $errorString);
-        else
-            echo("Database Error: <br>\n" . $errorString);
+    public function Error($errorString) 
+    {
+        if (class_exists("core")) {
+            core::systemError('Database Error', $errorString); 
+        }
+        else {
+            echo("Database Error: <br>\n" . $errorString); 
+        }
     }
 
-    public static function GenerateInstance($type, $host, $user, $pass, $db) {
-        if (strpos($type, ".") !== false || strpos($type, "/") !== false || strpos($type, "\\") !== false)
-            return false;
+    public static function GenerateInstance($type, $host, $user, $pass, $db) 
+    {
+        if (strpos($type, ".") !== false || strpos($type, "/") !== false || strpos($type, "\\") !== false) {
+            return false; 
+        }
 
-        if (!file_exists(dirname(__FILE__) . "/db/" . $type . ".php"))
-            return false;
+        if (!file_exists(dirname(__FILE__) . "/db/" . $type . ".php")) {
+            return false; 
+        }
 
-        require_once(dirname(__FILE__) . "/db/" . $type . ".php");
+        include_once dirname(__FILE__) . "/db/" . $type . ".php";
 
         $type = "_" . $type;
 

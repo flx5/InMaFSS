@@ -1,9 +1,8 @@
 <?php
-require_once("global.php");
-require_once(INC.'class.oauth.php');
+require_once "global.php";
+require_once INC.'class.oauth.php';
 
-if(Authorization::IsLoggedIn('LDAP') === null)
-{
+if(Authorization::IsLoggedIn('LDAP') === null) {
     header("Location: index.php");
     exit;
 }

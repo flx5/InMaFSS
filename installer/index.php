@@ -2,13 +2,14 @@
 session_start();
 define('IN_INSTALLER', true);
 date_default_timezone_set("UTC");
-require_once('inc/config.php');
-require_once('inc/core.php');
-require_once('inc/class.sql.php');
+require_once 'inc/config.php';
+require_once 'inc/core.php';
+require_once 'inc/class.sql.php';
 
 $nextStep = 0;
-if (isset($_POST['step']) && is_numeric($_POST['step']) && isset($steps[$_POST['step']]))
-    $nextStep = $_POST['step'];
+if (isset($_POST['step']) && is_numeric($_POST['step']) && isset($steps[$_POST['step']])) {
+    $nextStep = $_POST['step']; 
+}
 
 $step = $steps[$nextStep];
 $button = Array('continue' => Array('title' => 'Continue', 'target' => $nextStep + 1), 'back' => Array('title' => 'Back', 'target' => $nextStep - 1));
@@ -38,7 +39,7 @@ $button = Array('continue' => Array('title' => 'Continue', 'target' => $nextStep
                 <h3><?php echo $step['title']; ?></h3>
                 <form method="post">
                     <?php
-                    require_once('inc/templates/' . $step['template'] . '.php');
+                    require_once 'inc/templates/' . $step['template'] . '.php';
                     ?>
                     <br><br>
 

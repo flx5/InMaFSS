@@ -20,7 +20,8 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-class variables {
+class variables
+{
      private $core;
      private $lang;
      private $sql;
@@ -31,7 +32,8 @@ class variables {
      private $AllowOverride = Array("PLUGIN");
      private $PLUGIN_ACTOR = null;
 
-     public function variables($core,$lang,$sql,$tpl,$update,$pluginManager, $PLUGIN) {
+     public function variables($core,$lang,$sql,$tpl,$update,$pluginManager, $PLUGIN) 
+     {
                $this->core          = $core;
                $this->lang          = $lang;
                $this->sql           = $sql;
@@ -41,31 +43,34 @@ class variables {
                $this->PLUGIN = $PLUGIN;
      }
 
-     public function Get($var) {
+        public function Get($var) 
+        {
             if($this->PLUGIN && $var != "PLUGIN") {
-              return;
+                return;
             }
             return $this->$var;
-     }
+        }
 
-     public function Set($var,$val) {
+        public function Set($var,$val) 
+        {
             if($this->PLUGIN || $var == "PLUGIN") {
-              return;
+                return;
             }
             if($this->$var == null || in_array($var, $this->AllowOverride)) {
                    $this->$var = $val;
             }
-     }
+        }
 
-     public function SetPlugin($val,$actor) {
-             if($this->PLUGIN_ACTOR == null && !$val) {
-                       return;
-             }
+        public function SetPlugin($val,$actor) 
+        {
+            if($this->PLUGIN_ACTOR == null && !$val) {
+                      return;
+            }
 
-             if($val) {
-                  $this->PLUGIN_ACTOR = $actor;
-             }
+            if($val) {
+                 $this->PLUGIN_ACTOR = $actor;
+            }
              $this->PLUGIN = $val;
-     }
+        }
 }
 ?>

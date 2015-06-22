@@ -1,22 +1,25 @@
 <?php
 
-class ReplacementsTypes {
+class ReplacementsTypes
+{
 
     const PUPIL = 0;
     const TEACHER = 1;
 
 }
 
-require_once(INC . 'class.time_helper.php');
+require_once INC . 'class.time_helper.php';
 
-class Replacements {
+class Replacements
+{
 
     private $type;
     private $day;
     private $tfrom;
     private $tend;
 
-    public function __construct($type, $day) {
+    public function __construct($type, $day) 
+    {
         $this->type = $type;
         $this->day = $day;
 
@@ -24,7 +27,8 @@ class Replacements {
         $this->tend = $this->tfrom + 24 * 3600 - 1;
     }
 
-    public function GetTickers() {
+    public function GetTickers() 
+    {
         $sql = dbquery("SELECT * FROM ticker WHERE from_stamp < '" . $this->tend . "' AND to_stamp > '" . $this->tfrom . "' ORDER BY to_stamp, `order`");
         $tickers = Array();
         while ($ticker = $sql->fetchObject()) {
@@ -34,25 +38,30 @@ class Replacements {
         return $tickers;
     }
 
-    public function MergeTickers($day1, $day2) {
+    public function MergeTickers($day1, $day2) 
+    {
         $tickers = array_merge($day1, $day2);
         $tickers = array_unique($tickers, SORT_REGULAR);
         usort($tickers, Array($this, 'SortTickers'));
         return $tickers;
     }
 
-    private function SortTickers($a, $b) {
-        if ($a['day'] == $b['day'])
-            return 0;
+    private function SortTickers($a, $b) 
+    {
+        if ($a['day'] == $b['day']) {
+            return 0; 
+        }
 
         return (($a['day'] < $b['day']) ? -1 : 1);
     }
 
-    private function GetTFrom() {
+    private function GetTFrom() 
+    {
         return TimeHelper::GetTFrom($this->day);
     }
 
-    public function GetOthers() {
+    public function GetOthers() 
+    {
         $content = Array();
 
         $where = "timestamp >= " . $this->tfrom . " AND timestamp <= " . $this->tend;
@@ -65,7 +74,8 @@ class Replacements {
         return $content;
     }
 
-    private function GetTeacherReplacements($where, $filter) {
+    private function GetTeacherReplacements($where, $filter) 
+    {
         $content = Array();
 
         $filterQuery = Array();
@@ -76,25 +86,26 @@ class Replacements {
 
             foreach ($filter as $k => $teacher) {
                 switch ($teacher['type']) {
-                    case 'fullname':
-                        $fullname = preg_replace($s, $r, $teacher['value']);
-                        $lastname = substr($fullname, strrpos($fullname, " ") + 1);
-                        $prename = substr($fullname, 0, strrpos($fullname, " "));
+                case 'fullname':
+                    $fullname = preg_replace($s, $r, $teacher['value']);
+                    $lastname = substr($fullname, strrpos($fullname, " ") + 1);
+                    $prename = substr($fullname, 0, strrpos($fullname, " "));
 
-                        $name = $lastname . ' ' . $prename;
-                        $name_abbrv = $lastname . ' ' . substr($prename, 0, 1) . '.';
+                    $name = $lastname . ' ' . $prename;
+                    $name_abbrv = $lastname . ' ' . substr($prename, 0, 1) . '.';
 
-                        // Sometimes the names are written with a ss instead of a ß, but there may also be names with ss, so do this optional
-                        $alternative_name = preg_replace("/ss/", '&szlig;', $name);
-                        $alternative_name_abbrv = preg_replace("/ss/", '&szlig;', $name_abbrv);
+                    // Sometimes the names are written with a ss instead of a ß, but there may also be names with ss, so do this optional
+                    $alternative_name = preg_replace("/ss/", '&szlig;', $name);
+                    $alternative_name_abbrv = preg_replace("/ss/", '&szlig;', $name_abbrv);
 
-                        $filterQuery[] = "(teacher = '" . filter($name) . "' OR teacher = '" . filter($name_abbrv) . "' OR teacher = '" . filter($alternative_name) . "' OR teacher = '" . filter($alternative_name_abbrv) . "')";
-                        break;
+                    $filterQuery[] = "(teacher = '" . filter($name) . "' OR teacher = '" . filter($name_abbrv) . "' OR teacher = '" . filter($alternative_name) . "' OR teacher = '" . filter($alternative_name_abbrv) . "')";
+                    break;
                 }
             }
 
-            if (count($filterQuery) != 0)
-                $where .= " AND " . implode(" OR ", $filterQuery);
+            if (count($filterQuery) != 0) {
+                $where .= " AND " . implode(" OR ", $filterQuery); 
+            }
         }
 
         $sql = dbquery("SElECT * FROM teacher_substitude WHERE " . $where . " ORDER BY id");
@@ -106,7 +117,8 @@ class Replacements {
         return $content;
     }
 
-    private function GetPupilReplacements($where, $filterGrades) {
+    private function GetPupilReplacements($where, $filterGrades) 
+    {
         $content = Array();
 
         $gradeFilter = Array();
@@ -125,8 +137,9 @@ class Replacements {
             }
 
             // Deliver nothing if we've got an empty filter (that was not set to null)
-            if (count($gradeFilter) == 0)
-                return Array();
+            if (count($gradeFilter) == 0) {
+                return Array(); 
+            }
             
             $filterString = implode(" OR ", $gradeFilter);
             $whereFilter = " AND " . $filterString;
@@ -153,16 +166,19 @@ class Replacements {
         return $content;
     }
 
-    public function GetReplacements($filter = null) {
+    public function GetReplacements($filter = null) 
+    {
         $where = "timestamp >= " . $this->tfrom . " AND timestamp <= " . $this->tend;
 
-        if ($this->type == ReplacementsTypes::TEACHER)
-            return $this->GetTeacherReplacements($where, $filter);
+        if ($this->type == ReplacementsTypes::TEACHER) {
+            return $this->GetTeacherReplacements($where, $filter); 
+        }
 
         return $this->GetPupilReplacements($where, $filter);
     }
 
-    public function GetPages() {
+    public function GetPages() 
+    {
         $where = "timestamp_from <= " . $this->tfrom . " AND timestamp_end >= " . $this->tend;
 
         if ($this->type == ReplacementsTypes::TEACHER) {
@@ -182,7 +198,8 @@ class Replacements {
         return $pages;
     }
 
-    private function my_sort($a, $b) {
+    private function my_sort($a, $b) 
+    {
 
         if ($a['lesson'] == $b['lesson']) {
             return 0;
@@ -206,7 +223,8 @@ class Replacements {
         return ($a['lesson'] < $b['lesson']) ? -1 : 1;
     }
 
-    public function GetLastUpdate($replacements) {
+    public function GetLastUpdate($replacements) 
+    {
         $last_update = 0;
         foreach ($replacements as $grade) {
             foreach ($grade as $val) {
@@ -219,7 +237,8 @@ class Replacements {
         return $last_update;
     }
 
-    public function GetDate() {
+    public function GetDate() 
+    {
         return $this->tfrom;
     }
 

@@ -8,14 +8,17 @@ $db->Connect();
 $success = true;
 
 foreach($sql as $query) {
-    if(trim($query) == "")
-        continue;
-    if($db->DoQuery($query) === false)
-        $success = false;
+    if(trim($query) == "") {
+        continue; 
+    }
+    if($db->DoQuery($query) === false) {
+        $success = false; 
+    }
 }
 
-if($success)
-    echo 'Database import complete';
+if($success) {
+    echo 'Database import complete'; 
+}
 else 
 {
     echo 'An error occured. Please clean your database and retry. If the problem persists contact the programmer!';

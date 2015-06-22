@@ -11,8 +11,7 @@ var AJAX = {
     Data : null,
     
     GetObject : function() {
-        if (window.XMLHttpRequest)
-        {// code for IE7+, Firefox, Chrome, Opera, Safari
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
             return new XMLHttpRequest();
         }
         else
@@ -22,17 +21,19 @@ var AJAX = {
     },
     
     Update : function(limit, IsTeacher) {
-        if(this.running) 
-            return; 
+        if(this.running) { 
+            return; } 
         
         this.running = true;
         Update.updateRequired = false;
 
         var mThis = this;
 
-        this.fetchData("ajax.php?limit="+limit+"&t="+Date.now()+ (IsTeacher ? '&teacher=true' : ''), function(httpCode, response) {
-            mThis.insertData(httpCode, response);
-        });
+        this.fetchData(
+            "ajax.php?limit="+limit+"&t="+Date.now()+ (IsTeacher ? '&teacher=true' : ''), function(httpCode, response) {
+                mThis.insertData(httpCode, response);
+            }
+        );
     },
     
     insertData : function(httpCode, response) {  
@@ -56,8 +57,7 @@ var AJAX = {
         
         xmlhttp.onreadystatechange=function()
         {
-            if (xmlhttp.readyState==4)
-            {
+            if (xmlhttp.readyState==4) {
                 callback(xmlhttp.status, xmlhttp.responseText);
             }
         }
@@ -66,17 +66,17 @@ var AJAX = {
     },
     
     getData : function(site) {
-        if(!this.DataAvail[site])
-            return null;
+        if(!this.DataAvail[site]) {
+            return null; }
     
         this.DataAvail[site] = false;
     
         switch(site) {
-            case 'left':
+        case 'left':
                 return this.Data.left;
-            case 'right':
+        case 'right':
                 return this.Data.right;
-            case 'footer':
+        case 'footer':
                 return this.Data.footer;
         }
     }

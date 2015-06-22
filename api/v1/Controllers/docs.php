@@ -1,6 +1,7 @@
 <?php
 
-class Controller_Docs extends RestController {
+class Controller_Docs extends RestController
+{
 
     const API_VERSION = '1.0.0';
     const SWAGGER_VERSION = '1.2';
@@ -14,25 +15,30 @@ class Controller_Docs extends RestController {
         )
     );
 
-    public function GetDescription() {
+    public function GetDescription() 
+    {
         return "";
     }
 
-    public function RequiresAuth($method) {
+    public function RequiresAuth($method) 
+    {
         return false;
     }
 
-    public function RequireUser($method) {
+    public function RequireUser($method) 
+    {
         return false;
     }
 
     // Override here as we have to leave our default response format
-    public function GetResponse() {
+    public function GetResponse() 
+    {
         return $this->response;
     }
 
-    private function LoadScopes() {
-        require_once(INC . 'class.scope_data.php');
+    private function LoadScopes() 
+    {
+        include_once INC . 'class.scope_data.php';
         $this->authorizations['oauth2']['scopes'];
         $scopes = ScopeData::GetScopes();
         lang()->add('scopes');
@@ -44,7 +50,8 @@ class Controller_Docs extends RestController {
         }
     }
 
-    private function LoadGrantTypes() {
+    private function LoadGrantTypes() 
+    {
         $this->authorizations['oauth2']['grantTypes'] = Array(
             'implicit' => Array(
                 'loginEndpoint' => Array(
@@ -68,16 +75,19 @@ class Controller_Docs extends RestController {
         );
     }
 
-    private function LoadRessources() {
+    private function LoadRessources() 
+    {
         if ($handle = opendir(dirname(__FILE__))) {
             while (false !== ($file = readdir($handle))) {
-                if ($file == "." || $file == ".." || $file == "docs.php")
-                    continue;
+                if ($file == "." || $file == ".." || $file == "docs.php") {
+                    continue; 
+                }
 
-                if (strlen($file) <= 4 || substr($file, -4) != ".php")
-                    continue;
+                if (strlen($file) <= 4 || substr($file, -4) != ".php") {
+                    continue; 
+                }
 
-                require_once($file);
+                include_once $file;
                 $className = substr($file, 0, -4);
                 $className[0] = strtoupper($className[0]);
                 $reflection = new ReflectionClass('Controller_' . $className);
@@ -89,23 +99,29 @@ class Controller_Docs extends RestController {
         }
     }
 
-    public function RequiresVerb() {
+    public function RequiresVerb() 
+    {
         return true;
     }
 
-    public function GET() {
-        if ($this->verb == null)
-            $this->GetIndex();
-        else
-            $this->GetRessourceDesc();
+    public function GET() 
+    {
+        if ($this->verb == null) {
+            $this->GetIndex(); 
+        }
+        else {
+            $this->GetRessourceDesc(); 
+        }
     }
 
-    private function GetRessourceDesc() {
+    private function GetRessourceDesc() 
+    {
         $preg = preg_replace("/([a-z]|_)/", "", $this->verb);
-        if ($preg != "" || !file_exists(dirname(__FILE__) . '/' . $this->verb . '.php'))
-            $this->Get404();
+        if ($preg != "" || !file_exists(dirname(__FILE__) . '/' . $this->verb . '.php')) {
+            $this->Get404(); 
+        }
 
-        require_once(dirname(__FILE__) . '/' . $this->verb . '.php');
+        include_once dirname(__FILE__) . '/' . $this->verb . '.php';
 
         $this->verb = strtoupper($this->verb);
         $reflection = new ReflectionClass('Controller_' . $this->verb);
@@ -120,11 +136,13 @@ class Controller_Docs extends RestController {
         );
     }
 
-    private function Get404() {
+    private function Get404() 
+    {
         $this->responseStatus = HTTPStatus::_NOT_FOUND;
     }
 
-    private function GetIndex() {
+    private function GetIndex() 
+    {
         $this->LoadScopes();
         $this->LoadGrantTypes();
         $this->LoadRessources();

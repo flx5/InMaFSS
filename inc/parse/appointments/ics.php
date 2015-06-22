@@ -1,13 +1,16 @@
 <?php
 
-require_once(INC . "libs/iCalcreator.class.php");
+require_once INC . "libs/iCalcreator.class.php";
 
-class PARSE_APPOINTMENTS_ICS implements Parser {
+class PARSE_APPOINTMENTS_ICS implements Parser
+{
 
-    public function parse($file) {
+    public function parse($file) 
+    {
         $ical = new vcalendar();
-        if (!$ical->parse(file_get_contents($file)))
-            return false;
+        if (!$ical->parse(file_get_contents($file))) {
+            return false; 
+        }
 
         $timeZone = getTimezonesAsDateArrays($ical);
 
@@ -24,10 +27,12 @@ class PARSE_APPOINTMENTS_ICS implements Parser {
             $categories = Array();
 
             while ($category = $event->getProperty("CATEGORIES")) {
-                if (is_array($category))
-                    array_merge($categories, $category);
-                else
-                    $categories[] = $category;
+                if (is_array($category)) {
+                    array_merge($categories, $category); 
+                }
+                else {
+                    $categories[] = $category; 
+                }
             }
             var_dump($categories);
             $events[] = Array(

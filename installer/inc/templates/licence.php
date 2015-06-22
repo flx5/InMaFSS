@@ -1,6 +1,7 @@
 <?php
-if(!defined('IN_INSTALLER'))
-    exit;
+if(!defined('IN_INSTALLER')) {
+    exit; 
+}
 
 $button['continue']['title'] = "Accept";
 $button['back'] = Array('title'=>'Abort', 'target'=>0);

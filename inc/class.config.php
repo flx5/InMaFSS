@@ -21,7 +21,8 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-class config {
+class config
+{
 
     private $schoolname;
     private $dbtype;
@@ -39,8 +40,9 @@ class config {
     private $spalten_t = Array('200px', '30px', '100px', '75px', '*');
     private $spalten = Array('75px', '75px', '30px', '180px', '75px', '*');
 
-    public function config() {
-        include(CWD . "inc/config.php");
+    public function config() 
+    {
+        include CWD . "inc/config.php";
         $this->dbtype = $dbtype;
         $this->dbhost = $dbhost;
         $this->dbusr = $dbusr;
@@ -49,7 +51,8 @@ class config {
         $this->salt = $salt;
     }
 
-    public function LoadFromDB() {
+    public function LoadFromDB() 
+    {
         $val = dbquery("SELECT * FROM settings LIMIT 1")->fetchObject();
 
         $this->schoolname = (string)$val->schoolname;
@@ -62,7 +65,8 @@ class config {
         $this->updateStyle = (string)$val->updateStyle;
     }
 
-    public function Get($var) {
+    public function Get($var) 
+    {
         return $this->$var;
     }
 

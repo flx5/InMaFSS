@@ -1,5 +1,6 @@
 <?php
-class ScopeData {
+class ScopeData
+{
 
     const BASIC = 'basic';
     const SUBSTITUTION_PLAN = 'substitutions';
@@ -33,7 +34,8 @@ class ScopeData {
         self::UPDATE_EVENTS,
     );
 
-    public static function GetScopes() {
+    public static function GetScopes() 
+    {
         return array_merge(self::$scopes, self::$scopesTeacher, self::$scopesSpecial);
     }
 }

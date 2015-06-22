@@ -21,12 +21,14 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-require_once(INC.'class.parse_plan.php');
-require_once(INC.'class.parse_mensa.php');
-require_once(INC.'class.parse_appointments.php');
+require_once INC.'class.parse_plan.php';
+require_once INC.'class.parse_mensa.php';
+require_once INC.'class.parse_appointments.php';
 
-class parse {
-    public static function ICS2XML($data) {
+class parse
+{
+    public static function ICS2XML($data) 
+    {
         $data = htmlspecialchars($data);
         $data = preg_replace("/\r\n /", "", $data);
 
@@ -39,12 +41,14 @@ class parse {
         return $data;
     }
 
-    public static function ICS2UnixStamp($data) { 
+    public static function ICS2UnixStamp($data) 
+    { 
         $data = substr($data, 5);
         return gmmktime(0, 0, 0, substr($data, 4, 2), substr($data, 6, 2), substr($data, 0, 4));
     }
     
-    private static function ParseXML($xml) {
+    private static function ParseXML($xml) 
+    {
         $mCount = 0;
         $secondCount = 0;
 
@@ -64,16 +68,17 @@ class parse {
             }
 
             switch ($xml->nodeType) {
-                case XMLReader::TEXT:
-                    $output[$secondCount][] = $xml->value;
-                    break;
-                case XMLReader::ELEMENT:
-                    if (!$xml->isEmptyElement)
-                        $mCount++;
-                    break;
-                case XMLReader::END_ELEMENT:
-                    $mCount--;
-                    break;
+            case XMLReader::TEXT:
+                $output[$secondCount][] = $xml->value;
+                break;
+            case XMLReader::ELEMENT:
+                if (!$xml->isEmptyElement) {
+                    $mCount++; 
+                }
+                break;
+            case XMLReader::END_ELEMENT:
+                $mCount--;
+                break;
             }
         }
 
@@ -84,7 +89,8 @@ class parse {
         return $output;
     }
 
-    public static function ParseXMLString($data) {
+    public static function ParseXMLString($data) 
+    {
         $xml = new XMLReader();
         $xml->XML($data);
 
@@ -92,13 +98,15 @@ class parse {
     }
 }
 
-interface ParseInterface {
+interface ParseInterface
+{
     public function parse($file);
     public function CleanDatabase();
     public function UpdateDatabase();
 }
 
-interface Parser {
+interface Parser
+{
     public function parse($file);
 }
 ?>

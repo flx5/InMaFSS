@@ -5,18 +5,19 @@ if (isset($_POST['db_type']) && isset($_POST['db_name']) && isset($_POST['db_use
     $errors = Array();
 
     switch ($_POST['db_type']) {
-        case 'mysql':
-            $db = SQL::GenerateInstance('MySQL', $_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
-            $_POST['db_type'] = 'MySQL';
-            break;
-        case 'mysqli':
-            $db = SQL::GenerateInstance('MySQLi', $_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
-            $_POST['db_type'] = 'MySQLi';
-            break;
+    case 'mysql':
+        $db = SQL::GenerateInstance('MySQL', $_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
+        $_POST['db_type'] = 'MySQL';
+        break;
+    case 'mysqli':
+        $db = SQL::GenerateInstance('MySQLi', $_POST['db_host'], $_POST['db_user'], $_POST['db_pass'], $_POST['db_name']);
+        $_POST['db_type'] = 'MySQLi';
+        break;
     }
 
-    if ($db == null)
-        $errors[] = "Invalid database type!";
+    if ($db == null) {
+        $errors[] = "Invalid database type!"; 
+    }
     else {
         try {
             $db->Connect();

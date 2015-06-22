@@ -17,20 +17,20 @@ var Update = {
         this.updateRequired = true;
         
         switch(this.style) {
-            case 'ajax':
-                AJAX.Update(this.limit, this.isTeacher);
+        case 'ajax':
+            AJAX.Update(this.limit, this.isTeacher);
                 break;
         } 
     },
     
     doUpdate : function(site) {
         switch(this.style) {
-            case 'reload':
-            default:
-                this.reload();
+        case 'reload':
+        default:
+            this.reload();
                 break;
-            case 'ajax':
-                this.updateDOM(site);
+        case 'ajax':
+            this.updateDOM(site);
                 break;
         }  
         this.reset();
@@ -42,36 +42,38 @@ var Update = {
     },
     
     reset : function() {       
-        window.setTimeout(function(self) {
-            return function() {
-                self.requestUpdate();
-            }
-        }(this), this.Interval*1000);
+        window.setTimeout(
+            function(self) {
+                return function() {
+                    self.requestUpdate();
+                }
+            }(this), this.Interval*1000
+        );
     },
     
     updateDOM : function(site) { 
         var data = null;
         switch(this.style) {
-            case 'ajax':
-                data = AJAX.getData(site);
+        case 'ajax':
+            data = AJAX.getData(site);
                 break;
         }  
         
-        if(data == null)
-            return;
+        if(data == null) {
+            return; }
         
         var el = null;
         
         switch(site) {
-            case 'footer':
-                el = document.getElementById('footer');
+        case 'footer':
+            el = document.getElementById('footer');
                 break;
-            default:
-                el = document.getElementById('plan_'+site);
+        default:
+            el = document.getElementById('plan_'+site);
                 break;
         }
         
-        if(el != null)
+        if(el != null) {
             el.innerHTML = data
-    }
+        } }
 }

@@ -2,7 +2,8 @@
 
 require_once INC . 'class.replacements.php';
 
-class View {
+class View
+{
 
     private $replacements = Array();
     private $site;
@@ -11,7 +12,8 @@ class View {
     private $type = 0;  // 0 Pupils ; 1 teachers
     private $ReplacementHelper;
 
-    public function View($site, $limit, $type = ReplacementsTypes::PUPIL) {
+    public function View($site, $limit, $type = ReplacementsTypes::PUPIL) 
+    {
         $this->site = $site;
         $this->limit = $limit;
         $this->type = $type;
@@ -24,7 +26,8 @@ class View {
         $this->GetPages();
     }
 
-    private function AddRepacements() {
+    private function AddRepacements() 
+    {
         $p = 0;
         $i = -1;
 
@@ -55,7 +58,8 @@ class View {
         }
     }
 
-    private function CreateTables() {
+    private function CreateTables() 
+    {
 
         lang()->add('home');
 
@@ -80,31 +84,31 @@ class View {
                 if ($t != $k && $info) {
                     $t = $k;
                     switch ($t) {
-                        case 't':
-                            $output .= '<tr><th colspan="6">' . lang()->loc('absent.t', false) . '</th></tr>';
-                            break;
-                        case 'g':
-                            $output .= '<tr><th colspan="6">' . lang()->loc('absent.g', false) . '</th></tr>';
-                            break;
-                        case 'a':
-                            $output .= '<tr><th colspan="6">' . lang()->loc('supervision', false) . '</th></tr>';
-                            break;
-                        case 's':
-                            $output .= '<tr><th colspan="6">' . lang()->loc('entire.school', false) . '</th></tr>';
-                            break;
-                        case 'r':
-                            $output .= '<tr><th colspan="6">' . lang()->loc('na.rooms', false) . '</th></tr>';
-                            break;
+                    case 't':
+                        $output .= '<tr><th colspan="6">' . lang()->loc('absent.t', false) . '</th></tr>';
+                        break;
+                    case 'g':
+                        $output .= '<tr><th colspan="6">' . lang()->loc('absent.g', false) . '</th></tr>';
+                        break;
+                    case 'a':
+                        $output .= '<tr><th colspan="6">' . lang()->loc('supervision', false) . '</th></tr>';
+                        break;
+                    case 's':
+                        $output .= '<tr><th colspan="6">' . lang()->loc('entire.school', false) . '</th></tr>';
+                        break;
+                    case 'r':
+                        $output .= '<tr><th colspan="6">' . lang()->loc('na.rooms', false) . '</th></tr>';
+                        break;
 
-                        case 'n':
-                            $output .= '<tr><th colspan="6">zus&auml;tzliche Informationen</th></tr>';
-                            break;
+                    case 'n':
+                        $output .= '<tr><th colspan="6">zus&auml;tzliche Informationen</th></tr>';
+                        break;
 
-                        default:
-                            $output .= '<tr><th colspan="6">' . lang()->loc('subs', false) . '</th></tr>';
-                            $output .= '<tr><th width="' . $spalten_t[0] . '">' . lang()->loc('teacher.short', false) . '</th><th width="' . $spalten_t[1] . '">' . lang()->loc('lesson.short', false) . '</th><th width="' . $spalten_t[2] . '">' . lang()->loc('grade', false) . '</th><th width="' . $spalten_t[3] . '">' . lang()->loc('room', false) . '</th><th width="' . $spalten_t[4] . '">' . lang()->loc('comment', false) . '</th></tr>';
-                            $info = false;
-                            break;
+                    default:
+                        $output .= '<tr><th colspan="6">' . lang()->loc('subs', false) . '</th></tr>';
+                        $output .= '<tr><th width="' . $spalten_t[0] . '">' . lang()->loc('teacher.short', false) . '</th><th width="' . $spalten_t[1] . '">' . lang()->loc('lesson.short', false) . '</th><th width="' . $spalten_t[2] . '">' . lang()->loc('grade', false) . '</th><th width="' . $spalten_t[3] . '">' . lang()->loc('room', false) . '</th><th width="' . $spalten_t[4] . '">' . lang()->loc('comment', false) . '</th></tr>';
+                        $info = false;
+                        break;
                     }
                 }
                 $first = true;
@@ -116,46 +120,46 @@ class View {
                     $output .= '<tr align="left" class="' . (($val['addition']) ? 'update' : '') . '">';
 
                     switch ($t) {
-                        case 't':
-                            if ($prev_t != $val['name']) {
-                                $output = preg_replace("#_rowspan_#", $i, $output);
+                    case 't':
+                        if ($prev_t != $val['name']) {
+                            $output = preg_replace("#_rowspan_#", $i, $output);
 
-                                $output .= '<th colspan="1" rowspan="_rowspan_" >&nbsp;' . $val['name'] . '</th>';
-                                $prev_t = $val['name'];
-                                $i = 0;
-                            }
+                            $output .= '<th colspan="1" rowspan="_rowspan_" >&nbsp;' . $val['name'] . '</th>';
+                            $prev_t = $val['name'];
+                            $i = 0;
+                        }
 
-                            $i++;
-                            $output .= '<td colspan="2">&nbsp;' . $val['lesson'] . '</td><td colspan="2">&nbsp;' . $val['comment'] . '</td></tr>';
-                            break;
-                        case 'g':
-                            $output .= '<th colspan="1">&nbsp;' . $val['name'] . '</th><td colspan="4" >&nbsp;' . $val['lesson'] . '</td></tr>';
-                            break;
-                        case 'a':
-                            $output .= '<th colspan="1">&nbsp;' . $val['comment'] . '</th><td colspan="4">&nbsp;' . $val['name'] . '</td></tr>';
-                            break;
-                        case 's':
-                            $output .= '<th colspan="1">&nbsp;' . $val['lesson'] . '</th><td colspan="4">&nbsp;' . $val['comment'] . '</td></tr>';
-                            break;
-                        case 'r':
-                            $output .= '<th colspan="1">&nbsp;' . $val['name'] . '</th><td  colspan="4">&nbsp;' . $val['lesson'] . '</td></tr>';
-                            break;
+                        $i++;
+                        $output .= '<td colspan="2">&nbsp;' . $val['lesson'] . '</td><td colspan="2">&nbsp;' . $val['comment'] . '</td></tr>';
+                        break;
+                    case 'g':
+                        $output .= '<th colspan="1">&nbsp;' . $val['name'] . '</th><td colspan="4" >&nbsp;' . $val['lesson'] . '</td></tr>';
+                        break;
+                    case 'a':
+                        $output .= '<th colspan="1">&nbsp;' . $val['comment'] . '</th><td colspan="4">&nbsp;' . $val['name'] . '</td></tr>';
+                        break;
+                    case 's':
+                        $output .= '<th colspan="1">&nbsp;' . $val['lesson'] . '</th><td colspan="4">&nbsp;' . $val['comment'] . '</td></tr>';
+                        break;
+                    case 'r':
+                        $output .= '<th colspan="1">&nbsp;' . $val['name'] . '</th><td  colspan="4">&nbsp;' . $val['lesson'] . '</td></tr>';
+                        break;
 
-                        case 'n':
-                            $output .= '<td  colspan="6">&nbsp;' . $val['comment'] . '</td></tr>';
-                            break;
+                    case 'n':
+                        $output .= '<td  colspan="6">&nbsp;' . $val['comment'] . '</td></tr>';
+                        break;
 
-                        default:
-                            if ($first) {
-                                $output .= '<th rowspan="' . count($grade) . '">&nbsp;' . (($this->type == 0) ? $k : $val['teacher']) . '</th>';
-                            }
+                    default:
+                        if ($first) {
+                            $output .= '<th rowspan="' . count($grade) . '">&nbsp;' . (($this->type == 0) ? $k : $val['teacher']) . '</th>';
+                        }
 
-                            if ($this->type == 1) {
-                                $output .= '<td>&nbsp;' . $val['lesson'] . '</td><td>&nbsp;' . $val['grade'] . '</td><td>&nbsp;' . $val['room'] . '</td><td>&nbsp;' . $val['comment'] . '</td>';
-                            } else {
-                                $output .= '<td>&nbsp;' . $val['teacher'] . '</td><td>&nbsp;' . $val['lesson'] . '</td><td>' . $val['replacement'] . '</td><td>&nbsp;' . $val['room'] . '</td><td>' . $val['comment'] . '</td>';
-                            }
-                            break;
+                        if ($this->type == 1) {
+                            $output .= '<td>&nbsp;' . $val['lesson'] . '</td><td>&nbsp;' . $val['grade'] . '</td><td>&nbsp;' . $val['room'] . '</td><td>&nbsp;' . $val['comment'] . '</td>';
+                        } else {
+                            $output .= '<td>&nbsp;' . $val['teacher'] . '</td><td>&nbsp;' . $val['lesson'] . '</td><td>' . $val['replacement'] . '</td><td>&nbsp;' . $val['room'] . '</td><td>' . $val['comment'] . '</td>';
+                        }
+                        break;
                     }
 
                     $first = false;
@@ -183,7 +187,8 @@ class View {
         }
     }
 
-    private function CreateTableHeader() {
+    private function CreateTableHeader() 
+    {
 
         $spalten = config("spalten");
 
@@ -195,7 +200,8 @@ class View {
         return $output;
     }
 
-    private function CreateTeacherTableHeader() {
+    private function CreateTeacherTableHeader() 
+    {
         $output = '<tr><th colspan="6" >';
         $output .= '<span style="float:left;" >' . core::GetDay($this->ReplacementHelper->GetDate()) . ', ' . gmdate("d.m.Y", $this->ReplacementHelper->GetDate()) . '</span>';
         $output .= '<span style="float:right;" >' . preg_replace("/%update%/", gmdate("d.m. - H:i", $this->GetLastUpdate()), lang()->loc('last.update', false)) . '</span>';
@@ -203,17 +209,20 @@ class View {
         return $output;
     }
 
-    private function GetLastUpdate() {
+    private function GetLastUpdate() 
+    {
         $last = -1;
         foreach ($this->replacements as $replacements) {
             $tmp = $this->ReplacementHelper->GetLastUpdate($replacements);
-            if ($last < $tmp)
-                $last = $tmp;
+            if ($last < $tmp) {
+                $last = $tmp; 
+            }
         }
         return $last;
     }
 
-    public function GetMenu() {
+    public function GetMenu() 
+    {
         $menu = "";
         foreach ($this->pages as $i => $page) {
             $menu .= '<span id="info_' . $this->site . '_' . $i . '" class="' . (($i == 0) ? 'active' : '') . '">' . $page['title'] . '</span> * ';
@@ -223,7 +232,8 @@ class View {
         return $menu;
     }
 
-    public function GetContent() {
+    public function GetContent() 
+    {
         $output = "";
         foreach ($this->pages as $i => $page) {
             $output .= '<div id="plan_' . $this->site . '_' . $i . '" style="' . (($i != 0) ? 'display:none;' : '') . '">';
@@ -233,17 +243,21 @@ class View {
         return $output;
     }
 
-    private function GetPages() {
+    private function GetPages() 
+    {
         $pages = $this->ReplacementHelper->GetPages();
-        foreach ($pages as $page)
-            $this->AddPage($page['title'], $page['content']);
+        foreach ($pages as $page) {
+            $this->AddPage($page['title'], $page['content']); 
+        }
     }
 
-    public function AddPage($title, $content) {
+    public function AddPage($title, $content) 
+    {
         $this->pages[] = Array('title' => $title, 'content' => $content);
     }
 
-    public function GetTickers() {
+    public function GetTickers() 
+    {
         return $this->ReplacementHelper->GetTickers();
     }
 

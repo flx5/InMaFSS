@@ -21,7 +21,8 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-class _MySQL extends SQL {
+class _MySQL extends SQL
+{
 
     private $connected = false;
     private $hostname = "localhost";
@@ -32,7 +33,8 @@ class _MySQL extends SQL {
     private $count = 0;
     private $requests = Array();
 
-    public function __construct($host, $user, $pass, $db) {
+    public function __construct($host, $user, $pass, $db) 
+    {
         $this->connected = false;
         $this->hostname = $host;
         $this->username = $user;
@@ -40,7 +42,8 @@ class _MySQL extends SQL {
         $this->database = $db;
     }
 
-    public function IsConnected() {
+    public function IsConnected() 
+    {
         if ($this->connected) {
             return true;
         }
@@ -48,7 +51,8 @@ class _MySQL extends SQL {
         return false;
     }
 
-    public function Connect() {
+    public function Connect() 
+    {
         $this->link = @mysql_connect($this->hostname, $this->username, $this->password);
         
         if($this->link === false) {
@@ -67,55 +71,67 @@ class _MySQL extends SQL {
         $this->connected = true;
     }
 
-    public function Disconnect() {
+    public function Disconnect() 
+    {
         if ($this->connected) {
             mysql_close($this->link) or $this->error("could not close conn");
             $this->connected = false;
         }
     }
 
-    public function DoQuery($query) {
+    public function DoQuery($query) 
+    {
         $this->requests[] = $query;
         $resultset = mysql_query($query, $this->link) or $this->error(mysql_error());
 
-        if ($resultset === true)
-            return true;
+        if ($resultset === true) {
+            return true; 
+        }
 
-        if ($resultset === false)
-            return false;
+        if ($resultset === false) {
+            return false; 
+        }
 
         return new _MYSQL_Result($resultset);
     }
 
-    public function insertID() {
+    public function insertID() 
+    {
         return mysql_insert_id($this->link);
     }
 
-    public function affected_rows() {
+    public function affected_rows() 
+    {
         return mysql_affected_rows($this->link);
     }
 
-    public function real_escape_string($strInput = '') {
+    public function real_escape_string($strInput = '') 
+    {
         return mysql_real_escape_string($strInput, $this->link);
     }
 
-    public function __destruct() {
+    public function __destruct() 
+    {
         $this->disconnect();
     }
 
-    public function GetCount() {
+    public function GetCount() 
+    {
         return count($this->requests);
     }
 
-    public function GetRequests() {
+    public function GetRequests() 
+    {
         return $this->requests;
     }
 
-    public function getErrorList() { 
+    public function getErrorList() 
+    { 
         return null;
     }
 
-    public function getFieldsInfo($table) {
+    public function getFieldsInfo($table) 
+    {
         $sql = dbquery("SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, COLUMN_TYPE FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='" . config("dbname") . "' AND `TABLE_NAME`='" . $table . "';");
 
         $info = Array();
@@ -134,75 +150,91 @@ class _MySQL extends SQL {
         return $info;
     }
     
-    public function GetLink() {
+    public function GetLink() 
+    {
         return $this->link;
     }
 
 }
 
-class _MYSQL_Result {
+class _MYSQL_Result
+{
 
     private $res;
 
-    public function __construct($result) {
+    public function __construct($result) 
+    {
         $this->res = $result;
     }
 
-    public function count() {
+    public function count() 
+    {
         return mysql_num_rows($this->res);
     }
 
-    public function fetchAssoc() {
+    public function fetchAssoc() 
+    {
         $ret = mysql_fetch_assoc($this->res);
         return $ret;
     }
 
-    public function fetchArray() {
+    public function fetchArray() 
+    {
         $ret = mysql_fetch_array($this->res);
         return $ret;
     }
 
-    public function fetchObject() {
+    public function fetchObject() 
+    {
         return mysql_fetch_object($this->res);
     }
 
-    public function fetchRow() {
+    public function fetchRow() 
+    {
         return mysql_fetch_row($this->res);
     }
 
-    function result($row = 0, $field = 0) {
+    function result($row = 0, $field = 0) 
+    {
         mysql_data_seek($this->res, $row);
         $datarow = mysql_fetch_array($this->res);
         return $datarow[$field];
     }
 
-    function fetchFieldByName($columnName) {
+    function fetchFieldByName($columnName) 
+    {
         $fields = $this->fetchFields($this->res);
         foreach ($fields as $field) {
-            if ($field->name == $columnName)
-                return $field;
+            if ($field->name == $columnName) {
+                return $field; 
+            }
         }
 
         return null;
     }
 
-    function fetchFields() {
+    function fetchFields() 
+    {
         $fields = Array();
         
-        while($field = mysql_fetch_fields($this->res))
-            $fields[] = $field;
+        while($field = mysql_fetch_fields($this->res)) {
+            $fields[] = $field; 
+        }
         
         return $fields;
     }
 
-    public function close() {
+    public function close() 
+    {
     }
 
-    public function __destruct() {
+    public function __destruct() 
+    {
     }
 
     // Easy access to parent function
-    public function getErrorList() {
+    public function getErrorList() 
+    {
         return getVar("sql")->getErrorList();
     }
 

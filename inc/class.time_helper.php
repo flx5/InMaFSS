@@ -1,8 +1,10 @@
 <?php
-class TimeHelper {
+class TimeHelper
+{
     private static $cache = Array();
     
-    private static function RemoveWeekend($tfrom) {
+    private static function RemoveWeekend($tfrom) 
+    {
         if (date("w", $tfrom) == 6) {
             $tfrom = $tfrom + 2 * 24 * 60 * 60;
         } elseif (date("w", $tfrom) == 0) {
@@ -12,7 +14,8 @@ class TimeHelper {
         return $tfrom;
     }
 
-    public static function GetNextDay($tfrom) {  
+    public static function GetNextDay($tfrom) 
+    {  
         do {
             $remWeekend = self::RemoveWeekend($tfrom);
             $tfrom = $remWeekend;
@@ -22,7 +25,8 @@ class TimeHelper {
         return $tfrom;
     }
 
-    public static function GetTFrom($day) {
+    public static function GetTFrom($day) 
+    {
         if (isset(self::$cache[$day])) {
             return self::$cache[$day];
         }
@@ -34,8 +38,9 @@ class TimeHelper {
             $tfrom = self::GetNextDay($tfrom);
         } elseif(is_numeric($day))
             $tfrom = $day;
-        else
-            throw new Exception("UNKNOWN DAY PARAMETER");
+        else {
+            throw new Exception("UNKNOWN DAY PARAMETER"); 
+        }
 
         self::$cache[$day] = $tfrom;
         return $tfrom;

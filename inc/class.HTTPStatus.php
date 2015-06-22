@@ -1,6 +1,7 @@
 <?php
 
-class HTTPStatus {
+class HTTPStatus
+{
     /*
      * 1xx Informational
      */
@@ -109,20 +110,22 @@ class HTTPStatus {
     /**
      * This function returns the appropriate message for the status code
      * 
-     * @param int $code
+     * @param  int $code
      * @return string
      */
-    public static function GetMessage($code) { 
+    public static function GetMessage($code) 
+    { 
         return self::$messages[$code];
     }
 
     /**
      * This function returns a String containing the HTTP Status that can be sent with the header function
      * 
-     * @param int $code
+     * @param  int $code
      * @return string
      */
-    public static function GetHeader($code) {
+    public static function GetHeader($code) 
+    {
         return 'HTTP/1.1 ' . $code . ' ' . self::GetMessage($code);
     }
 

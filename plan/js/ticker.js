@@ -20,12 +20,14 @@ var Ticker = function(elementID) {
                 
     this.elementID = elementID;
 
-    if(document.getElementById(this.elementID) == null)
-        return;
+    if(document.getElementById(this.elementID) == null) {
+        return; }
 
-    window.setInterval((function(self) {       
-        return function() { 
-            self.tick(); 
-        }
-    })(this), this.speed);
+    window.setInterval(
+        (function(self) {       
+            return function() { 
+                self.tick(); 
+            }
+        })(this), this.speed
+    );
 };

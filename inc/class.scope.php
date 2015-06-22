@@ -1,18 +1,22 @@
 <?php
-require_once(INC.'class.scope_data.php');
+require_once INC.'class.scope_data.php';
 
-class Scope implements OAuth2_ScopeInterface {
-    public function checkScope($required_scope, $available_scope) {
+class Scope implements OAuth2_ScopeInterface
+{
+    public function checkScope($required_scope, $available_scope) 
+    {
         $required_scope = explode(' ', trim($required_scope));
         $available_scope = explode(' ', trim($available_scope));
         return (count(array_diff($required_scope, $available_scope)) == 0);
     }
 
-    public function getDefaultScope() {
+    public function getDefaultScope() 
+    {
         return ScopeData::BASIC;
     }
 
-    public function getScopeFromRequest(OAuth2_RequestInterface $request) {
+    public function getScopeFromRequest(OAuth2_RequestInterface $request) 
+    {
         // "scope" is valid if passed in either POST or QUERY
         $scope = $request->request('scope', $request->query('scope'));
 
@@ -30,13 +34,15 @@ class Scope implements OAuth2_ScopeInterface {
         return $scope;
     }
 
-    public function scopeExists($scopes, $client_id = null) {
+    public function scopeExists($scopes, $client_id = null) 
+    {
         $scopes = explode(" ", $scopes);
 
         $sql = dbquery("SELECT scope FROM oauth_clients WHERE client_id = '".filter($client_id)."'");
         
-        if($sql->count() != 1)
-            return false;
+        if($sql->count() != 1) {
+            return false; 
+        }
         
         $scopesAvail = explode(" ", $sql->result());
         
@@ -45,8 +51,9 @@ class Scope implements OAuth2_ScopeInterface {
         if($type != null) {
             foreach(ScopeData::$scopesSpecial as $scope) {
                 $key = array_search($scope, $scopesAvail);
-                if($key !== false) 
-                    unset($scopesAvail[$key]);
+                if($key !== false) { 
+                    unset($scopesAvail[$key]); 
+                }
                     
             }
         }
@@ -54,15 +61,16 @@ class Scope implements OAuth2_ScopeInterface {
         if($type == ReplacementsTypes::TEACHER) {
             foreach(ScopeData::$scopesTeacher as $scope) {
                 $key = array_search($scope, $scopesAvail);
-                if($key !== false) 
-                    unset($scopesAvail[$key]);
+                if($key !== false) { 
+                    unset($scopesAvail[$key]); 
+                }
                     
             }
         }
 
         return (count(array_diff($scopes, $scopesAvail)) == 0);
     }
-/*
+    /*
     private function filterScope($scope) {
 
         $scopes = explode(" ", $scope);

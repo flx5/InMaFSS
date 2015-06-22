@@ -20,80 +20,88 @@
 |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
 \*=================================================================================*/
 
-class pluginManager {
+class pluginManager
+{
        private $ready = false;
        private $plugins = Array();
        private $handler;
 
-       public function Init() {
+       public function Init() 
+       {
               $this->handler = new handler();
               $this->reloadPlugins();
        }
 
-       public function reloadPlugins() {
+        public function reloadPlugins() 
+        {
             $this->ready = false;
 
             foreach (glob(CWD."plugins/*.php") as $file) {
-                  $file = substr($file,strlen(CWD."plugins/"),-4);     
-                  $this->plugins[$file] = new plugin($file,$this->handler);          
+                  $file = substr($file, strlen(CWD."plugins/"), -4);     
+                  $this->plugins[$file] = new plugin($file, $this->handler);          
             }
-       }
+        }
 
-       public function ExecuteEvent($event, &$params = null) {
+        public function ExecuteEvent($event, &$params = null) 
+        {
                return $this->handler->ExecuteEvent($event, $params);
-       }
+        }
 }
 
-class plugin {
+class plugin
+{
       var $handler;
       var $plugin;
       var $running = false;
 
-      public function plugin($file, $handler) {
+      public function plugin($file, $handler) 
+      {
              $this->handler = $handler;
              ob_start();
-             include(CWD."plugins/".$file.".php");
+             include CWD."plugins/".$file.".php";
              ob_clean();
 
-             if(!class_exists($file))
-             {
-                 setVar("PLUGIN",false);
-                 return;
-             }
+        if(!class_exists($file)) {
+            setVar("PLUGIN", false);
+            return;
+        }
              
              $this->plugin = new $file();
-             setVar("PLUGIN",true);
-             if(!$this->plugin->Init($this->handler)) {
-                  setVar("PLUGIN",false);
-                  return;
-             }
-             setVar("PLUGIN",false);
+             setVar("PLUGIN", true);
+        if(!$this->plugin->Init($this->handler)) {
+             setVar("PLUGIN", false);
+             return;
+        }
+             setVar("PLUGIN", false);
              $this->running  = true;
-      }
+        }
 }
 
-class handler {
+class handler
+{
      var $executers = Array();
 
-     public function RegisterEvent($plugin, $event, $action) {
-           if(!isset($this->executers[$event])) {
-                $this->executers[$event] = Array();
-           }
+     public function RegisterEvent($plugin, $event, $action) 
+     {
+        if(!isset($this->executers[$event])) {
+             $this->executers[$event] = Array();
+        }
            $this->executers[$event][] = Array("plugin"=>$plugin, "action"=>$action);
      }
 
-     public function ExecuteEvent($event, &$params = null) {
-             if(!isset($this->executers[$event])) {
-                   return false;
-             }
+        public function ExecuteEvent($event, &$params = null) 
+        {
+            if(!isset($this->executers[$event])) {
+                  return false;
+            }
              setPlugin(true, $this);
-             foreach($this->executers[$event] as $action) {
-                    //ob_start();
-                    $action["plugin"]->$action["action"]($params);
-                    //ob_end_clean();
-             }
+            foreach($this->executers[$event] as $action) {
+                   //ob_start();
+                   $action["plugin"]->$action["action"]($params);
+                   //ob_end_clean();
+            }
              setPlugin(false, $this);
-     }
+        }
 
 
 }

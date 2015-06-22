@@ -1,6 +1,7 @@
 <?php
-if (!defined('IN_INSTALLER'))
-    exit;
+if (!defined('IN_INSTALLER')) {
+    exit; 
+}
 
 $mayContinue = true;
 

@@ -21,11 +21,13 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-class core {
+class core
+{
 
-    public static function GetVersion() {
+    public static function GetVersion() 
+    {
         if (file_exists(INC . "version.php")) {
-            include(INC . "version.php");
+            include INC . "version.php";
             if (isset($version)) {
                 return $version;
             }
@@ -34,106 +36,123 @@ class core {
         return null;
     }
 
-    public static function CompareVersion($oldVersion, $newVersion) {
+    public static function CompareVersion($oldVersion, $newVersion) 
+    {
         $oldVersion = self::ParseVersionString($oldVersion);
         $newVersion = self::ParseVersionString($newVersion);
 
-        if ($newVersion['major'] > $oldVersion['major'])
-            return 1;
-        if ($newVersion['major'] < $oldVersion['major'])
-            return -1;
-
-        if ($newVersion['minor'] > $oldVersion['minor'])
-            return 1;
-        if ($newVersion['minor'] < $oldVersion['minor'])
-            return -1;
-
-        if ($newVersion['revision'] > $oldVersion['revision'])
-            return 1;
-        if ($newVersion['revision'] < $oldVersion['revision'])
-            return -1;
-
-        switch ($newVersion['type']) {
-            case 'STABLE':
-                if ($oldVersion['type'] != 'STABLE')
-                    return 1;
-                break;
-            case 'PREALPHA':
-                break;
-            case 'ALPHA':
-                switch ($oldVersion['type']) {
-                    case 'RC':
-                    case 'BETA':
-                    case 'STABLE':
-                        return -1;
-                    case 'PREALPHA':
-                        return 1;
-                }
-                break;
-            case 'BETA':
-                switch ($oldVersion['type']) {
-                    case 'RC':
-                    case 'STABLE':
-                        return -1;
-                    case 'PREALPHA':
-                    case 'ALPHA':
-                        return 1;
-                }
-                break;
-            case 'RC':
-                switch ($oldVersion['type']) {
-                    case 'STABLE':
-                        return -1;
-                    case 'BETA':
-                    case 'PREALPHA':
-                    case 'ALPHA':
-                        return 1;
-                }
-                break;
+        if ($newVersion['major'] > $oldVersion['major']) {
+            return 1; 
+        }
+        if ($newVersion['major'] < $oldVersion['major']) {
+            return -1; 
         }
 
-        if ($newVersion['typeNo'] == $oldVersion['typeNo'])
-            return 0;
+        if ($newVersion['minor'] > $oldVersion['minor']) {
+            return 1; 
+        }
+        if ($newVersion['minor'] < $oldVersion['minor']) {
+            return -1; 
+        }
+
+        if ($newVersion['revision'] > $oldVersion['revision']) {
+            return 1; 
+        }
+        if ($newVersion['revision'] < $oldVersion['revision']) {
+            return -1; 
+        }
+
+        switch ($newVersion['type']) {
+        case 'STABLE':
+            if ($oldVersion['type'] != 'STABLE') {
+                return 1; 
+            }
+            break;
+        case 'PREALPHA':
+            break;
+        case 'ALPHA':
+            switch ($oldVersion['type']) {
+            case 'RC':
+            case 'BETA':
+            case 'STABLE':
+                return -1;
+            case 'PREALPHA':
+                return 1;
+            }
+            break;
+        case 'BETA':
+            switch ($oldVersion['type']) {
+            case 'RC':
+            case 'STABLE':
+                return -1;
+            case 'PREALPHA':
+            case 'ALPHA':
+                return 1;
+            }
+            break;
+        case 'RC':
+            switch ($oldVersion['type']) {
+            case 'STABLE':
+                return -1;
+            case 'BETA':
+            case 'PREALPHA':
+            case 'ALPHA':
+                return 1;
+            }
+            break;
+        }
+
+        if ($newVersion['typeNo'] == $oldVersion['typeNo']) {
+            return 0; 
+        }
 
         return ($newVersion['typeNo'] > $oldVersion['typeNo']) ? 1 : -1;
     }
 
-    public static function ParseVersionString($version) {
+    public static function ParseVersionString($version) 
+    {
         $version = explode("-", $version, 2);
 
         $prerelease = "stable";
 
-        if (isset($version[1]))
-            $prerelease = $version[1];
+        if (isset($version[1])) {
+            $prerelease = $version[1]; 
+        }
 
         $version = explode(".", $version[0]);
 
         $majorVersion = $version[0];
-        if (strpos($majorVersion, "v") === 0)
-            $majorVersion = substr($majorVersion, 1);
+        if (strpos($majorVersion, "v") === 0) {
+            $majorVersion = substr($majorVersion, 1); 
+        }
 
         $minorVersion = 0;
-        if (isset($version[1]))
-            $minorVersion = $version[1];
+        if (isset($version[1])) {
+            $minorVersion = $version[1]; 
+        }
 
         $revision = 0;
-        if (isset($version[2]))
-            $revision = $version[2];
+        if (isset($version[2])) {
+            $revision = $version[2]; 
+        }
 
         $prerelease = explode(".", $prerelease, 2);
         
         $preReleaseVersion = 0;
-        if (isset($prerelease[1]))
-            $preReleaseVersion = $prerelease[1];
+        if (isset($prerelease[1])) {
+            $preReleaseVersion = $prerelease[1]; 
+        }
 
         $prerelease = $prerelease[0];
 
         return Array('major' => $majorVersion, 'minor' => $minorVersion, 'revision' => $revision, 'type' => strtoupper($prerelease), 'typeNo' => $preReleaseVersion);
     }
 
-    public static function GetIP() {
-        if (isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
-            return $_SERVER['HTTP_CLIENT_IP'];
+    public static function GetIP() 
+    {
+        if (isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP']; 
+        }
 
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -146,22 +165,27 @@ class core {
             return $ip;
         }
 
-        if (isset($_SERVER['HTTP_X_FORWARDED']) && !empty($_SERVER['HTTP_X_FORWARDED']))
-            return $_SERVER['HTTP_X_FORWARDED'];
+        if (isset($_SERVER['HTTP_X_FORWARDED']) && !empty($_SERVER['HTTP_X_FORWARDED'])) {
+            return $_SERVER['HTTP_X_FORWARDED']; 
+        }
 
-        if (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && !empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']))
-            return $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
+        if (isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']) && !empty($_SERVER['HTTP_X_CLUSTER_CLIENT_IP'])) {
+            return $_SERVER['HTTP_X_CLUSTER_CLIENT_IP']; 
+        }
 
-        if (isset($_SERVER['HTTP_FORWARDED_FOR']) && !empty($_SERVER['HTTP_FORWARDED_FOR']))
-            return $_SERVER['HTTP_FORWARDED_FOR'];
+        if (isset($_SERVER['HTTP_FORWARDED_FOR']) && !empty($_SERVER['HTTP_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_FORWARDED_FOR']; 
+        }
 
-        if (isset($_SERVER['HTTP_FORWARDED']) && !empty($_SERVER['HTTP_FORWARDED']))
-            return $_SERVER['HTTP_FORWARDED'];
+        if (isset($_SERVER['HTTP_FORWARDED']) && !empty($_SERVER['HTTP_FORWARDED'])) {
+            return $_SERVER['HTTP_FORWARDED']; 
+        }
 
         return $_SERVER['REMOTE_ADDR'];
     }
 
-    public static function GetDay($timestamp) {
+    public static function GetDay($timestamp) 
+    {
         $engDay = gmdate("D", $timestamp);
         $engDay = strtolower(substr($engDay, 0, 2));
         lang()->add('date');
@@ -169,7 +193,8 @@ class core {
         return $localDay;
     }
 
-    public static function SystemError($title, $text) {
+    public static function SystemError($title, $text) 
+    {
 
         if (!in_array("Content-Type: text/html", headers_list())) {
             echo $title . " " . $text;
@@ -186,22 +211,27 @@ class core {
         exit;
     }
 
-    public static function SuccessMessage($text) {
+    public static function SuccessMessage($text) 
+    {
         echo '<div class="status_ok">' . $text . '</div>';
     }
 
-    public function generatePW($username, $password) {
+    public function generatePW($username, $password) 
+    {
         return sha1(config("salt") . md5($password . config("salt") . $username));
     }
 
-    public function filter($input) {
-        if (ini_get("magic_quotes_gpc"))
-            $input = stripslashes($input);
+    public function filter($input) 
+    {
+        if (ini_get("magic_quotes_gpc")) {
+            $input = stripslashes($input); 
+        }
 
         return getVar("sql")->real_escape_string($input);
     }
 
-    public static function MagicQuotesCompability() {
+    public static function MagicQuotesCompability() 
+    {
         if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
             $process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
             while (list($key, $val) = each($process)) {
@@ -219,41 +249,43 @@ class core {
         }
     }
 
-    public static function UploadCodeToMessage($code) {
+    public static function UploadCodeToMessage($code) 
+    {
         switch ($code) {
-            case UPLOAD_ERR_OK:
-                return null;
+        case UPLOAD_ERR_OK:
+            return null;
                 break;
-            case UPLOAD_ERR_INI_SIZE:
-                $message = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
-                break;
-            case UPLOAD_ERR_FORM_SIZE:
-                $message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                $message = "The uploaded file was only partially uploaded";
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                $message = "No file was uploaded";
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR:
-                $message = "Missing a temporary folder";
-                break;
-            case UPLOAD_ERR_CANT_WRITE:
-                $message = "Failed to write file to disk";
-                break;
-            case UPLOAD_ERR_EXTENSION:
-                $message = "File upload stopped by extension";
-                break;
+        case UPLOAD_ERR_INI_SIZE:
+            $message = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+            break;
+        case UPLOAD_ERR_FORM_SIZE:
+            $message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+            break;
+        case UPLOAD_ERR_PARTIAL:
+            $message = "The uploaded file was only partially uploaded";
+            break;
+        case UPLOAD_ERR_NO_FILE:
+            $message = "No file was uploaded";
+            break;
+        case UPLOAD_ERR_NO_TMP_DIR:
+            $message = "Missing a temporary folder";
+            break;
+        case UPLOAD_ERR_CANT_WRITE:
+            $message = "Failed to write file to disk";
+            break;
+        case UPLOAD_ERR_EXTENSION:
+            $message = "File upload stopped by extension";
+            break;
 
-            default:
-                $message = "Unknown upload error";
-                break;
+        default:
+            $message = "Unknown upload error";
+            break;
         }
         return $message;
     }
 
-    public static function String2Grade($gradeString) {
+    public static function String2Grade($gradeString) 
+    {
         $grade = Array('prefix' => '', 'num' => '', 'suffix' => '');
 
         for ($i = 0; $i < strlen($gradeString); $i++) {
@@ -272,7 +304,8 @@ class core {
         return $grade;
     }
 
-    function FormatJson($json) {
+    function FormatJson($json) 
+    {
 
         $result = '';
         $pos = 0;

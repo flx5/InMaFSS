@@ -1,8 +1,10 @@
 <?php
 
-class OAuthHelper {
+class OAuthHelper
+{
 
-    public static function GetConsumers($user) {
+    public static function GetConsumers($user) 
+    {
         $sql = dbquery("SELECT client_id, scope FROM oauth_access_tokens WHERE user_id = " . $user);
 
         $apps = Array();
@@ -30,15 +32,18 @@ class OAuthHelper {
         return $apps;
     }
 
-    public static function GetConsumerName($id) {
+    public static function GetConsumerName($id) 
+    {
         $sql = dbquery("SELECT title FROM oauth_clients WHERE client_id = '" . filter($id) . "' LIMIT 1");
-        if ($sql->count() == 1)
-            return $sql->result();
+        if ($sql->count() == 1) {
+            return $sql->result(); 
+        }
 
         return null;
     }
 
-    public static function RemoveConsumerAccess($consumer, $user) {
+    public static function RemoveConsumerAccess($consumer, $user) 
+    {
         $consumer = filter($consumer);
         $user = filter($user);
         

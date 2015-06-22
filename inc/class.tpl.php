@@ -21,7 +21,8 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-class tpl {
+class tpl
+{
 
     var $content;
     var $headers;
@@ -29,7 +30,8 @@ class tpl {
     private $standards = Array();
     private $outputSent = false;
 
-    public function Init($title) {
+    public function Init($title) 
+    {
         $this->content = '';
         $this->headers = Array(
             '<title>InMaFSS // ' . $title . '</title>',
@@ -41,50 +43,62 @@ class tpl {
         $this->params = Array('username' => USERNAME, "www" => WWW);
     }
 
-    public function registerStandard($page, $callback) {
+    public function registerStandard($page, $callback) 
+    {
         $this->standards[$page] = $callback;
     }
 
-    public function addStandards($page) {
+    public function addStandards($page) 
+    {
 
-        if (isset($this->standards[$page]))
-            $this->standards[$page]($this);
+        if (isset($this->standards[$page])) {
+            $this->standards[$page]($this); 
+        }
     }
 
-    public function addTemplate($name) {
+    public function addTemplate($name) 
+    {
         $tpl = new Template($name);
         $this->content .= $tpl->GetHtml();
     }
 
-    public function addTemplateClass($tpl) {
+    public function addTemplateClass($tpl) 
+    {
         $this->content .= $tpl->GetHtml();
     }
 
-    public function getTemplate($name) {
+    public function getTemplate($name) 
+    {
         return new Template($name);
     }
 
-    public function addHeader($text) {
+    public function addHeader($text) 
+    {
         $this->headers[] = $text;
     }
 
-    public function addJS($url) {
+    public function addJS($url) 
+    {
         $this->addHeader('<script type="text/javascript" src="' . $url . '"></script>');
     }
 
-    public function addCSS($url) {
+    public function addCSS($url) 
+    {
         $this->addHeader('<link rel="stylesheet" type="text/css" href="' . $url . '">');
     }
 
-    public function write($text) {
+    public function write($text) 
+    {
         $this->content .= $text;
     }
 
-    public function setParam($title, $value) {
+    public function setParam($title, $value) 
+    {
         $this->params[$title] = $value;
     }
 
-    private function GetHeader() {
+    private function GetHeader() 
+    {
         $output = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
         $header = "";
         foreach ($this->headers as $head) {
@@ -97,11 +111,13 @@ class tpl {
         return $output;
     }
 
-    private function GetFooter() {
+    private function GetFooter() 
+    {
         return "\n</body>\n</html>";
     }
 
-    public function Flush($explicitFlush = true) {
+    public function Flush($explicitFlush = true) 
+    {
         $header = "";
         if (!$this->outputSent) {
             if ($explicitFlush) {
@@ -126,7 +142,8 @@ class tpl {
         $this->outputSent = true;
     }
 
-    function disable_gzip() {
+    function disable_gzip() 
+    {
         for ($i = 0; $i < ob_get_level(); $i++) {
             ob_end_flush();
         }
@@ -137,32 +154,38 @@ class tpl {
         ob_implicit_flush(1);
     }
 
-    public function Output() {
+    public function Output() 
+    {
         $this->Flush(false);
         echo $this->GetFooter();
     }
 
 }
 
-class Template {
+class Template
+{
 
     var $tplName;
     var $params = Array();
     var $vars = Array();
 
-    public function Template($tplName) {
+    public function Template($tplName) 
+    {
         $this->tplName = $tplName;
     }
 
-    public function setParam($title, $value) {
+    public function setParam($title, $value) 
+    {
         $this->params[$title] = $value;
     }
 
-    public function setVar($name, $value) {
+    public function setVar($name, $value) 
+    {
         $this->vars[$name] = $value;
     }
 
-    public function GetHtml() {
+    public function GetHtml() 
+    {
         $file = CWD . 'inc/tpl/' . $this->tplName . '.tpl';
 
         if (!file_exists($file)) {
@@ -174,7 +197,7 @@ class Template {
         }
 
         ob_start();
-        include($file);
+        include $file;
         $data = ob_get_contents();
         ob_end_clean();
 

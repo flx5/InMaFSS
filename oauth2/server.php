@@ -1,12 +1,12 @@
 <?php 
-require_once(realpath(dirname(__FILE__))."/../global.php");
-require_once(INC.'libs/oauth2-server/src/OAuth2/Autoloader.php');
+require_once realpath(dirname(__FILE__))."/../global.php";
+require_once INC.'libs/oauth2-server/src/OAuth2/Autoloader.php';
 
 // Register Autoloader before loading Storage!
 OAuth2_Autoloader::register();
 
-require_once (INC.'libs/Oauth2Storage.php');
-require_once(INC.'class.scope.php');
+require_once INC.'libs/Oauth2Storage.php';
+require_once INC.'class.scope.php';
 
 $storage = new OAuth2_Storage_InMaFSS(getVar("sql"));
 // Overwriting the token_bearer_header_name as our test client only sends OAuth2 as Auth-Header and not the specified one

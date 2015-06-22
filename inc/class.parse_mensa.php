@@ -1,30 +1,36 @@
 <?php
 
-class parseMensa implements ParseInterface {
+class parseMensa implements ParseInterface
+{
 
     private $data = Array();
     
-    public function parse($content) {
-        if ($content == "")
-            return false;
+    public function parse($content) 
+    {
+        if ($content == "") {
+            return false; 
+        }
         
-        require_once(CWD . DS . "inc" . DS . "parse" . DS . "mensa" . DS . "gymdon.php");
+        include_once CWD . DS . "inc" . DS . "parse" . DS . "mensa" . DS . "gymdon.php";
         $parser = "PARSE_MENSA_GYMDON";
         $parser = new $parser();
         $data = $parser->parse($content);
         
-        if($data === false)
-            return false;
+        if($data === false) {
+            return false; 
+        }
         
         $this->data[] = $data;
         return true;
     }
 
-    public function CleanDatabase() {
-        dbquery("DELETE FROM mensa WHERE day < ".gmmktime(0,0,0));
+    public function CleanDatabase() 
+    {
+        dbquery("DELETE FROM mensa WHERE day < ".gmmktime(0, 0, 0));
     }
 
-    public function UpdateDatabase() {
+    public function UpdateDatabase() 
+    {
         $this->CleanDatabase();
         
         foreach($this->data as $data) {

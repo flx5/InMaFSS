@@ -21,8 +21,8 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-require_once(realpath(dirname(__FILE__)) . "/../global.php");
-require_once(INC . 'libs/ip_in_range/ip_in_range.php');
+require_once realpath(dirname(__FILE__)) . "/../global.php";
+require_once INC . 'libs/ip_in_range/ip_in_range.php';
 
 lang()->add('admin');
 
@@ -79,7 +79,8 @@ if (!$isAuth) {
     exit;
 }
 
-function PlanRegisterStandard($tpl) {
+function PlanRegisterStandard($tpl) 
+{
     $tpl->addCSS(WWW . '/plan/css/plan.css');
     $tpl->addJS(WWW . "/plan/js/plan.js");
     $tpl->addJS(WWW . "/plan/js/ajax.js");

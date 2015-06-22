@@ -1,12 +1,15 @@
 <?php
 
-class Controller_Me extends RestController {
+class Controller_Me extends RestController
+{
 
-    public function GetDescription() {
+    public function GetDescription() 
+    {
         return "Information about current user";
     }
 
-    public function GET() {
+    public function GET() 
+    {
         $auth = Authorization::GenerateInstance('LDAP');
         /* @var $auth LDAP_Auth */
 

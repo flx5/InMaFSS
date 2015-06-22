@@ -26,12 +26,12 @@ if (!isset($_GET['limit']) || !is_numeric($_GET['limit'])) {
     exit;
 }
 
-require_once("global.php");
+require_once "global.php";
 lang()->add('home');
 
 $limit = $_GET['limit'];
 
-require_once(INC."class.view.php");
+require_once INC."class.view.php";
 
 $data = Array();
 

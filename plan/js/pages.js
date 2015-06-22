@@ -9,11 +9,13 @@ var Pages = {
         this.mPages.push(new Page('left'));
         this.mPages.push(new Page('right'));
        
-        window.setInterval(function(self) {
-            return function() {
-                self.NextPage();
-            }
-        }(this), time*1000);
+        window.setInterval(
+            function(self) {
+                return function() {
+                    self.NextPage();
+                }
+            }(this), time*1000
+        );
     },
     
     NextPage : function() { 
@@ -49,8 +51,7 @@ var Page = function(site) {
         var next = this.getPage(this.currentPage);
         var next_info = this.getInfo(this.currentPage);
 
-        if(current_plan == null)
-        {
+        if(current_plan == null) {
             this.endReached();
             return;
         }

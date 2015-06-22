@@ -11,8 +11,8 @@ var Cache = {
             document.getElementById('header_cached').style.display = 'none';
             document.getElementById('header_normal').style.display = 'inline';
         
-            for(var i = 0; i<el.length;i++)
-                el[i].style.visibility = "hidden";
+            for(var i = 0; i<el.length;i++) {
+                el[i].style.visibility = "hidden"; }
         }
     }
 }

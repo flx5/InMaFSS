@@ -1,6 +1,7 @@
 <?php
 
-class LDAP_Auth extends Authorization {
+class LDAP_Auth extends Authorization
+{
 
     var $ldaphost = "ldaps://10.16.1.1/";  // your ldap servers
     var $ldapport = 636;                 // your ldap server's port number
@@ -11,22 +12,27 @@ class LDAP_Auth extends Authorization {
     private $groups = Array();
     private $force_debug_login = true;
 
-    function __construct() {
-        if (!function_exists('ldap_connect'))
-            throw new Exception("PHP is missing the LDAP extension");
+    function __construct() 
+    {
+        if (!function_exists('ldap_connect')) {
+            throw new Exception("PHP is missing the LDAP extension"); 
+        }
 
         $this->Connect();
     }
 
-    public function Logout() {
+    public function Logout() 
+    {
         $this->DestroySession();
     }
 
-    public function HasFuse($fuse) {
+    public function HasFuse($fuse) 
+    {
         return false;
     }
 
-    public function Login($username, $password) {
+    public function Login($username, $password) 
+    {
         $password = $this->filter($password);
 
         $user = $this->getUserDataByName($username);
@@ -44,17 +50,20 @@ class LDAP_Auth extends Authorization {
         return false;
     }
 
-    public function getUserDataByID($id) {
+    public function getUserDataByID($id) 
+    {
         $id = $this->filter($id);
         return $this->getUserData('uidNumber=' . $id);
     }
 
-    public function getUserDataByName($username) {
+    public function getUserDataByName($username) 
+    {
         $username = $this->filter($username);
         return $this->getUserData('uid=' . $username);
     }
 
-    private function getUserData($filter) {
+    private function getUserData($filter) 
+    {
 
         // limit attributes we want to look for
         $attributes_ad = array("givenName", "sn", "uid", "uidNumber", "displayName", "gidnumber");
@@ -103,22 +112,26 @@ class LDAP_Auth extends Authorization {
         return null;
     }
 
-    private function getGroupData($gID) {
+    private function getGroupData($gID) 
+    {
         $r = @ldap_search($this->link, "ou=groups," . $this->base_dn, 'gidNumber=' . $gID);
 
-        if (!$r)
-            return null;
+        if (!$r) {
+            return null; 
+        }
 
         $result = ldap_get_entries($this->link, $r);
         return $result[0];
     }
 
-    private function Connect() {
+    private function Connect() 
+    {
         $this->link = ldap_connect($this->ldaphost, $this->ldapport);
 
         // Only works with OPENLDAP 1.X.X else this must be caught later
-        if ($this->link === false)
-            throw new Exception("Could not connect to $this->ldaphost");
+        if ($this->link === false) {
+            throw new Exception("Could not connect to $this->ldaphost"); 
+        }
 
         ldap_set_option($this->link, LDAP_OPT_PROTOCOL_VERSION, 3);
 
@@ -129,12 +142,15 @@ class LDAP_Auth extends Authorization {
         }
     }
 
-    public function __destruct() {
-        if ($this->link != null)
-            ldap_close($this->link);
+    public function __destruct() 
+    {
+        if ($this->link != null) {
+            ldap_close($this->link); 
+        }
     }
 
-    private function filter($s) {
+    private function filter($s) 
+    {
         return preg_replace(Array("#=#", "#&#", "#,#"), "", $s);
     }
 

@@ -25,12 +25,14 @@
   | FILE SOURCE: http://www.schulferien.org/iCal/ |
   \*============================================= */
 
-class german_holidays {
+class german_holidays
+{
 
     var $handler;
     var $events;
 
-    public function Init($handler) {
+    public function Init($handler) 
+    {
         $this->events = Array();
 
         $this->handler = $handler;
@@ -38,7 +40,8 @@ class german_holidays {
         return true;
     }
 
-    public function parse_holidays($year = 0) {
+    public function parse_holidays($year = 0) 
+    {
         if ($year == 0) {
             $year = date("Y");
         }
@@ -46,11 +49,13 @@ class german_holidays {
         $data = "";
         $data2 = "";
 
-        if (file_exists(PLUGIN_DIR . "Ferien_Bayern_" . $year . ".ics"))
-            $data = file_get_contents(PLUGIN_DIR . "Ferien_Bayern_" . $year . ".ics");
+        if (file_exists(PLUGIN_DIR . "Ferien_Bayern_" . $year . ".ics")) {
+            $data = file_get_contents(PLUGIN_DIR . "Ferien_Bayern_" . $year . ".ics"); 
+        }
 
-        if (file_exists(PLUGIN_DIR . "Feiertage_Bayern_" . $year . ".ics"))
-            $data2 = file_get_contents(PLUGIN_DIR . "Feiertage_Bayern_" . $year . ".ics");
+        if (file_exists(PLUGIN_DIR . "Feiertage_Bayern_" . $year . ".ics")) {
+            $data2 = file_get_contents(PLUGIN_DIR . "Feiertage_Bayern_" . $year . ".ics"); 
+        }
 
         $events = Array();
 
@@ -76,12 +81,14 @@ class german_holidays {
         $this->events[$year] = $events;
     }
 
-    public function check(&$param) {
+    public function check(&$param) 
+    {
 
         $year = date("Y", $param);
 
-        if (!isset($this->events[$year]))
-            $this->parse_holidays($year);
+        if (!isset($this->events[$year])) {
+            $this->parse_holidays($year); 
+        }
 
         $found = false;
         foreach ($this->events[$year] as $event) {
@@ -94,8 +101,9 @@ class german_holidays {
             }
         }
         
-        if($found)
-            $this->check ($param);
+        if($found) {
+            $this->check($param); 
+        }
     }
 
 }

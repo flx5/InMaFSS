@@ -22,7 +22,7 @@
   \*================================================================================= */
 
 
-require_once("global.php");
+require_once "global.php";
 
 lang()->add('home');
 getVar("tpl")->Init(lang()->loc('title', false));
@@ -34,10 +34,12 @@ getVar("tpl")->Write('<div class="main" id="plan_left" style="border-right:0px s
 if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     getVar("tpl")->Write('</div>');
 
-    getVar("tpl")->Write('
+    getVar("tpl")->Write(
+        '
         <script language="JavaScript">
         Height.SetHeight();
-        </script>');
+        </script>'
+    );
 } elseif ($_GET['size'] < 533) {
     getVar("tpl")->addTemplate('plan/too_small');
 } else {
@@ -45,7 +47,7 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     $size = $_GET['size'];
     $limit = floor(($size - 50 ) / 25) - 4;
 
-    require_once(INC . "class.view.php");
+    include_once INC . "class.view.php";
 
     $left = getVar("tpl")->getTemplate('plan/plan');
     $left->setVar('site', 'left');
@@ -69,10 +71,12 @@ if (!isset($_GET['size']) || !is_numeric($_GET['size'])) {
     getVar("tpl")->addTemplateClass($footer);
     getVar("tpl")->Write('</div>');
 
-    getVar("tpl")->Write('
+    getVar("tpl")->Write(
+        '
         <script language="JavaScript">
         Init(' . config("time_for_next_page") . ', "' . config("updateStyle") . '", ' . $limit . ', false);
-        </script>');
+        </script>'
+    );
 }
 
 getVar("tpl")->Write('<noscript>');

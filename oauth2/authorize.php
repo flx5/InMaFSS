@@ -17,8 +17,9 @@ if (!Authorization::IsLoggedIn("LDAP")) {
     }
 }
 
-if(isset($_SESSION['auth_request']))
-    unset($_SESSION['auth_request']);
+if(isset($_SESSION['auth_request'])) {
+    unset($_SESSION['auth_request']); 
+}
 
 $request = OAuth2_Request::createFromGlobals();
 $response = new OAuth2_Response();

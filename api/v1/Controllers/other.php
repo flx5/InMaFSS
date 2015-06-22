@@ -1,15 +1,19 @@
 <?php
-class Controller_Other extends RestController {
+class Controller_Other extends RestController
+{
 
-    public function RequiredScope($method) {
+    public function RequiredScope($method) 
+    {
         return ScopeData::OTHER;
     }
 
-    public function GetDescription() {
+    public function GetDescription() 
+    {
         return "Operations concerning additional substitution plan data";
     }
     
-    public function GET() {
+    public function GET() 
+    {
         if (!isset($this->args[0])) {
             $this->AddError(APIErrorCodes::PARAM_DAY_MISSING);
             return;
@@ -17,13 +21,15 @@ class Controller_Other extends RestController {
 
         $type = RestUtil::CheckUserType($this->user);
 
-        if ($type === false)
-            return;
+        if ($type === false) {
+            return; 
+        }
 
         $replacements = RestUtil::GetReplacements($type, $this->args[0]);
 
-        if ($replacements === null)
-            return;
+        if ($replacements === null) {
+            return; 
+        }
 
         $others = $replacements->GetOthers();
 
