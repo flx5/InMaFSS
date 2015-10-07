@@ -70,6 +70,6 @@ Libraries
 + [TinyMCE](http://www.tinymce.com) (4.0.16)
 + [Tigra Calendar](http://www.softcomplex.com/products/tigra_calendar/) (v5.2)      
 + [ip_in_range](http://www.pgregg.com/projects/php/ip_in_range/) (v1.2)
-+ [OAuth2 Server](https://github.com/bshaffer/oauth2-server-php) (v0.9) (Using an old version to ensure compability with pre PHP 5.3.9
++ [OAuth2 Server](https://github.com/bshaffer/oauth2-server-php) (v0.9) (Using an old version to ensure compatibility with pre PHP 5.3.9
 + [ics-parser] (http://code.google.com/p/ics-parser/)
 + [SwaggerUI] (https://github.com/wordnik/swagger-ui)
