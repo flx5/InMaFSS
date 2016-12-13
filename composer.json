@@ -21,6 +21,11 @@
         }
     ],
     "autoload": {
-        "psr-4": {"InMaFSS\\": "src/"}
+        "psr-4": {
+            "InMaFSS\\": "src/"
+        },
+        "psr-0": {
+            "InMaFSS\\Data\\": "build/classes/"
+        }
     }
 }

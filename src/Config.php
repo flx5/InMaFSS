@@ -45,7 +45,7 @@ $dbtype='';
     public function __construct() {
         require __DIR__.'/../config.php';
         
-        $this->dbUser = $dbUser;
+        $this->dbUser = $dbuser;
         $this->dbPass = $dbpass;
         $this->dbName = $dbname;
         $this->dbServer = $dbserver;

@@ -59,7 +59,9 @@ namespace InMaFSS {
                 )
             )
     );
-    \Propel::init();
+    \Propel::initialize();
+    
+    Data\EventQuery::create()->find();
 
     $vars->set("sql", SQL::GenerateInstance($config->Get("dbtype"), $config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname")));
     vars::Init($vars);
