@@ -29,7 +29,7 @@ class lang
     private $file;
     private $info;
 
-    public function lang($lang) 
+    public function __construct($lang) 
     {
         $this->language = $lang;
         $this->local = Array();

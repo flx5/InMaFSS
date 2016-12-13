@@ -169,7 +169,7 @@ class Template
     var $params = Array();
     var $vars = Array();
 
-    public function Template($tplName) 
+    public function __construct($tplName) 
     {
         $this->tplName = $tplName;
     }

@@ -21,187 +21,66 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-define('DS', DIRECTORY_SEPARATOR);
-define('CWD', dirname(__FILE__) . DS);
-define('INC', CWD . "inc" . DS);
-define('PLUGIN_DIR', CWD . DS . "plugins" . DS);
+namespace InMaFSS {
 
-$www = "http";
-
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
-    $www .= "s";
-}
-
-$req = $_SERVER['REQUEST_URI'];
-if (strpos($req, "?") !== false) {
-    $req = substr($req, 0, strpos($req, "?"));
-}
-
-$www .= "://" . $_SERVER['SERVER_NAME'];
-
-if($_SERVER['SERVER_PORT'] != 80 && $_SERVER['SERVER_PORT'] != 443) {
-    $www .= ":".$_SERVER['SERVER_PORT']; 
-}
-    
-$www .= $req;
-$www = substr($www, 0, strrpos($www, basename(dirname(__FILE__)))) . basename(dirname(__FILE__));
-define('WWW', $www);
-
-// register_shutdown_function('Shutdown');
-set_error_handler('error_handler');
-date_default_timezone_set('Europe/Berlin');
-
-header('Content-Type: text/html');
-
-if (is_dir(CWD . "installer") && file_exists(CWD . "inc/config.php") && !file_exists(CWD."dev.txt")) {
-     die("ERROR: YOU HAVE TO REMOVE THE installer folder BEFORE YOU WILL BE ABLE TO USE THIS!");
-}
-
-if (!file_exists(CWD . "inc/config.php") && !is_dir(CWD . "installer")) {
-    die("ERROR: CONFIG AND INSTALLER NOT FOUND!");
-}
-
-if (!file_exists(CWD . "inc/config.php")) {
-    header("Location: " . WWW . "/installer/");
-    exit;
-}
-
-require_once INC . "class.variables.php";
-require_once INC . "class.config.php";
-require_once INC . "class.core.php";
-require_once INC . "class.sql.php";
-require_once INC . "class.lang.php";
-require_once INC . "class.tpl.php";
-require_once INC . "class.update.php";
-require_once INC . "class.plugin.php";
-require_once INC . "class.parse.php";
-require_once INC . "class.authorize.php";
-
-core::MagicQuotesCompability();
-
-$config = new config();
-$vars = new variables(new core(), null, null, new tpl(), new Update(), new pluginManager(), false);
-$vars->set("sql", SQL::GenerateInstance($config->Get("dbtype"), $config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname")));
-vars::Init($vars);
-
-getVar("sql")->connect();
-$config->LoadFromDB();
-
-$vars->Set("lang", new lang($config->Get("lang")));
-getVar("pluginManager")->Init();
-
-session_start();
+    require __DIR__ . '/vendor/autoload.php';
 
 
-$user = Authorization::IsLoggedIn();
-if ($user != null) {
-    define('LOGGED_IN', true);
-    define('USERNAME', $user['name']);
-    define('USER_ID', $user['id']);
-} else {
-    define('LOGGED_IN', false);
-    define('USERNAME', 'GUEST');
-    define('USER_ID', -1);
-}
+// TODO Time management!
+    date_default_timezone_set('Europe/Berlin');
 
-function lang() 
-{
-    return getVar("lang");
-}
-
-function filter($input) 
-{
-    return getVar("core")->filter($input);
-}
-
-function dbquery($input) 
-{
-    if (getVar("PLUGIN") || !getVar("sql")->IsConnected()) {
-        return null;
+    if (is_dir(__DIR__ . "/installer") && file_exists(__DIR__ . "/inc/config.php") && !file_exists(__DIR__ . "/dev.txt")) {
+        die("ERROR: YOU HAVE TO REMOVE THE installer folder BEFORE YOU WILL BE ABLE TO USE THIS!");
     }
 
-    return getVar("sql")->DoQuery($input);
-}
-
-function config($var) 
-{
-    if (getVar("PLUGIN")) {
-        return null;
+    if (!file_exists(__DIR__ . "/inc/config.php")) {
+        header("Location: ./installer/");
+        exit;
     }
 
-    global $config;
-    return $config->Get($var);
-}
+    Compability::magicQuotes();
+    $config = new Config();
 
-class vars
-{
+    \Propel::setConfiguration(
+            array(
+                'datasources' =>
+                array(
+                    'inmafss' =>
+                    array(
+                        'adapter' => $config->getDbAdapter(),
+                        'connection' =>
+                        array(
+                            'dsn' => $config->getDbDSN(),
+                            'user' => $config->getDbUser(),
+                            'password' => $config->getDbPass(),
+                        ),
+                    ),
+                    'default' => 'inmafss',
+                )
+            )
+    );
+    \Propel::init();
 
-    private static $vars;
+    $vars->set("sql", SQL::GenerateInstance($config->Get("dbtype"), $config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname")));
+    vars::Init($vars);
 
-    public static function Init($vars) 
-    {
-        self::$vars = $vars;
-    }
+    getVar("sql")->connect();
+    $config->LoadFromDB();
 
-    public static function getVar($var) 
-    {
-        return self::$vars->Get($var);
-    }
+    $vars->Set("lang", new lang($config->Get("lang")));
+    getVar("pluginManager")->Init();
 
-    public static function setVar($var, $val) 
-    {
-        self::$vars->Set($var, $val);
-    }
+    session_start();
 
-    public static function get() 
-    {
-        return self::$vars;
-    }
 
-}
-
-function getVar($var) 
-{
-    return vars::getVar($var);
-}
-
-function setVar($var, $val) 
-{
-    vars::setVar($var, $val);
-}
-
-function setPlugin($val, $actor) 
-{
-    vars::get()->setPlugin($val, $actor);
-}
-
-function error_handler($errno, $errstr, $errfile, $errline) 
-{
-    if (error_reporting() == 0) {
-        return true; // Ignore Messages with an @ before!
-    }
-    return false;
-}
-
-function Shutdown() 
-{
-    $error = error_get_last();
-    if ($error != null) {
-        ob_end_clean();
-        core::SystemError($error['message'], ' in ' . $error['file'] . ' on line ' . $error['line']);
+    $user = Authorization::IsLoggedIn();
+    if ($user != null) {
+        define('LOGGED_IN', true);
+        define('USERNAME', $user['name']);
+        define('USER_ID', $user['id']);
+    } else {
+        define('LOGGED_IN', false);
+        define('USERNAME', 'GUEST');
+        define('USER_ID', -1);
     }
 }
-
-function findFirstLetter($str) 
-{
-    $i = 0;
-    while ($i < strlen($str)) {
-        if (ctype_alpha($str[$i])) {
-            return $i; 
-        }
-
-        $i++;
-    }
-    return false;
-}
-?>

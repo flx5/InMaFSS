@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2016 Felix Prasse <me@flx5.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<database name="inmafss" defaultIdMethod="native">
+    <table name="events" phpName="Event" namespace="InMaFSS\Data">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="title" type="varchar" size="255" required="true" />
+        <column name="content" type="longvarchar" size="255" required="true" />
+        <column name="begin" type="date" required="true"/>
+        <column name="end" type="date" required="true"/>
+    </table>
+    <table name="allowed_ips" phpName="IPRange" namespace="InMaFSS\Data">
+        <column name="range" type="varchar" size="49" required="true" primaryKey="true"/>
+    </table>
+    <table name="mensa" phpName="Mensa" namespace="InMaFSS\Data">
+        <column name="day" type="date" required="true" primaryKey="true" />
+        <column name="menu1" type="varchar" size="255" required="true" />
+        <column name="menu2" type="varchar" size="255" required="true" />
+        <column name="salad" type="varchar" size="255" required="true" />
+    </table>
+    <table name="pages" phpName="Page" namespace="InMaFSS\Data">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="title" type="varchar" size="255" required="true" />
+        <column name="content" type="longvarchar" size="255" required="true" />
+        <column name="begin" type="date" required="true"/>
+        <column name="end" type="date" required="true"/>
+        <column name="show_pupil" type="boolean" required="true"/>
+        <column name="show_teacher" type="boolean" required="true"/>
+    </table>
+</database>

@@ -12,7 +12,7 @@ class View
     private $type = 0;  // 0 Pupils ; 1 teachers
     private $ReplacementHelper;
 
-    public function View($site, $limit, $type = ReplacementsTypes::PUPIL) 
+    public function __construct($site, $limit, $type = ReplacementsTypes::PUPIL) 
     {
         $this->site = $site;
         $this->limit = $limit;

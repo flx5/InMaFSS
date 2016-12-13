@@ -3,13 +3,24 @@
     "description": "INformation MAnagement for School Systems",
     "type": "project",
     "require": {
-        "bshaffer/oauth2-server-php": "~1.8"
+        "bshaffer/oauth2-server-php": "~1.8",
+        "propel/propel1": "^1.7",
+        "wikimedia/ip-set": "^1.1"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.0.0",
+        "dealerdirect/phpcodesniffer-composer-installer" : "*",
+        "frenck/php-compatibility": "*"
+    },
+    "prefer-stable" : true,
     "license": "GPL-3.0",
     "authors": [
         {
             "name": "flx5",
             "email": "me@flx5.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {"InMaFSS\\": "src/"}
+    }
 }
