@@ -1,4 +1,5 @@
-inc/config.php
-dev.txt
+/build
+/config.php
+/dev.txt
 /nbproject/private/
 /vendor/
