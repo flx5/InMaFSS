@@ -1,0 +1,15 @@
+{
+    "name": "flx5/inmafss",
+    "description": "INformation MAnagement for School Systems",
+    "type": "project",
+    "require": {
+        "bshaffer/oauth2-server-php": "~1.8"
+    },
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "flx5",
+            "email": "me@flx5.com"
+        }
+    ]
+}
