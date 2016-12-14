@@ -43,6 +43,10 @@ $view->setTemplatesDirectory(__DIR__ . '/../templates/');
 $view->parserCompileDirectory = __DIR__ . '/../templates_c/';
 $view->parserCacheDirectory = __DIR__ . '/../cache/';
 
+$view->parserExtensions = array(
+    __DIR__ . '/../vendor/slim/views/SmartyPlugins'
+);
+
 // Only invoked if mode is "production"
 $app->configureMode('production', function () use ($app) {
     $app->config(array(
@@ -63,7 +67,10 @@ $app->setName('InMaFSS');
 
 $app->addRoutes(
         array('/' => array(
-                'get' => 'Index:index'
+                'get' => 'Home:index'
+            ),
+            '/plan/' => array(
+                'get' => 'Plan:index'
             )
         )
 );

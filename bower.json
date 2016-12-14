@@ -1,0 +1,20 @@
+{
+  "name": "InMaFSS",
+  "homepage": "https://github.com/flx5/InMaFSS",
+  "authors": [
+    "flx5 <me@flx5.com>"
+  ],
+  "description": "INformation MAnagement for School Systems",
+  "license": "GPL-3.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "moment": "^2.17.1"
+  }
+}

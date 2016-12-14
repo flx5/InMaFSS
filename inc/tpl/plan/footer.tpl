@@ -54,10 +54,6 @@ if (isset($view_left) && isset($view_right)) {
     }
 }
 ?>
-
-<div class="copyright" style="<?php echo ($ticker ? '' : 'bottom:0px;'); ?>; z-index:99;"><a href="http://flx5.com/inmafss" target="_blank"><span style="visibility: hidden;">http://flx5.com/inmafss</span></a></div>
-<div class="copyright" style="<?php echo ($ticker ? '' : 'bottom:0px;'); ?>; z-index:-1; ">http://flx5.com/inmafss</div>
-
 <?php if ($ticker) { ?>
     <div class="bar" style="position:absolute; bottom:0px; overflow:hidden;width:100%; ">         
                 <span id="ticker">+++&nbsp;<?php echo implode("&nbsp;+++&nbsp;", $output); ?>&nbsp;+++</span>

@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>InMaFSS // {block name=title}{/block}</title>
-        <link href="static/css/main.css" rel="stylesheet" type="text/css"/>
+        <link href="{siteUrl url='/static/css/main.css'}" rel="stylesheet" type="text/css"/>
         {block name=head}{/block}
 </head>
 <body>
