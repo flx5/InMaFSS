@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6c16e731f385ec32b891d5194daea2cc",
-    "content-hash": "848398dfece801520b8c613f56eb20ac",
+    "hash": "d42b6b1b57571f0f1eb713dc71072ee9",
+    "content-hash": "f8d155e3faf6ac5a52fac07a3814c435",
     "packages": [
         {
             "name": "aura/session",
@@ -434,6 +434,53 @@
                 "templating"
             ],
             "time": "2014-12-09 23:48:51"
+        },
+        {
+            "name": "slimcontroller/slimcontroller",
+            "version": "0.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fortrabbit/slimcontroller.git",
+                "reference": "35d7486e98b968bc994bedffbd88a28dadcfad71"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fortrabbit/slimcontroller/zipball/35d7486e98b968bc994bedffbd88a28dadcfad71",
+                "reference": "35d7486e98b968bc994bedffbd88a28dadcfad71",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "slim/slim": "2.*"
+            },
+            "require-dev": {
+                "mockery/mockery": "0.8.*",
+                "phpunit/phpunit": "4.3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SlimController": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ulrich Kautz",
+                    "email": "uk@fortrabbit.de",
+                    "homepage": "http://fortrabbit.com/"
+                }
+            ],
+            "description": "Controller extensions for the Slim Framework",
+            "homepage": "http://github.com/fortrabbit/slimcontroller",
+            "keywords": [
+                "controller",
+                "microframework"
+            ],
+            "time": "2015-04-07 21:15:32"
         },
         {
             "name": "smarty-gettext/smarty-gettext",

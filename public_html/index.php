@@ -28,11 +28,15 @@ $_ENV['SLIM_MODE'] = 'development';
 require __DIR__ . '/../vendor/autoload.php';
 
 // http://docs.slimframework.com/
-$app = new \Slim\Slim(array(
+$app = New \SlimController\Slim(array(
+    'templates.path' => __DIR__ . '/templates',
+    'controller.class_prefix' => '\\InMaFSS\\Controller',
+    'controller.class_suffix' => 'Controller',
+    'controller.method_suffix' => 'Action',
+    'controller.template_suffix' => 'tpl',
     'mode' => 'production',
     'view' => new \Slim\Views\Smarty()
-        )
-);
+        ));
 
 $view = $app->view();
 $view->setTemplatesDirectory(__DIR__ . '/../templates/');
@@ -57,8 +61,11 @@ $app->configureMode('development', function () use ($app) {
 
 $app->setName('InMaFSS');
 
-$app->get('/', function () use ($app) {
-    $app->render('index.tpl');
-})->name('landing');
+$app->addRoutes(
+        array('/' => array(
+                'get' => 'Index:index'
+            )
+        )
+);
 
 $app->run();
