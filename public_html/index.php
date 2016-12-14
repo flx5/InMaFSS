@@ -21,45 +21,44 @@
   |* along with InMaFSS; if not, see http://www.gnu.org/licenses/.                   *|
   \*================================================================================= */
 
-class config
-{
+namespace InMaFSS;
 
-    private $schoolname;
-    private $salt;
-    private $lang;
-    private $auto_addition;
-    private $time_for_next_page;
-    private $teacher_time_for_next_page;
-    private $system;
-    private $updateStyle;
-    private $spalten_t = Array('200px', '30px', '100px', '75px', '*');
-    private $spalten = Array('75px', '75px', '30px', '180px', '75px', '*');
+$_ENV['SLIM_MODE'] = 'development';
 
-    public function __construct() 
-    {
-        include CWD . "inc/config.php";
-        $this->salt = $salt;
-    }
+require __DIR__ . '/../vendor/autoload.php';
 
-    public function LoadFromDB() 
-    {
-        $val = dbquery("SELECT * FROM settings LIMIT 1")->fetchObject();
+// http://docs.slimframework.com/
+$app = new \Slim\Slim(array(
+    'mode' => 'production',
+    'view' => new \Slim\Views\Smarty()
+        )
+);
 
-        $this->schoolname = (string)$val->schoolname;
-        $this->lang = (string)$val->lang;
-        $this->auto_addition = (bool)$val->auto_addition;
-        $this->time_for_next_page = (int)$val->time_for_next_page;
-        $this->teacher_time_for_next_page = (int)$val->teacher_time_for_next_page;
+$view = $app->view();
+$view->setTemplatesDirectory(__DIR__ . '/../templates/');
+$view->parserCompileDirectory = __DIR__ . '/../templates_c/';
+$view->parserCacheDirectory = __DIR__ . '/../cache/';
 
-        $this->system = (string)$val->system;
-        $this->updateStyle = (string)$val->updateStyle;
-    }
+// Only invoked if mode is "production"
+$app->configureMode('production', function () use ($app) {
+    $app->config(array(
+        'log.enable' => true,
+        'debug' => false
+    ));
+});
 
-    public function Get($var) 
-    {
-        return $this->$var;
-    }
+// Only invoked if mode is "development"
+$app->configureMode('development', function () use ($app) {
+    $app->config(array(
+        'log.enable' => false,
+        'debug' => true
+    ));
+});
 
-}
+$app->setName('InMaFSS');
 
-?>
+$app->get('/', function () use ($app) {
+    $app->render('index.tpl');
+})->name('landing');
+
+$app->run();

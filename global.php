@@ -23,9 +23,9 @@
 
 namespace InMaFSS {
 
-    require __DIR__ . '/vendor/autoload.php';
+    
 
-
+/*
 // TODO Time management!
     date_default_timezone_set('Europe/Berlin');
 
@@ -37,52 +37,11 @@ namespace InMaFSS {
         header("Location: ./installer/");
         exit;
     }
-
+*/
     Compability::magicQuotes();
     $config = new Config();
+    Database::Initialize($config);
 
-    \Propel::setConfiguration(
-            array(
-                'datasources' =>
-                array(
-                    'inmafss' =>
-                    array(
-                        'adapter' => $config->getDbAdapter(),
-                        'connection' =>
-                        array(
-                            'dsn' => $config->getDbDSN(),
-                            'user' => $config->getDbUser(),
-                            'password' => $config->getDbPass(),
-                        ),
-                    ),
-                    'default' => 'inmafss',
-                )
-            )
-    );
-    \Propel::initialize();
-    
-    Data\EventQuery::create()->find();
-
-    $vars->set("sql", SQL::GenerateInstance($config->Get("dbtype"), $config->Get("dbhost"), $config->Get("dbusr"), $config->Get("dbpass"), $config->Get("dbname")));
-    vars::Init($vars);
-
-    getVar("sql")->connect();
-    $config->LoadFromDB();
-
-    $vars->Set("lang", new lang($config->Get("lang")));
-    getVar("pluginManager")->Init();
-
-    session_start();
-
-
-    $user = Authorization::IsLoggedIn();
-    if ($user != null) {
-        define('LOGGED_IN', true);
-        define('USERNAME', $user['name']);
-        define('USER_ID', $user['id']);
-    } else {
-        define('LOGGED_IN', false);
-        define('USERNAME', 'GUEST');
-        define('USER_ID', -1);
-    }
+    $session_factory = new \Aura\Session\SessionFactory;
+    $session = $session_factory->newInstance($_COOKIE);
 }
