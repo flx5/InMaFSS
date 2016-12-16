@@ -16,18 +16,23 @@
  */
 
 
-function createClock(domId) {
-    var dom = document.getElementById(domId);
+var Ajax = {
+    get : function(url, callback) {
+        return request('GET', url, callback);
+    },
     
-    moment.locale(window.navigator.language);
+    post : function(url, callback) {
+        return request('POST', url, callback);
+    },
     
-    var update = function () {
-        dom.innerHTML = moment().format('L LT');
-    };
-    
-    // display current time
-    update();
-    
-    // update clock
-    setInterval(update, 5000);
-}
+    request: function (method, url, callback) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                callback(this.responseText);
+            }
+        };
+        xhttp.open(method, url, true);
+        xhttp.send();
+    }
+};

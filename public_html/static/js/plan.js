@@ -16,18 +16,33 @@
  */
 
 
-function createClock(domId) {
-    var dom = document.getElementById(domId);
-    
-    moment.locale(window.navigator.language);
-    
-    var update = function () {
-        dom.innerHTML = moment().format('L LT');
+/* global Ajax */
+
+var PlanType = {
+    Pupil: 'pupil',
+    Teacher: 'teacher'
+};
+
+/**
+ * Create a Plan with the given type.
+ * @param {PlanType} type
+ * @returns {Plan}
+ */
+function Plan(type) {
+    this.getHeight = function () {
+        return window.innerHeight;
     };
-    
-    // display current time
-    update();
-    
-    // update clock
-    setInterval(update, 5000);
+
+    this.getLimit = function () {
+        // TODO Revisit & improve
+        return floor((this.getHeight() - 50) / 25) - 4;
+    };
+
+    this.requestUpdate = function () {
+        Ajax.get("update/" + type + "/" + this.getLimit() + "?t=" + Date.now(),
+                function (json) {
+                    var data = JSON.decode(json);
+                }
+        );
+    };
 }

@@ -100,3 +100,14 @@ a {
 #header_cached {
     display: none; 
 }
+
+#too_small {
+    display: none;
+    position:absolute; 
+    bottom:0px; 
+    top:30px; 
+    background-color:#E1E100; 
+    width:100%; 
+    font-size:20px; 
+    text-align:center; 
+}

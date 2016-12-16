@@ -27,13 +27,10 @@ namespace InMaFSS\Controller;
 class PlanController extends \SlimController\SlimController {
 
     public function indexAction() {
-        // TODO Implement!
-        
-        $this->render('plan/index',
-                array(
-                    'ticker' => array('test'),
-                    'schoolname' => 'TODO'
-                ));
+        $this->render('plan/index', array(
+            'ticker' => array('test'),
+            'schoolname' => 'TODO'
+        ));
     }
 
 }
