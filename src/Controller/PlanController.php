@@ -27,10 +27,23 @@ namespace InMaFSS\Controller;
 class PlanController extends \SlimController\SlimController {
 
     public function indexAction() {
+        // TODO Permissions
+        
         $this->render('plan/index', array(
             'ticker' => array('test'),
             'schoolname' => 'TODO'
         ));
     }
 
+    public function updateAction($type, $limit) {
+        
+         // TODO Permissions
+        
+        $data = Array();
+        
+        $viewType = \InMaFSS\ReplacementsTypes::fromName($type);
+        
+        
+        //$view_left = new view('left', $limit, $viewType);
+    }
 }

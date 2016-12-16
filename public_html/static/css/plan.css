@@ -93,6 +93,15 @@
     color:#ff0000;
 }
 
+.no_content {
+    height:80px; 
+    width:90%; 
+    background-color:#C0C0C0; 
+    padding:5px; 
+    margin:auto; 
+    margin-top:40%;
+}
+
 a {
     color:#fff;
 }

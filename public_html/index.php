@@ -75,4 +75,13 @@ $app->addRoutes(
         )
 );
 
+$app
+        ->addControllerRoute("/plan/update/:type/:limit", "Plan:update")
+        ->via('GET')->conditions(
+        array(
+            'type' => '(pupil|teacher)',
+            'limit' => '[0-9]+'
+        )
+);
+
 $app->run();

@@ -29,20 +29,69 @@ var PlanType = {
  * @returns {Plan}
  */
 function Plan(type) {
+    this.data = null;
+    this.updateInterval = 60000;
+
     this.getHeight = function () {
         return window.innerHeight;
     };
 
     this.getLimit = function () {
         // TODO Revisit & improve
-        return floor((this.getHeight() - 50) / 25) - 4;
+        return Math.floor((this.getHeight() - 50) / 25) - 4;
     };
 
     this.requestUpdate = function () {
+        var self = this;
         Ajax.get("update/" + type + "/" + this.getLimit() + "?t=" + Date.now(),
-                function (json) {
-                    var data = JSON.decode(json);
+                function (response, httpStatus) {
+                    if (httpStatus === 200) {
+                        self.data = JSON.parse(response);
+
+                        self.setCacheWarning(false);
+                    } else {
+                        self.setCacheWarning(true);
+                    }
+
+                    window.setTimeout(function () {
+                        self.requestUpdate();
+                    }, self.updateInterval);
                 }
         );
     };
+    
+    this.updateContent = function() {
+        var left = document.getElementById('plan_left');
+        var right = document.getElementById('plan_right');
+        
+        left.getElementsByClassName('no_content')[0].style.display = 'none';
+        right.getElementsByClassName('no_content')[0].style.display = 'none';
+    };
+
+    this.setCacheWarning = function (enable) {
+        var cache = document.getElementById("header_cached");
+        var normal = document.getElementById("header_normal");
+
+        if (enable) {
+            cache.style.display = 'inline-block';
+            normal.style.display = 'none';
+            document.getElementById('header').style.backgroundColor = "#ff0000";
+        } else {
+            cache.style.display = 'none';
+            normal.style.display = 'inline-block';
+            document.getElementById('header').style.backgroundColor = "";
+        }
+    };
+
+    this.enableCacheWarning = function () {
+        var t = true;
+        var self = this;
+
+        window.setInterval(function () {
+            self.setCacheWarning(t);
+            t = !t;
+        }, 2500);
+    };
+
+    this.requestUpdate();
 }

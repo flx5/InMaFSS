@@ -51,6 +51,9 @@
                 ticker.addEventListener("animationiteration", function () {
                     // TODO Update here!
                 });
+                
+                var plan = new Plan(PlanType.Pupil);
+                
             }
     );
 </script>

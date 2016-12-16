@@ -1,4 +1,6 @@
-/* 
+<?php
+
+/*
  * Copyright (C) 2016 Felix Prasse <me@flx5.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,24 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace InMaFSS;
 
-var Ajax = {
-    get : function(url, callback) {
-        return this.request('GET', url, callback);
-    },
+/**
+ * Description of ReplacementsTypes
+ *
+ * @author Felix Prasse <me@flx5.com>
+ */
+class ReplacementsTypes {
+    const PUPIL = 0;
+    const TEACHER = 1;
     
-    post : function(url, callback) {
-        return this.request('POST', url, callback);
-    },
-    
-    request: function (method, url, callback) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4) {
-                callback(this.responseText, this.status );
-            }
-        };
-        xhttp.open(method, url, true);
-        xhttp.send();
+    public static function fromName($name) {
+        switch($name) {
+            case 'pupil':
+                return self::PUPIL;
+            case 'teacher':
+                return self::TEACHER;
+            default:
+                return null;
+        }
     }
-};
+}

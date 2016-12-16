@@ -1,13 +1,5 @@
 <?php
 
-class ReplacementsTypes
-{
-
-    const PUPIL = 0;
-    const TEACHER = 1;
-
-}
-
 require_once INC . 'class.time_helper.php';
 
 class Replacements
