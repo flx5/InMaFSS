@@ -27,6 +27,10 @@ $_ENV['SLIM_MODE'] = 'development';
 
 require __DIR__ . '/../vendor/autoload.php';
 
+Compability::magicQuotes();
+$config = new Config();
+Database::Initialize($config);
+
 // http://docs.slimframework.com/
 $app = New \SlimController\Slim(array(
     'templates.path' => __DIR__ . '/templates',

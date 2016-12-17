@@ -43,6 +43,14 @@ class PlanController extends \SlimController\SlimController {
         
         $viewType = \InMaFSS\ReplacementsTypes::fromName($type);
         
+        $query = \InMaFSS\Data\ReplacementQuery::create();
+        
+        $today = $query->findByDay(new \DateTime("today"));
+        $tomorrow = $query->findByDay(new \DateTime("tomorrow"));
+        
+        foreach($today as $replacement) {
+            var_dump($replacement);
+        }
         
         //$view_left = new view('left', $limit, $viewType);
     }

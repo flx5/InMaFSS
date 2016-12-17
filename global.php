@@ -38,9 +38,7 @@ namespace InMaFSS {
         exit;
     }
 */
-    Compability::magicQuotes();
-    $config = new Config();
-    Database::Initialize($config);
+    
 
     $session_factory = new \Aura\Session\SessionFactory;
     $session = $session_factory->newInstance($_COOKIE);

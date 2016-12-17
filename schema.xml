@@ -36,11 +36,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </table>
     <table name="pages" phpName="Page" namespace="InMaFSS\Data">
         <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
-        <column name="title" type="varchar" size="255" required="true" />
+        <column name="title" type="varchar" size="100" required="true" />
         <column name="content" type="longvarchar" size="255" required="true" />
         <column name="begin" type="date" required="true"/>
         <column name="end" type="date" required="true"/>
         <column name="show_pupil" type="boolean" required="true"/>
         <column name="show_teacher" type="boolean" required="true"/>
+    </table>
+    <table name="replacements" phpName="Replacement" namespace="InMaFSS\Data">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="grade" type="varchar" size="5" required="true" />
+        <column name="lesson" type="integer" size="2" required="true" />
+        <column name="teacher" type="varchar" size="50" required="true" />
+        <column name="replacement" type="varchar" size="50" required="false" />
+        <column name="room" type="varchar" size="5" required="false" />
+        <column name="comment" type="varchar" size="100" required="false" />
+        <column name="day" type="date" required="true"/>
     </table>
 </database>
